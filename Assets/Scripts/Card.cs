@@ -5,13 +5,16 @@ using UnityEngine.Events;
 public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     private Camera _mainCamera;
-    private Vector3 offset;
+    private Vector3 _offset;
 
-    [HideInInspector] public UnityEvent ChangeCardPosition;
-    [HideInInspector] public Transform CurrentCardParentTransform;
-    [HideInInspector] public Transform FutureCardParentTransform;
     [HideInInspector] public int StartSiblingIndex;
     [HideInInspector] public int SiblingIndex;
+
+    [HideInInspector] public Transform CurrentCardParentTransform;
+    [HideInInspector] public Transform FutureCardParentTransform;
+
+    [HideInInspector] public UnityEvent ChangeCardPosition;
+    [HideInInspector] public UnityEvent ChangeCardPoints;
 
     private void Awake()
     {
@@ -20,7 +23,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        offset = transform.position - _mainCamera.ScreenToWorldPoint(eventData.position);
+        _offset = transform.position - _mainCamera.ScreenToWorldPoint(eventData.position);
 
         CurrentCardParentTransform = transform.parent;
         FutureCardParentTransform = transform.parent;
@@ -32,7 +35,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = (_mainCamera.ScreenToWorldPoint(eventData.position) + offset) * Vector2.one;
+        transform.position = (_mainCamera.ScreenToWorldPoint(eventData.position) + _offset) * Vector2.one;
         CheckPosition();
     }
 
@@ -40,6 +43,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     {
         GetComponent<CanvasGroup>().blocksRaycasts = true;
         transform.SetParent(FutureCardParentTransform);
+        transform.SetSiblingIndex(SiblingIndex);
     }
 
     private void CheckPosition()

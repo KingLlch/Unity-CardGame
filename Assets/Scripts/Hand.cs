@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.XR;
 
 public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
@@ -48,7 +46,6 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
             HideEmptyCard();
             card.transform.SetParent(transform);
             card.transform.SetSiblingIndex(card.SiblingIndex);
-
         }
     }
 
