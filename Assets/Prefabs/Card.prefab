@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -75, y: 125}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: -35, y: 60}
+  m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5089990239235329303
 CanvasRenderer:
@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 667380371289791919}
   - component: {fileID: 1015399376359050430}
   - component: {fileID: -8805600453780257939}
+  - component: {fileID: 3822636935777310630}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -115,7 +116,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 300}
+  m_SizeDelta: {x: 100, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6358606340941417035
 CanvasRenderer:
@@ -179,7 +180,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28dc7af2a8d3c034791b437114c4d5fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ParentObject: {fileID: 0}
+  StartSiblingIndex: 0
+  SiblingIndex: 0
+  CurrentCardParentTransform: {fileID: 0}
+  FutureCardParentTransform: {fileID: 0}
+  ChangeCardPosition:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3822636935777310630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2441212105074888676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1aa53c1acf321c41a22c119ce2a6411, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Image: {fileID: 5646225784876631289}
+  Point: {fileID: 6089050918954820202}
 --- !u!1 &4767603395334613595
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +236,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 170, y: 270}
+  m_SizeDelta: {x: 90, y: 135}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9173285938338254841
 CanvasRenderer:

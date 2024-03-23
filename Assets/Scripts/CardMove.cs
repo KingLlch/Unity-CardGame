@@ -7,6 +7,8 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private Camera _mainCamera;
     private Vector3 _offset;
 
+    private bool _isDraggable;
+
     [HideInInspector] public int StartSiblingIndex;
     [HideInInspector] public int SiblingIndex;
 
@@ -27,6 +29,11 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         CurrentCardParentTransform = transform.parent;
         FutureCardParentTransform = transform.parent;
 
+        if (CurrentCardParentTransform.GetComponent<DropField>() && (CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND))
+            _isDraggable = (CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND);
+
+        if (!_isDraggable) return;
+
         StartSiblingIndex = transform.GetSiblingIndex();
         transform.SetParent(CurrentCardParentTransform.parent);
         GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -34,12 +41,16 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!_isDraggable) return;
+
         transform.position = (_mainCamera.ScreenToWorldPoint(eventData.position) + _offset) * Vector2.one;
         CheckPosition();
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!_isDraggable) return;
+
         GetComponent<CanvasGroup>().blocksRaycasts = true;
         transform.SetParent(FutureCardParentTransform);
         transform.SetSiblingIndex(SiblingIndex);
