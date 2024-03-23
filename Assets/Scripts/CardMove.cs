@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     private Camera _mainCamera;
     private Vector3 _offset;
@@ -14,7 +14,6 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     [HideInInspector] public Transform FutureCardParentTransform;
 
     [HideInInspector] public UnityEvent ChangeCardPosition;
-    [HideInInspector] public UnityEvent ChangeCardPoints;
 
     private void Awake()
     {

@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class Table : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
     private Transform _emptyTableCard;
-    private Card card;
+    private CardMove card;
     private Hand hand;
 
     [HideInInspector] public Transform EmptyCardTableParentTransform;
@@ -23,7 +23,7 @@ public class Table : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null) return;
-        card = eventData.pointerDrag.GetComponent<Card>();
+        card = eventData.pointerDrag.GetComponent<CardMove>();
         card.ChangeCardPosition.AddListener(ChangeCardPosition);
 
         _emptyTableCard.SetParent(transform);
@@ -45,14 +45,9 @@ public class Table : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
         {
             card.transform.SetParent(transform);
             HideEmptyCard();
-            card.transform.SetSiblingIndex(card.SiblingIndex);
-
         }
 
-        else
-        {
-            card.transform.SetSiblingIndex(card.SiblingIndex);
-        }
+        card.transform.SetSiblingIndex(card.SiblingIndex);
     }
 
     public void HideEmptyCard()
