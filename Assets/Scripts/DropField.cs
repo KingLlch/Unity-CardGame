@@ -21,17 +21,21 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private void ChangeCardPosition()
     {
         _emptyHandCard.transform.SetSiblingIndex(card.SiblingIndex);
+        _emptyTableCard.transform.SetSiblingIndex(card.SiblingIndex);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null) return;
         card = eventData.pointerDrag.GetComponent<CardMove>();
+
         card.ChangeCardPosition.AddListener(ChangeCardPosition);
+        card.HideEmptyCard.AddListener(HideEmptyCard);
 
         if (typeField == TypeField.SELF_TABLE)
         {
             _emptyTableCard.SetParent(transform);
+            _emptyTableCard.SetSiblingIndex(card.SiblingIndex);
             card.FutureCardParentTransform = transform;
         }
         
@@ -59,9 +63,11 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnDrop(PointerEventData eventData)
     {
-        HideEmptyCard();
-        card.transform.SetParent(transform);
-        card.transform.SetSiblingIndex(card.SiblingIndex);
+        if (typeField == TypeField.SELF_TABLE)
+        {
+            card.transform.SetParent(transform);
+            card.transform.SetSiblingIndex(card.SiblingIndex);
+        }
     }
 
     public void HideEmptyCard()

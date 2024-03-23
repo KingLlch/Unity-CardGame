@@ -16,6 +16,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     [HideInInspector] public Transform FutureCardParentTransform;
 
     [HideInInspector] public UnityEvent ChangeCardPosition;
+    [HideInInspector] public UnityEvent HideEmptyCard;
 
     private void Awake()
     {
@@ -29,8 +30,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         CurrentCardParentTransform = transform.parent;
         FutureCardParentTransform = transform.parent;
 
-        if (CurrentCardParentTransform.GetComponent<DropField>() && (CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND))
-            _isDraggable = (CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND);
+        _isDraggable = (CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND);
 
         if (!_isDraggable) return;
 
@@ -51,9 +51,14 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         if (!_isDraggable) return;
 
+        HideEmptyCard.Invoke();
+
         GetComponent<CanvasGroup>().blocksRaycasts = true;
         transform.SetParent(FutureCardParentTransform);
         transform.SetSiblingIndex(SiblingIndex);
+
+        ChangeCardPosition.RemoveAllListeners();
+        HideEmptyCard.RemoveAllListeners();
     }
 
     private void CheckPosition()
@@ -71,7 +76,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             }
         }
 
-        ChangeCardPosition.Invoke();
         SiblingIndex = newIndex;
+        ChangeCardPosition.Invoke();
     }
 }
