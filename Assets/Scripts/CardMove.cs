@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -8,6 +9,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private Vector3 _offset;
 
     public bool IsDraggable;
+    public bool IsDrag;
 
     [HideInInspector] public int StartSiblingIndex;
     [HideInInspector] public int SiblingIndex;
@@ -42,6 +44,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     public void OnDrag(PointerEventData eventData)
     {
         if (!IsDraggable) return;
+        IsDrag = true;
 
         transform.position = (_mainCamera.ScreenToWorldPoint(eventData.position) + _offset) * Vector2.one;
         CheckPosition();
@@ -50,6 +53,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     public void OnEndDrag(PointerEventData eventData)
     {
         if (!IsDraggable) return;
+        IsDrag = false;
 
         HideEmptyCard.Invoke();
 
