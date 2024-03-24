@@ -9,6 +9,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private Transform _emptyTableCard;
     private Transform _emptyHandCard;
+    private bool _isChangeEmptyCardPositionInHand;
 
     private CardMove card;
 
@@ -20,14 +21,16 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private void ChangeCardPosition()
     {
-        _emptyHandCard.transform.SetSiblingIndex(card.SiblingIndex);
+        if (_isChangeEmptyCardPositionInHand) _emptyHandCard.transform.SetSiblingIndex(card.SiblingIndex);
         _emptyTableCard.transform.SetSiblingIndex(card.SiblingIndex);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null) return;
+
         card = eventData.pointerDrag.GetComponent<CardMove>();
+        if (!card.IsDraggable) return;
 
         card.ChangeCardPosition.AddListener(ChangeCardPosition);
         card.HideEmptyCard.AddListener(HideEmptyCard);
@@ -38,7 +41,12 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             _emptyTableCard.SetSiblingIndex(card.SiblingIndex);
             card.FutureCardParentTransform = transform;
         }
-        
+
+        if (typeField == TypeField.SELF_HAND)
+        {
+            _isChangeEmptyCardPositionInHand = true;
+        }
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -47,26 +55,44 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         if (typeField == TypeField.SELF_HAND)
         {
-        _emptyHandCard.SetParent(transform);
-
-        card.ChangeCardPosition.RemoveListener(ChangeCardPosition);
-        _emptyHandCard.transform.SetSiblingIndex(card.StartSiblingIndex);
+            _isChangeEmptyCardPositionInHand = false;
+            _emptyHandCard.SetParent(transform);
+            _emptyHandCard.transform.SetSiblingIndex(card.StartSiblingIndex);
         }
 
         if (typeField == TypeField.SELF_TABLE)
         {
-            if (eventData.pointerDrag == null) return;
             card.FutureCardParentTransform = card.CurrentCardParentTransform;
-            HideEmptyCard();
+
+            _emptyTableCard.SetParent(null);
+            _emptyTableCard.transform.position = new Vector2(2000, 0);
         }
     }
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (typeField == TypeField.SELF_TABLE)
+        if (eventData.pointerDrag == null) return;
+        if (!card.IsDraggable) return;
+
+        if ((typeField == TypeField.SELF_TABLE ) || (typeField == TypeField.SELF_HAND))
         {
-            card.transform.SetParent(transform);
-            card.transform.SetSiblingIndex(card.SiblingIndex);
+            if (typeField == TypeField.SELF_TABLE)
+            {
+                card.transform.SetParent(transform);
+                card.transform.SetSiblingIndex(card.SiblingIndex);
+            }
+
+            else
+            {
+                card.transform.SetParent(card.CurrentCardParentTransform);
+                card.transform.SetSiblingIndex(card.SiblingIndex);
+            }
+        }
+
+        else
+        {
+            card.transform.SetParent(card.CurrentCardParentTransform);
+            card.transform.SetSiblingIndex(card.StartSiblingIndex);
         }
     }
 

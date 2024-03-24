@@ -7,7 +7,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private Camera _mainCamera;
     private Vector3 _offset;
 
-    private bool _isDraggable;
+    public bool IsDraggable;
 
     [HideInInspector] public int StartSiblingIndex;
     [HideInInspector] public int SiblingIndex;
@@ -30,9 +30,9 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         CurrentCardParentTransform = transform.parent;
         FutureCardParentTransform = transform.parent;
 
-        _isDraggable = (CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND);
+        IsDraggable = (CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND);
 
-        if (!_isDraggable) return;
+        if (!IsDraggable) return;
 
         StartSiblingIndex = transform.GetSiblingIndex();
         transform.SetParent(CurrentCardParentTransform.parent);
@@ -41,7 +41,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!_isDraggable) return;
+        if (!IsDraggable) return;
 
         transform.position = (_mainCamera.ScreenToWorldPoint(eventData.position) + _offset) * Vector2.one;
         CheckPosition();
@@ -49,13 +49,17 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!_isDraggable) return;
+        if (!IsDraggable) return;
 
         HideEmptyCard.Invoke();
 
         GetComponent<CanvasGroup>().blocksRaycasts = true;
-        transform.SetParent(FutureCardParentTransform);
-        transform.SetSiblingIndex(SiblingIndex);
+
+        if (!eventData.pointerCurrentRaycast.gameObject.GetComponent<DropField>())
+        {
+            transform.SetParent(CurrentCardParentTransform);
+            transform.SetSiblingIndex(StartSiblingIndex);  
+        }
 
         ChangeCardPosition.RemoveAllListeners();
         HideEmptyCard.RemoveAllListeners();
