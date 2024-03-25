@@ -15,6 +15,11 @@ public class CardInfoScript : MonoBehaviour
     public TextMeshProUGUI Name;
     public TextMeshProUGUI Description;
 
+    private void Start()
+    {
+        //ShowCardInfo(CardManagerList.AllCards[transform.GetSiblingIndex()]);
+    }
+
     public void ShowCardInfo(Card card)
     {
         SelfCard = card;
@@ -31,16 +36,12 @@ public class CardInfoScript : MonoBehaviour
         SelfCard = card;
 
         Image.sprite = null;
-        Image.preserveAspect = true;
+        Image.preserveAspect = false;
         Point.text = null;
         Name.text = null;
         Description.text = null;
     }
 
-    private void Start()
-    {
-        ShowCardInfo(CardManagerList.AllCards[transform.GetSiblingIndex()]);
-    }
 
     public void ShowDescription()
     {
