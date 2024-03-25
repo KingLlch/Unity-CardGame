@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Xml.Linq;
-using System.Diagnostics;
 
 public class CardInfoScript : MonoBehaviour
 {
@@ -21,9 +17,9 @@ public class CardInfoScript : MonoBehaviour
 
     public bool IsHideCard;
 
-    private void Start()
+    public int ShowPoints(Card card)
     {
-        //ShowCardInfo(CardManagerList.AllCards[transform.GetSiblingIndex()]);
+        return card.Points;
     }
 
     public void ShowCardInfo(Card card)

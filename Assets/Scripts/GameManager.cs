@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
+using UnityEngine.Events;
+using TMPro;
 
 public class Game
 {
@@ -34,10 +33,15 @@ public class GameManager : MonoBehaviour
     private Transform _enemyField;
     private Transform _playerField;
 
+    private TextMeshProUGUI _playerPointsTMPro;
+    private TextMeshProUGUI _enemyPointsTMPro;
+
     private UnityEngine.UI.Image[] _imageTurnTime = new UnityEngine.UI.Image[2];
 
     private int _turn;
     private int _turnTime;
+    private int _playerPoints;
+    private int _enemyPoints;
 
     public GameObject CardPref;
     public UnityEngine.UI.Button EndTurnButton;
@@ -63,13 +67,22 @@ public class GameManager : MonoBehaviour
         _enemyField = GameObject.Find("UI/MainCanvas/EnemyTable/TableLayout").transform;
         _playerField = GameObject.Find("UI/MainCanvas/PlayerTable/TableLayout").transform;
 
+        _playerPointsTMPro = GameObject.Find("UI/MainCanvas/RightUI/Points/PlayerAllPointsImage/PlayerAllPoints").GetComponent<TextMeshProUGUI>();
+        _enemyPointsTMPro = GameObject.Find("UI/MainCanvas/RightUI/Points/EnemyAllPointsImage/EnemyAllPoints").GetComponent<TextMeshProUGUI>();
+
+        _playerField.GetComponent<DropField>().DropCard.AddListener(PlayerDropCard);
+        _playerField.GetComponent<DropField>().DropCard.AddListener(ChangePlayerPoints);
+
         _imageTurnTime[0] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime").GetComponent<UnityEngine.UI.Image>();
         _imageTurnTime[1] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime1").GetComponent<UnityEngine.UI.Image>();
     }
 
+
     private void Start()
     {
         _turn = 0;
+        _playerPoints = 0;
+        _enemyPoints = 0;
 
         _currentGame = new Game();
 
@@ -128,6 +141,8 @@ public class GameManager : MonoBehaviour
             enemyHandCards[0].ShowCardInfo(enemyHandCards[0].SelfCard);
             enemyHandCards[0].transform.SetParent(_enemyField);
 
+            ChangeEnemyPoints(enemyHandCards);
+
             EnemyHandCards.Remove(enemyHandCards[0]);
             EnemyFieldCards.Add(enemyHandCards[0]);
         }
@@ -177,5 +192,29 @@ public class GameManager : MonoBehaviour
         }
 
         ChangeTurn();
+    }
+
+    private void PlayerDropCard(CardInfoScript card)
+    {
+        PlayerFieldCards.Add(card);
+        PlayerHandCards.Remove(card);
+    }
+
+    private void ChangeEnemyPoints(List<CardInfoScript> enemyCard)
+    {
+        _enemyPoints += enemyCard[0].ShowPoints(enemyCard[0].SelfCard);
+        ShowPoints();
+    }
+
+    private void ChangePlayerPoints(CardInfoScript card)
+    {
+        _playerPoints += card.ShowPoints(card.SelfCard);
+        ShowPoints();
+    }
+
+    private void ShowPoints()
+    {
+        _playerPointsTMPro.text = _playerPoints.ToString();
+        _enemyPointsTMPro.text = _enemyPoints.ToString();
     }
 }

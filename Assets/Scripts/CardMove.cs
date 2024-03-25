@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Events;
-using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 
 public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {

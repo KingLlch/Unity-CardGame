@@ -1,7 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.XR;
 
 public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
@@ -10,6 +9,8 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private Transform _emptyTableCard;
     private Transform _emptyHandCard;
     private bool _isChangeEmptyCardPositionInHand;
+
+    [HideInInspector] public UnityEvent<CardInfoScript> DropCard;
 
     private CardMove card;
 
@@ -79,6 +80,8 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             if (typeField == TypeField.SELF_TABLE && card.GameManager.PlayerFieldCards.Count < 9)
             {
+                DropCard.Invoke(card.GetComponent<CardInfoScript>());
+
                 card.GameManager.PlayerHandCards.Remove(card.GetComponent<CardInfoScript>());
                 card.GameManager.PlayerHandCards.Add(card.GetComponent<CardInfoScript>());
                 card.transform.SetParent(transform);
