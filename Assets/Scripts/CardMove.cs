@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 
 public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    public GameManager GameManager;
     private Camera _mainCamera;
     private Vector3 _offset;
 
@@ -23,6 +24,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private void Awake()
     {
         _mainCamera = Camera.main;
+        GameManager = FindObjectOfType<GameManager>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -32,7 +34,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         CurrentCardParentTransform = transform.parent;
         FutureCardParentTransform = transform.parent;
 
-        IsDraggable = (CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND);
+        IsDraggable = ((CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND) && (GameManager.IsPlayerTurn));
 
         if (!IsDraggable) return;
 

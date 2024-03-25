@@ -9,11 +9,17 @@ using System.Diagnostics;
 public class CardInfoScript : MonoBehaviour
 {
     public Card SelfCard;
+
     public GameObject DescriptionObject;
+    public GameObject CardBack;
+
     public Image Image;
+
     public TextMeshProUGUI Point;
     public TextMeshProUGUI Name;
     public TextMeshProUGUI Description;
+
+    public bool IsHideCard;
 
     private void Start()
     {
@@ -24,32 +30,32 @@ public class CardInfoScript : MonoBehaviour
     {
         SelfCard = card;
 
+        CardBack.SetActive(false);
+        IsHideCard = false;
+
         Image.sprite = card.Image;
         Image.preserveAspect = true;
         Point.text = card.Points.ToString();
         Name.text = card.Name.ToString();
         Description.text = card.Description.ToString();
+
     }
 
     public void HideCardInfo(Card card)
     {
         SelfCard = card;
-
-        Image.sprite = null;
-        Image.preserveAspect = false;
-        Point.text = null;
-        Name.text = null;
-        Description.text = null;
+        CardBack.SetActive(true);
+        IsHideCard = true;
     }
 
 
     public void ShowDescription()
     {
-       // if ()
-        //{
+        if (!IsHideCard)
+        {
             DescriptionObject.SetActive(true);
             DescriptionObject.transform.SetParent(transform.parent.parent);
-        //}
+        }
     }
 
     public void HideDescription()

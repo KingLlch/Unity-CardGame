@@ -72,12 +72,15 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null) return;
+
         if (!card.IsDraggable) return;
 
         if ((typeField == TypeField.SELF_TABLE ) || (typeField == TypeField.SELF_HAND))
         {
-            if (typeField == TypeField.SELF_TABLE)
+            if (typeField == TypeField.SELF_TABLE && card.GameManager.PlayerFieldCards.Count < 9)
             {
+                card.GameManager.PlayerHandCards.Remove(card.GetComponent<CardInfoScript>());
+                card.GameManager.PlayerHandCards.Add(card.GetComponent<CardInfoScript>());
                 card.transform.SetParent(transform);
                 card.transform.SetSiblingIndex(card.SiblingIndex);
             }
