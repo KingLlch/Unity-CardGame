@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,13 @@ public class CardInfoScript : MonoBehaviour
     public TextMeshProUGUI Description;
 
     public bool IsHideCard;
+
+    private GameManager _gameManager;
+
+    private void Awake()
+    {
+        _gameManager = FindObjectOfType<GameManager>();
+    }
 
     public int ShowPoints(Card card)
     {
@@ -49,8 +57,11 @@ public class CardInfoScript : MonoBehaviour
     {
         if (!IsHideCard)
         {
-            DescriptionObject.SetActive(true);
-            DescriptionObject.transform.SetParent(transform.parent.parent);
+            if (!_gameManager.IsDrag)
+            {
+                DescriptionObject.SetActive(true);
+                DescriptionObject.transform.SetParent(transform.parent.parent);
+            }
         }
     }
 
@@ -59,4 +70,5 @@ public class CardInfoScript : MonoBehaviour
         DescriptionObject.SetActive(false);
         DescriptionObject.transform.SetParent(transform);
     }
+
 }

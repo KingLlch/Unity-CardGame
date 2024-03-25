@@ -1981,8 +1981,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4f39a3b0723114148ba3f9d728349d73, type: 2}
+  m_sharedMaterial: {fileID: 6640169494650683046, guid: 4f39a3b0723114148ba3f9d728349d73, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2263,6 +2263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d7a9ff72b16bb743a263fe684b773f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsDrag: 0
   CardPref: {fileID: 2441212105074888676, guid: 634948aaf4c1f2947a82d9c635c07118, type: 3}
   EndTurnButton: {fileID: 1213024715}
   PlayerHandCards: []
@@ -2328,8 +2329,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4f39a3b0723114148ba3f9d728349d73, type: 2}
+  m_sharedMaterial: {fileID: 6640169494650683046, guid: 4f39a3b0723114148ba3f9d728349d73, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2575,8 +2576,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: End Turn
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4f39a3b0723114148ba3f9d728349d73, type: 2}
+  m_sharedMaterial: {fileID: 6640169494650683046, guid: 4f39a3b0723114148ba3f9d728349d73, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

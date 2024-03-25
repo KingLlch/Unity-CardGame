@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
     private int _playerPoints;
     private int _enemyPoints;
 
+    public bool IsDrag;
+
     public GameObject CardPref;
     public UnityEngine.UI.Button EndTurnButton;
 
