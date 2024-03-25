@@ -61,9 +61,8 @@ sysinfo.txt
 *.unitypackage
 *.app
 
-# ShaderLab
-*.shader
-*.cginc
+# TextMeshPro
+/TextMesh Pro
 
 # Crashlytics generated file
 crashlytics-build.properties
