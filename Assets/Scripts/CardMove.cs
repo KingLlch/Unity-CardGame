@@ -89,4 +89,5 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         SiblingIndex = newIndex;
         ChangeCardPosition.Invoke();
     }
+
 }

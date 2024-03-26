@@ -30,6 +30,28 @@ public class CardInfoScript : MonoBehaviour
         return card.Points;
     }
 
+    public void ChangePoints(ref Card card, int value)
+    {
+        Debug.Log(card.Points);
+        card.Points += value;
+        Debug.Log(card.Points);
+        ShowPointsUI(card);
+    }
+
+    public int Boost(Card card)
+    {
+        if (card.Boost != 0) return card.Boost;
+
+        else return 0;
+    }
+
+    public int Damage(Card card)
+    {
+        if (card.Damage != 0) return card.Damage;
+
+        else return 0;
+    }
+
     public void ShowCardInfo(Card card)
     {
         SelfCard = card;
@@ -69,6 +91,11 @@ public class CardInfoScript : MonoBehaviour
     {
         DescriptionObject.SetActive(false);
         DescriptionObject.transform.SetParent(transform);
+    }
+
+    public void ShowPointsUI(Card card)
+    {
+        Point.text = card.Points.ToString();
     }
 
 }

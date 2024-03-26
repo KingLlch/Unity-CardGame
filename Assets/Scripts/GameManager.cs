@@ -54,6 +54,9 @@ public class GameManager : MonoBehaviour
     public List<CardInfoScript> EnemyHandCards = new List<CardInfoScript>();
     public List<CardInfoScript> EnemyFieldCards = new List<CardInfoScript>();
 
+    //public CardInfoScript ChosenCard;
+   //[HideInInspector] public bool isChoosePlayer = false;
+
     public bool IsPlayerTurn
     {
         get
@@ -73,7 +76,6 @@ public class GameManager : MonoBehaviour
         _enemyPointsTMPro = GameObject.Find("UI/MainCanvas/RightUI/Points/EnemyAllPointsImage/EnemyAllPoints").GetComponent<TextMeshProUGUI>();
 
         _playerField.GetComponent<DropField>().DropCard.AddListener(PlayerDropCard);
-        _playerField.GetComponent<DropField>().DropCard.AddListener(ChangePlayerPoints);
 
         _imageTurnTime[0] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime").GetComponent<UnityEngine.UI.Image>();
         _imageTurnTime[1] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime1").GetComponent<UnityEngine.UI.Image>();
@@ -111,6 +113,8 @@ public class GameManager : MonoBehaviour
 
         GameObject cardHand = Instantiate(CardPref, hand, false);
 
+        cardHand.GetComponent<ChoseCard>().enabled = false;
+
         if (hand == _enemyHand)
         {
             cardHand.GetComponent<CardInfoScript>().HideCardInfo(card);
@@ -143,10 +147,7 @@ public class GameManager : MonoBehaviour
             enemyHandCards[0].ShowCardInfo(enemyHandCards[0].SelfCard);
             enemyHandCards[0].transform.SetParent(_enemyField);
 
-            ChangeEnemyPoints(enemyHandCards);
-
-            EnemyHandCards.Remove(enemyHandCards[0]);
-            EnemyFieldCards.Add(enemyHandCards[0]);
+            EnemyDropCard(enemyHandCards[0]);
         }
     }
 
@@ -196,21 +197,79 @@ public class GameManager : MonoBehaviour
         ChangeTurn();
     }
 
-    private void PlayerDropCard(CardInfoScript card)
+    private void EnemyDropCard(CardInfoScript card)
     {
-        PlayerFieldCards.Add(card);
-        PlayerHandCards.Remove(card);
+        EnemyHandCards.Remove(card);
+        EnemyFieldCards.Add(card);
+
+
+        if (card.Boost(card.SelfCard) != 0)
+        {
+            if (EnemyFieldCards.Count == 0) return;
+
+            BoostCard(ChooseOurCard(false), card.Boost(card.SelfCard));
+
+        }
+
+        if (card.Damage(card.SelfCard) != 0)
+        {
+            if (PlayerFieldCards.Count == 0) return;
+
+            DamageCard(ChooseEnemyCard(false), card.Damage(card.SelfCard));
+            ChangePlayerPoints();
+        }
+
+        ChangeEnemyPoints();
     }
 
-    private void ChangeEnemyPoints(List<CardInfoScript> enemyCard)
+    private void PlayerDropCard(CardInfoScript card)
     {
-        _enemyPoints += enemyCard[0].ShowPoints(enemyCard[0].SelfCard);
+        PlayerHandCards.Remove(card);
+        PlayerFieldCards.Add(card);
+
+        if (card.Boost(card.SelfCard) != 0)
+        {
+            if (PlayerFieldCards.Count == 0) return;
+
+            BoostCard(ChooseOurCard(true), card.Boost(card.SelfCard));
+
+            //RemoveListenersChoseCard();
+
+        }
+
+        if (card.Damage(card.SelfCard) != 0)
+        {
+            if (EnemyFieldCards.Count == 0) return;
+
+            DamageCard(ChooseEnemyCard(true), card.Damage(card.SelfCard));
+
+            ChangeEnemyPoints();
+        }
+
+        ChangePlayerPoints();
+    }
+
+    private void ChangeEnemyPoints()
+    {
+        _enemyPoints = 0;
+
+        foreach (CardInfoScript card in EnemyFieldCards)
+        {
+            _enemyPoints += card.ShowPoints(card.SelfCard);
+        }
+
         ShowPoints();
     }
 
-    private void ChangePlayerPoints(CardInfoScript card)
+    private void ChangePlayerPoints()
     {
-        _playerPoints += card.ShowPoints(card.SelfCard);
+        _playerPoints = 0;
+
+        foreach (CardInfoScript card in PlayerFieldCards)
+        {
+            _playerPoints += card.ShowPoints(card.SelfCard);
+        }
+
         ShowPoints();
     }
 
@@ -219,4 +278,91 @@ public class GameManager : MonoBehaviour
         _playerPointsTMPro.text = _playerPoints.ToString();
         _enemyPointsTMPro.text = _enemyPoints.ToString();
     }
+
+    private CardInfoScript ChooseEnemyCard(bool isPlayerChoose)
+    {
+        if (isPlayerChoose)
+        {
+            /* foreach (CardInfoScript card in EnemyFieldCards)
+             {
+                 card.transform.GetComponent<ChoseCard>().enabled = true;
+
+                 card.transform.GetComponent<ChoseCard>().IChoseCard.AddListener(ChoseCard);
+             }*/
+
+            //isChoosePlayer = true;
+
+            // StartCoroutine(WaitForChoseCard(isChoosePlayer));
+
+            //return ChosenCard;
+            return EnemyFieldCards[0];
+        }
+
+        else
+        {
+            return PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)];
+        }
+    }
+
+    private CardInfoScript ChooseOurCard(bool isPlayerChoose)
+    {
+        if (isPlayerChoose)
+        {
+            /*foreach (CardInfoScript card in PlayerFieldCards)
+            {
+                card.transform.GetComponent<ChoseCard>().enabled = true;
+
+                card.transform.GetComponent<ChoseCard>().IChoseCard.AddListener(ChoseCard);
+            }*/
+            //isChoosePlayer = true;
+
+            //StartCoroutine(WaitForChoseCard(isChoosePlayer));
+
+            //return ChosenCard;
+            return PlayerFieldCards[0];
+        }
+
+        else
+        {
+            return EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)];
+        }
+    }
+
+   /* private void ChoseCard(CardInfoScript card)
+    {
+        ChosenCard = card;
+    }*/
+
+    /*private void RemoveListenersChoseCard()
+    {
+        foreach (CardInfoScript card in PlayerFieldCards)
+        {
+            card.transform.GetComponent<ChoseCard>().enabled = false;
+
+            card.transform.GetComponent<ChoseCard>().IChoseCard.RemoveListener(ChoseCard);
+        }
+
+    }*/
+
+    private void BoostCard(CardInfoScript card, int value)
+    {
+        card.ChangePoints(ref card.SelfCard, value);
+    }
+
+    private void DamageCard(CardInfoScript card, int value)
+    {
+        card.ChangePoints(ref card.SelfCard, -value);
+    }
+
+  /*  private IEnumerator WaitForChoseCard(bool isPlayerChoose)
+    {
+        if (isPlayerChoose)
+        {
+            while (isPlayerChoose)
+            {
+                isChoosePlayer = false;
+                yield return null;
+            }
+        }
+    }*/
 }
