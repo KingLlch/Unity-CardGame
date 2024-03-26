@@ -32,9 +32,7 @@ public class CardInfoScript : MonoBehaviour
 
     public void ChangePoints(ref Card card, int value)
     {
-        Debug.Log(card.Points);
         card.Points += value;
-        Debug.Log(card.Points);
         ShowPointsUI(card);
     }
 

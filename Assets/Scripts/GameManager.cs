@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
 
         GameObject cardHand = Instantiate(CardPref, hand, false);
 
-        cardHand.GetComponent<ChoseCard>().enabled = false;
+       // cardHand.GetComponent<ChoseCard>().enabled = false;
 
         if (hand == _enemyHand)
         {
