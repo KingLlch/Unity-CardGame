@@ -295,7 +295,7 @@ public class GameManager : MonoBehaviour
             // StartCoroutine(WaitForChoseCard(isChoosePlayer));
 
             //return ChosenCard;
-            return EnemyFieldCards[0];
+            return EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)];
         }
 
         else
@@ -319,7 +319,7 @@ public class GameManager : MonoBehaviour
             //StartCoroutine(WaitForChoseCard(isChoosePlayer));
 
             //return ChosenCard;
-            return PlayerFieldCards[0];
+            return PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)];
         }
 
         else
