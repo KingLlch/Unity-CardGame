@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
+using System.Numerics;
 
 public class Game
 {
@@ -36,7 +37,9 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI _playerPointsTMPro;
     private TextMeshProUGUI _enemyPointsTMPro;
 
+    private Camera _mainCamera;
     private UnityEngine.UI.Image[] _imageTurnTime = new UnityEngine.UI.Image[2];
+    private LineRenderer _line;
 
     private int _turn;
     private int _turnTime;
@@ -82,6 +85,8 @@ public class GameManager : MonoBehaviour
 
         _imageTurnTime[0] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime").GetComponent<UnityEngine.UI.Image>();
         _imageTurnTime[1] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime1").GetComponent<UnityEngine.UI.Image>();
+        _line = GameObject.Find("UI/MainCanvas/Line").GetComponent<LineRenderer>();
+        _mainCamera = Camera.main;
     }
 
 
@@ -366,7 +371,10 @@ public class GameManager : MonoBehaviour
         _choosenCard = null;
 
         card.ImageEdge.color = Color.green;
-        yield return StartCoroutine(WaitForChoseCard());
+        card.transform.position += new UnityEngine.Vector3(0,0,0);
+        EndTurnButton.interactable = false;
+
+        yield return StartCoroutine(WaitForChoseCard(card));
 
         if (isBoost)
         {
@@ -393,15 +401,24 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        _line.SetPosition(0, UnityEngine.Vector3.zero);
+        _line.SetPosition(1, UnityEngine.Vector3.zero);
+
         card.ImageEdge.color = ColorBase;
+        card.transform.position -= new UnityEngine.Vector3(0, 0, 0);
+        EndTurnButton.interactable = true;
     }
 
-    private IEnumerator WaitForChoseCard()
+    private IEnumerator WaitForChoseCard(CardInfoScript card)
     {
         _choosenCard = null;
 
         while (_choosenCard == null)
         {
+
+            _line.SetPosition(0, card.transform.position);
+            _line.SetPosition(1, _mainCamera.ScreenToWorldPoint(Input.mousePosition));
+
             yield return null;
         }
     }
