@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: -8805600453780257939}
   - component: {fileID: 3822636935777310630}
   - component: {fileID: -5743592158190691174}
+  - component: {fileID: -1549182892061513566}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -210,6 +211,7 @@ MonoBehaviour:
   DescriptionObject: {fileID: 5731903910897777013}
   CardBack: {fileID: 7818380968407556095}
   Image: {fileID: 5646225784876631289}
+  ImageEdge: {fileID: 667380371289791919}
   Point: {fileID: 6089050918954820202}
   Name: {fileID: 6236580174244072488}
   Description: {fileID: 6023029153618601706}
@@ -259,6 +261,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
+--- !u!114 &-1549182892061513566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2441212105074888676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa96b32a0f855cc4cbb9129c36ee5854, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IChoseCard:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4767603395334613595
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

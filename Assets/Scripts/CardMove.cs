@@ -32,7 +32,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         CurrentCardParentTransform = transform.parent;
         FutureCardParentTransform = transform.parent;
 
-        IsDraggable = ((CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND) && (GameManager.IsPlayerTurn));
+        IsDraggable = ((CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND) && (GameManager.IsPlayerTurn) && (!GameManager.IsChoosing) && (!GameManager.IsSingleCardPlaying) );
 
         if (!IsDraggable) return;
 

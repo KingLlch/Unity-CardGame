@@ -36,10 +36,10 @@ public class CardManager : MonoBehaviour
 {
     private void Awake()
     {
-        CardManagerList.AllCards.Add(new Card("Lina", "Fire Girl", 10, 10, "Sprites/Cards/1"));
-        CardManagerList.AllCards.Add(new Card("Lina: Fire", "Fire Girl", 11, 11, "Sprites/Cards/2"));
-        CardManagerList.AllCards.Add(new Card("Marci: Strength", "Anime Girl", 9, 9, "Sprites/Cards/3"));
-        CardManagerList.AllCards.Add(new Card("Marci", "Anime Girl", 2, 2, "Sprites/Cards/4"));
+        CardManagerList.AllCards.Add(new Card("Lina", "Damage enemy card by 3", 10, 10, "Sprites/Cards/1",0,3));
+        CardManagerList.AllCards.Add(new Card("Lina: Fire", "Damage enemy card by 5", 3, 3, "Sprites/Cards/2",0,5));
+        CardManagerList.AllCards.Add(new Card("Marci: Strength", "Boost friendly card by 5", 4, 4, "Sprites/Cards/3",5,0));
+        CardManagerList.AllCards.Add(new Card("Marci", "Boost enemy card by 5", 12, 12, "Sprites/Cards/4",0,-5));
         CardManagerList.AllCards.Add(new Card("Templar Assasin", "Boost friendly card by 2", 5, 5, "Sprites/Cards/5",2,0));
         CardManagerList.AllCards.Add(new Card("Luna", "Damage enemy card by 2", 3, 3, "Sprites/Cards/6",0,2));
     }

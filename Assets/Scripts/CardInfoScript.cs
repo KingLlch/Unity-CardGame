@@ -11,6 +11,7 @@ public class CardInfoScript : MonoBehaviour
     public GameObject CardBack;
 
     public Image Image;
+    public Image ImageEdge;
 
     public TextMeshProUGUI Point;
     public TextMeshProUGUI Name;
