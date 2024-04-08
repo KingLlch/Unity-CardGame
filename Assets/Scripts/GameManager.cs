@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using TMPro;
-using System.Numerics;
 
 public class Game
 {
@@ -62,6 +61,10 @@ public class GameManager : MonoBehaviour
     public bool IsSingleCardPlaying;
 
     private CardInfoScript _choosenCard;
+
+    public UnityEvent<CardInfoScript> EnemyDropCardEvent;
+
+    public UnityEvent<CardInfoScript> OrderCard;
 
     public bool IsPlayerTurn
     {
@@ -211,19 +214,26 @@ public class GameManager : MonoBehaviour
         {
             if (EnemyFieldCards.Count == 1) return;
 
-            ChangePoints(ChooseOurCard(false), card, true, false);
+            ChangePoints(ChooseOurCard(false), card);
         }
 
         if (card.SelfCard.Damage != 0)
         {
             if (PlayerFieldCards.Count == 0) return;
 
-            ChangePoints(ChooseEnemyCard(false), card, true, false);
+            ChangePoints(ChooseEnemyCard(false), card);
 
             ChangePlayerPoints();
         }
 
+        if ((card.SelfCard.SelfBoost != 0) || (card.SelfCard.SelfDamage != 0))
+        {
+            ChangePoints(card, card);
+            OrderCard.Invoke(card);
+        }
+
         ChangeEnemyPoints();
+        EnemyDropCardEvent.Invoke(card);
     }
 
     private void PlayerDropCard(CardInfoScript card)
@@ -256,6 +266,12 @@ public class GameManager : MonoBehaviour
             }
 
             StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
+        }
+
+        if ((card.SelfCard.SelfBoost != 0) || (card.SelfCard.SelfDamage != 0))
+        {
+            ChangePoints(card, card);
+            OrderCard.Invoke(card);
         }
 
         ChangePlayerPoints();
@@ -367,7 +383,7 @@ public class GameManager : MonoBehaviour
 
         if (isBoost)
         {
-            ChangePoints(ChooseOurCard(true), card, true, false);
+            ChangePoints(ChooseOurCard(true), card);
 
             ChangePlayerPoints();
 
@@ -380,7 +396,7 @@ public class GameManager : MonoBehaviour
 
         if (isDamage)
         {
-            ChangePoints(ChooseEnemyCard(true), card, true, false);
+            ChangePoints(ChooseEnemyCard(true), card);
 
             ChangeEnemyPoints();
 
@@ -396,6 +412,8 @@ public class GameManager : MonoBehaviour
         card.ImageEdge.color = ColorBase;
         card.transform.position -= new UnityEngine.Vector3(0, 0, 0);
         EndTurnButton.interactable = true;
+
+        OrderCard.Invoke(card);
     }
 
     private IEnumerator WaitForChoseCard(CardInfoScript card)
@@ -425,14 +443,14 @@ public class GameManager : MonoBehaviour
             {
                 if (card.SelfCard.EndTurnAction == true)
                 {
-                    if ((card.SelfCard.EndTurnDamage > 0) && (EnemyFieldCards.Count > 0))
+                    if ((card.SelfCard.EndTurnDamage != 0) && (EnemyFieldCards.Count > 0))
                     {
-                        ChangePoints(EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)], card, false, true);
+                        ChangePoints(EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)], card, true);
                     }
 
-                    if ((card.SelfCard.EndTurnBoost > 0) && (PlayerFieldCards.Count > 0))
+                    if ((card.SelfCard.EndTurnBoost != 0) && (PlayerFieldCards.Count > 0))
                     {
-                        ChangePoints(PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)], card, false, true);
+                        ChangePoints(PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)], card, true);
                     }
                 }
             }
@@ -445,32 +463,31 @@ public class GameManager : MonoBehaviour
             {
                 if (card.SelfCard.EndTurnAction == true)
                 {
-                    if ((card.SelfCard.EndTurnDamage > 0) && (PlayerFieldCards.Count > 0))
+                    if ((card.SelfCard.EndTurnDamage != 0) && (PlayerFieldCards.Count > 0))
                     {
-                        ChangePoints(PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)], card, false, true);
+                        ChangePoints(PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)], card, true);
                     }
 
-                    if ((card.SelfCard.EndTurnBoost > 0) && (EnemyFieldCards.Count > 0))
+                    if ((card.SelfCard.EndTurnBoost != 0) && (EnemyFieldCards.Count > 0))
                     {
-                        ChangePoints(EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)], card, false, true);
+                        ChangePoints(EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)], card, true);
                     }
                 }
             }
         }
     }
 
-    private void ChangePoints(CardInfoScript targetCard, CardInfoScript startCard, bool deployment, bool endTurnAction)
+    private void ChangePoints(CardInfoScript targetCard, CardInfoScript startCard, bool endTurnAction = false)
     {
-        if (deployment)
-        {
-            if (startCard.SelfCard.Boost > 0) targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.Boost, startCard.SelfCard);
-            if (startCard.SelfCard.Damage > 0) targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage, startCard.SelfCard);
-        }
+        if (startCard.SelfCard.Boost != 0) targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.Boost, startCard.SelfCard);
+        if (startCard.SelfCard.Damage != 0) targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage, startCard.SelfCard);
+        if (startCard.SelfCard.SelfBoost != 0) targetCard.ChangePoints(ref startCard.SelfCard, startCard.SelfCard.SelfBoost, startCard.SelfCard);
+        if (startCard.SelfCard.SelfDamage != 0) targetCard.ChangePoints(ref startCard.SelfCard, -startCard.SelfCard.SelfDamage, startCard.SelfCard);
 
-        if (endTurnAction) 
+        if (endTurnAction)
         {
-            if (startCard.SelfCard.EndTurnBoost > 0) targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.EndTurnBoost, startCard.SelfCard);
-            if (startCard.SelfCard.EndTurnDamage > 0) targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.EndTurnDamage, startCard.SelfCard);
+            if (startCard.SelfCard.EndTurnDamage != 0) targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.EndTurnDamage, startCard.SelfCard);
+            if (startCard.SelfCard.EndTurnBoost != 0) targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.EndTurnBoost, startCard.SelfCard);
         }
 
         IsDestroyCard(targetCard);

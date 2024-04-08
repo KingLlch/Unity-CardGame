@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -56,7 +55,7 @@ public class CardInfoScript : MonoBehaviour
         Description.text = card.Description.ToString();
 
         Name.colorGradient = new VertexGradient(card.ColorTheme, card.ColorTheme, Color.black, Color.black);
-        ImageEdge.color = card.ColorTheme;
+        //ImageEdge.color = card.ColorTheme;
 
     }
 
