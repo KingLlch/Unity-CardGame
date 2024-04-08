@@ -17,13 +17,18 @@ public struct Card
     public int SelfBoost;
     public int SelfDamage;
 
+    public bool EndTurnAction;
+    public int EndTurnDamage;
+    public int EndTurnBoost;
+
     public Card(string name, string description, 
         int maxPoints, int points, 
         string spritePath, string soundPath, 
         int boost = 0, 
         int damage = 0,
         int selfBoost = 0,
-        int selfDamage = 0)
+        int selfDamage = 0,
+        bool endTurnAction = false, int endTurnDamage = 0, int endTurnBoost = 0)
     {
         Name = name;
         Description = description;
@@ -38,6 +43,10 @@ public struct Card
 
         SelfBoost = selfBoost;
         SelfDamage = selfDamage;
+
+        EndTurnAction = endTurnAction;
+        EndTurnDamage = endTurnDamage;
+        EndTurnBoost = endTurnBoost;
     }
 }
 
@@ -55,6 +64,6 @@ public class CardManager : MonoBehaviour
         CardManagerList.AllCards.Add(new Card("Marci: Strength", "Boost friendly card by 5", 4, 4, "Sprites/Cards/3", "Sounds/Cards/3", 5,0));
         CardManagerList.AllCards.Add(new Card("Marci", "Boost enemy card by 5", 12, 12, "Sprites/Cards/4", "Sounds/Cards/4", 0,-5));
         CardManagerList.AllCards.Add(new Card("Templar Assasin", "Boost friendly card by 2", 5, 5, "Sprites/Cards/5", "Sounds/Cards/5", 2,0));
-        CardManagerList.AllCards.Add(new Card("Luna", "Damage enemy card by 2", 3, 3, "Sprites/Cards/6", "Sounds/Cards/6", 0,2));
+        CardManagerList.AllCards.Add(new Card("Luna", "Damage enemy card by 2. At the end of the turn, deal 1 damage to a random enemy unit", 3, 3, "Sprites/Cards/6", "Sounds/Cards/6", 0,2,0,0,true,1,0));
     }
 }

@@ -155,12 +155,13 @@ public class GameManager : MonoBehaviour
 
     public void ChangeTurn()
     {
+        EndTurnActions();
+
         StopAllCoroutines();
 
         _turn++;
         IsSingleCardPlaying = false;
         EndTurnButton.interactable = IsPlayerTurn;
-
         StartCoroutine(TurnFunk());
     }
 
@@ -204,24 +205,23 @@ public class GameManager : MonoBehaviour
     {
         EnemyHandCards.Remove(card);
         EnemyFieldCards.Add(card);
+        ChangeEnemyPoints();
 
-        if (card.Boost(card.SelfCard) != 0)
+        if (card.SelfCard.Boost != 0)
         {
             if (EnemyFieldCards.Count == 1) return;
 
-            BoostCard(ChooseOurCard(false), card.Boost(card.SelfCard));
-
+            ChangePoints(ChooseOurCard(false), card, true, false);
         }
 
-        if (card.Damage(card.SelfCard) != 0)
+        if (card.SelfCard.Damage != 0)
         {
             if (PlayerFieldCards.Count == 0) return;
 
-            DamageCard(ChooseEnemyCard(false), card.Damage(card.SelfCard));
+            ChangePoints(ChooseEnemyCard(false), card, true, false);
 
             ChangePlayerPoints();
         }
-
 
         ChangeEnemyPoints();
     }
@@ -232,8 +232,9 @@ public class GameManager : MonoBehaviour
 
         PlayerHandCards.Remove(card);
         PlayerFieldCards.Add(card);
+        ChangePlayerPoints();
 
-        if (card.Boost(card.SelfCard) != 0)
+        if (card.SelfCard.Boost != 0)
         {
             if (PlayerFieldCards.Count == 1) return;
 
@@ -245,7 +246,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
         }
 
-        if (card.Damage(card.SelfCard) != 0)
+        if (card.SelfCard.Damage != 0)
         {
             if (EnemyFieldCards.Count == 0) return;
 
@@ -339,18 +340,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void BoostCard(CardInfoScript card, int value)
-    {
-        card.ChangePoints(ref card.SelfCard, value);
-        IsDestroyCard(card);
-    }
-
-    private void DamageCard(CardInfoScript card, int value)
-    {
-        card.ChangePoints(ref card.SelfCard, -value);
-        IsDestroyCard(card);
-    }
-
     private void IsDestroyCard(CardInfoScript card)
     {
         if (card.SelfCard.Points <= 0)
@@ -371,14 +360,14 @@ public class GameManager : MonoBehaviour
         _choosenCard = null;
 
         card.ImageEdge.color = Color.green;
-        card.transform.position += new UnityEngine.Vector3(0,0,0);
+        card.transform.position += new UnityEngine.Vector3(0, 0, 0);
         EndTurnButton.interactable = false;
 
         yield return StartCoroutine(WaitForChoseCard(card));
 
         if (isBoost)
         {
-            BoostCard(ChooseOurCard(true), card.Boost(card.SelfCard));
+            ChangePoints(ChooseOurCard(true), card, true, false);
 
             ChangePlayerPoints();
 
@@ -391,7 +380,7 @@ public class GameManager : MonoBehaviour
 
         if (isDamage)
         {
-            DamageCard(ChooseEnemyCard(true), card.Damage(card.SelfCard));
+            ChangePoints(ChooseEnemyCard(true), card, true, false);
 
             ChangeEnemyPoints();
 
@@ -426,5 +415,64 @@ public class GameManager : MonoBehaviour
     public void ChoseCard(CardInfoScript card)
     {
         _choosenCard = card;
+    }
+
+    public void EndTurnActions()
+    {
+        if (IsPlayerTurn)
+        {
+            foreach (CardInfoScript card in PlayerFieldCards)
+            {
+                if (card.SelfCard.EndTurnAction == true)
+                {
+                    if ((card.SelfCard.EndTurnDamage > 0) && (EnemyFieldCards.Count > 0))
+                    {
+                        ChangePoints(EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)], card, false, true);
+                    }
+
+                    if ((card.SelfCard.EndTurnBoost > 0) && (PlayerFieldCards.Count > 0))
+                    {
+                        ChangePoints(PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)], card, false, true);
+                    }
+                }
+            }
+
+        }
+
+        else
+        {
+            foreach (CardInfoScript card in EnemyFieldCards)
+            {
+                if (card.SelfCard.EndTurnAction == true)
+                {
+                    if ((card.SelfCard.EndTurnDamage > 0) && (PlayerFieldCards.Count > 0))
+                    {
+                        ChangePoints(PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)], card, false, true);
+                    }
+
+                    if ((card.SelfCard.EndTurnBoost > 0) && (EnemyFieldCards.Count > 0))
+                    {
+                        ChangePoints(EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)], card, false, true);
+                    }
+                }
+            }
+        }
+    }
+
+    private void ChangePoints(CardInfoScript targetCard, CardInfoScript startCard, bool deployment, bool endTurnAction)
+    {
+        if (deployment)
+        {
+            if (startCard.SelfCard.Boost > 0) targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.Boost, startCard.SelfCard);
+            if (startCard.SelfCard.Damage > 0) targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage, startCard.SelfCard);
+        }
+
+        if (endTurnAction) 
+        {
+            if (startCard.SelfCard.EndTurnBoost > 0) targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.EndTurnBoost, startCard.SelfCard);
+            if (startCard.SelfCard.EndTurnDamage > 0) targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.EndTurnDamage, startCard.SelfCard);
+        }
+
+        IsDestroyCard(targetCard);
     }
 }

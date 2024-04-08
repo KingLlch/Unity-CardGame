@@ -31,24 +31,13 @@ public class CardInfoScript : MonoBehaviour
         return card.Points;
     }
 
-    public void ChangePoints(ref Card card, int value)
+    public void ChangePoints(ref Card card, int value, Card startCard)
     {
         card.Points += value;
+
+        Debug.Log(startCard.Name + " изменила силу " + card.Name + " в размере " + value + "\n" + (card.Points - value) + " => " + card.Points);
+
         ShowPointsUI(card);
-    }
-
-    public int Boost(Card card)
-    {
-        if (card.Boost != 0) return card.Boost;
-
-        else return 0;
-    }
-
-    public int Damage(Card card)
-    {
-        if (card.Damage != 0) return card.Damage;
-
-        else return 0;
     }
 
     public void ShowCardInfo(Card card)
