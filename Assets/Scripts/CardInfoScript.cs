@@ -15,6 +15,7 @@ public class CardInfoScript : MonoBehaviour
 
     public TextMeshProUGUI Point;
     public TextMeshProUGUI Name;
+    public TextMeshProUGUI SecondName;
     public TextMeshProUGUI Description;
 
     public bool IsHideCard;
@@ -51,6 +52,7 @@ public class CardInfoScript : MonoBehaviour
         Image.preserveAspect = true;
         Point.text = card.Points.ToString();
         Name.text = card.Name.ToString();
+        SecondName.text = card.SecondName.ToString();
         Description.text = card.Description.ToString();
 
     }
