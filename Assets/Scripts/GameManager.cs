@@ -490,6 +490,9 @@ public class GameManager : MonoBehaviour
             if (startCard.SelfCard.EndTurnBoost != 0) targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.EndTurnBoost, startCard.SelfCard);
         }
 
+        CheckColorPointsCard(targetCard);
+        CheckColorPointsCard(startCard);
+
         IsDestroyCard(targetCard);
     }
 }

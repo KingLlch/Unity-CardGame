@@ -76,7 +76,7 @@ public class CardManager : MonoBehaviour
              3, 3, 0, 0, 0, 0, true , 1, 0));
         CardManagerList.AllCards.Add(new Card("Lina", "Laguna Blade", "Damage enemy card by 10",
              "Sprites/Cards/Lina4", "Sounds/Cards/Deployment/Lina4", "Sounds/Cards/StartOrder/LinaLagunaBlade", Color.red, 
-             1, 1, 0, 5));
+             1, 1, 0, 10));
 
         CardManagerList.AllCards.Add(new Card("Luna", "Lucent Beam", "Damage enemy card by 2",
             "Sprites/Cards/Luna1", "Sounds/Cards/Deployment/Luna1", "Sounds/Cards/StartOrder/LunaLucentBeam", Color.blue,
@@ -90,12 +90,5 @@ public class CardManager : MonoBehaviour
         CardManagerList.AllCards.Add(new Card("Centaur Warrunner", "Double Edge", "Damage self by 3",
              "Sprites/Cards/Centaur1", "Sounds/Cards/Deployment/Centaur1", "Sounds/Cards/StartOrder/CentaurDoubleEdge", Color.gray,
              12, 12, 0, 0, 0, 3));
-
-
-
-        //CardManagerList.AllCards.Add(new Card("Marci", "Character", "Boost friendly card by 5", 4, 4, "Sprites/Cards/Marci", "Sounds/Cards/Marci", Color.yellow, 5,0));
-        //CardManagerList.AllCards.Add(new Card("Marci", "Strength", "Boost enemy card by 5", 12, 12, "Sprites/Cards/Marci2", "Sounds/Cards/Marci2", Color.yellow, 0,-5));
-        // CardManagerList.AllCards.Add(new Card("Templar Assasin", "Character", "Boost friendly card by 2", 5, 5, "Sprites/Cards/TemplarAssasin", "Sounds/Cards/TemplarAssasin", Color.magenta, 2,0));
-        //CardManagerList.AllCards.Add(new Card("Luna", "Character", "Damage enemy card by 2. At the end of the turn, deal 1 damage to a random enemy unit.", 3, 3, "Sprites/Cards/Luna", "Sounds/Cards/Luna", Color.blue, 0,2,0,0,true,1,0));
     }
 }
