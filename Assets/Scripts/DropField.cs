@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -45,6 +46,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         if (typeField == TypeField.SELF_HAND)
         {
+            _emptyHandCard.SetParent(transform);
             _isChangeEmptyCardPositionInHand = true;
         }
 
@@ -53,8 +55,9 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerExit(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null) return;
+        card = eventData.pointerDrag.GetComponent<CardMove>();
 
-        if (typeField == TypeField.SELF_HAND)
+        if ((typeField == TypeField.SELF_HAND) && (card.IsDraggable))
         {
             _isChangeEmptyCardPositionInHand = false;
             _emptyHandCard.SetParent(transform);
@@ -82,8 +85,6 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             {
                 DropCard.Invoke(card.GetComponent<CardInfoScript>());
 
-                card.GameManager.PlayerHandCards.Remove(card.GetComponent<CardInfoScript>());
-                card.GameManager.PlayerHandCards.Add(card.GetComponent<CardInfoScript>());
                 card.transform.SetParent(transform);
                 card.transform.SetSiblingIndex(card.SiblingIndex);
             }

@@ -48,7 +48,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         if (!IsDraggable) return;
 
         transform.position = (_mainCamera.ScreenToWorldPoint(eventData.position) + _offset) * Vector2.one;
-        CheckPosition();
+        ChangePosition();
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -71,7 +71,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         HideEmptyCard.RemoveAllListeners();
     }
 
-    private void CheckPosition()
+    private void ChangePosition()
     {
         int newIndex = FutureCardParentTransform.childCount;
 
