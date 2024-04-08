@@ -55,6 +55,9 @@ public class CardInfoScript : MonoBehaviour
         SecondName.text = card.SecondName.ToString();
         Description.text = card.Description.ToString();
 
+        Name.colorGradient = new VertexGradient(card.ColorTheme, card.ColorTheme, Color.black, Color.black);
+        ImageEdge.color = card.ColorTheme;
+
     }
 
     public void HideCardInfo(Card card)
