@@ -57,14 +57,14 @@ public class GameManager : MonoBehaviour
     public List<CardInfoScript> EnemyFieldCards = new List<CardInfoScript>();
 
     public Color ColorBase;
+
     public bool IsChoosing;
-    public bool IsSingleCardPlaying;
+    [HideInInspector] public bool IsSingleCardPlaying;
 
     private CardInfoScript _choosenCard;
 
-    public UnityEvent<CardInfoScript> EnemyDropCardEvent;
-
-    public UnityEvent<CardInfoScript> OrderCard;
+    [HideInInspector] public UnityEvent<CardInfoScript> EnemyDropCardEvent;
+    [HideInInspector] public UnityEvent<CardInfoScript> OrderCard;
 
     public bool IsPlayerTurn
     {
@@ -253,6 +253,7 @@ public class GameManager : MonoBehaviour
                 cardd.transform.GetComponent<ChoseCard>().enabled = true;
             }
 
+            _line.SetColors(Color.white, Color.green);
             StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
         }
 
@@ -265,6 +266,7 @@ public class GameManager : MonoBehaviour
                 cardd.transform.GetComponent<ChoseCard>().enabled = true;
             }
 
+            _line.SetColors(Color.white, Color.red);
             StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
         }
 
@@ -376,7 +378,7 @@ public class GameManager : MonoBehaviour
         _choosenCard = null;
 
         card.ImageEdge.color = Color.green;
-        card.transform.position += new UnityEngine.Vector3(0, 0, 0);
+        //card.transform.position += new UnityEngine.Vector3(0, 0, 0);
         EndTurnButton.interactable = false;
 
         yield return StartCoroutine(WaitForChoseCard(card));
@@ -409,8 +411,8 @@ public class GameManager : MonoBehaviour
         _line.SetPosition(0, UnityEngine.Vector3.zero);
         _line.SetPosition(1, UnityEngine.Vector3.zero);
 
-        card.ImageEdge.color = ColorBase;
-        card.transform.position -= new UnityEngine.Vector3(0, 0, 0);
+        card.ImageEdge.color = card.SelfCard.ColorTheme;
+        //card.transform.position -= new UnityEngine.Vector3(0, 0, 0);
         EndTurnButton.interactable = true;
 
         OrderCard.Invoke(card);
