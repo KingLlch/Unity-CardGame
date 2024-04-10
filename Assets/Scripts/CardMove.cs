@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -27,12 +28,12 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _offset = transform.position - _mainCamera.ScreenToWorldPoint(eventData.position);
+        _offset = transform.position - _mainCamera.ScreenToWorldPoint(new Vector3 (eventData.position.x * _mainCamera.farClipPlane, eventData.position.y * _mainCamera.farClipPlane, 1));
 
         CurrentCardParentTransform = transform.parent;
         FutureCardParentTransform = transform.parent;
 
-        IsDraggable = ((CurrentCardParentTransform.GetComponent<DropField>().typeField == TypeField.SELF_HAND) && (GameManager.IsPlayerTurn) && (!GameManager.IsChoosing) && (!GameManager.IsSingleCardPlaying) );
+        IsDraggable = ((CurrentCardParentTransform.GetComponent<DropField>().TypeField == TypeField.SELF_HAND) && (GameManager.IsPlayerTurn) && (!GameManager.IsChoosing) && (!GameManager.IsSingleCardPlaying) );
 
         if (!IsDraggable) return;
 
@@ -47,7 +48,9 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         if (!IsDraggable) return;
 
-        transform.position = (_mainCamera.ScreenToWorldPoint(eventData.position) + _offset) * Vector2.one;
+        transform.position = (_mainCamera.ScreenToWorldPoint(new Vector3(eventData.position.x * _mainCamera.farClipPlane, eventData.position.y * _mainCamera.farClipPlane, 1)) + _offset);
+
+        Debug.Log(transform.position);
         ChangePosition();
     }
 
@@ -90,4 +93,14 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         ChangeCardPosition.Invoke();
     }
 
+    public void MoveToField(Transform field)
+    {
+        transform.DOMove(field.position, 0.5f);
+    }
+
+    public void PlayerMoveToField(Transform field, Transform emptyHandCard)
+    {
+       transform.position = emptyHandCard.transform.position;
+       transform.DOMove(field.GetComponent<DropField>().EmptyTableCard.position, 0.5f);
+    }
 }

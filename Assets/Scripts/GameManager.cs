@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
     private CardInfoScript _choosenCard;
 
     [HideInInspector] public UnityEvent<CardInfoScript> EnemyDropCardEvent;
+    [HideInInspector] public UnityEvent<CardInfoScript> PlayerDropCardEvent;
     [HideInInspector] public UnityEvent<CardInfoScript> OrderCard;
 
     public bool IsPlayerTurn
@@ -84,7 +85,7 @@ public class GameManager : MonoBehaviour
         _playerPointsTMPro = GameObject.Find("UI/MainCanvas/RightUI/Points/PlayerAllPointsImage/PlayerAllPoints").GetComponent<TextMeshProUGUI>();
         _enemyPointsTMPro = GameObject.Find("UI/MainCanvas/RightUI/Points/EnemyAllPointsImage/EnemyAllPoints").GetComponent<TextMeshProUGUI>();
 
-        _playerField.GetComponent<DropField>().DropCard.AddListener(PlayerDropCard);
+        _playerField.GetComponent<DropField>().DropCard.AddListener(PlayerDropCartStartCoroutine);
 
         _imageTurnTime[0] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime").GetComponent<UnityEngine.UI.Image>();
         _imageTurnTime[1] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime1").GetComponent<UnityEngine.UI.Image>();
@@ -141,19 +142,23 @@ public class GameManager : MonoBehaviour
         deck.RemoveAt(0);
     }
 
-    public void EnemyTurn(List<CardInfoScript> enemyHandCards)
+    public IEnumerator EnemyTurn(List<CardInfoScript> enemyHandCards)
     {
-        int countCards = enemyHandCards.Count;
+        yield return new WaitForSeconds(1.0f);
 
-        for (int i = 0; i < 1; i++)
-        {
-            if (EnemyFieldCards.Count > 8) return;
+        int enemyPlayedCard = Random.Range(0, enemyHandCards.Count);
 
-            enemyHandCards[0].ShowCardInfo(enemyHandCards[0].SelfCard);
-            enemyHandCards[0].transform.SetParent(_enemyField);
+        if ((EnemyFieldCards.Count > 8) || (EnemyHandCards.Count == 0)) yield break;
 
-            EnemyDropCard(enemyHandCards[0]);
-        }
+        enemyHandCards[enemyPlayedCard].GetComponent<CardMove>().MoveToField(_enemyField.transform);
+        yield return new WaitForSeconds(0.6f);
+
+        enemyHandCards[enemyPlayedCard].ShowCardInfo(enemyHandCards[enemyPlayedCard].SelfCard);
+        enemyHandCards[enemyPlayedCard].transform.SetParent(_enemyField);
+
+        EnemyDropCard(enemyHandCards[enemyPlayedCard]);
+
+        ChangeTurn();
     }
 
     public void ChangeTurn()
@@ -183,25 +188,14 @@ public class GameManager : MonoBehaviour
                 _imageTurnTime[1].fillAmount = (float)_turnTime / 30;
                 yield return new WaitForSeconds(1);
             }
+
+            ChangeTurn();
         }
 
         else
         {
-            while (_turnTime-- > 27)
-            {
-
-                _imageTurnTime[0].fillAmount = (float)_turnTime / 30;
-                _imageTurnTime[1].fillAmount = (float)_turnTime / 30;
-                yield return new WaitForSeconds(1);
-            }
-
-            if (EnemyHandCards.Count > 0)
-            {
-                EnemyTurn(EnemyHandCards);
-            }
+            StartCoroutine(EnemyTurn(EnemyHandCards));
         }
-
-        ChangeTurn();
     }
 
     private void EnemyDropCard(CardInfoScript card)
@@ -209,6 +203,12 @@ public class GameManager : MonoBehaviour
         EnemyHandCards.Remove(card);
         EnemyFieldCards.Add(card);
         ChangeEnemyPoints();
+
+        if ((card.SelfCard.SelfBoost != 0) || (card.SelfCard.SelfDamage != 0))
+        {
+            ChangePoints(card, card);
+            OrderCard.Invoke(card);
+        }
 
         if (card.SelfCard.Boost != 0)
         {
@@ -222,9 +222,28 @@ public class GameManager : MonoBehaviour
             if (PlayerFieldCards.Count == 0) return;
 
             ChangePoints(ChooseEnemyCard(false), card);
-
-            ChangePlayerPoints();
         }
+
+        EnemyDropCardEvent.Invoke(card);
+    }
+
+    private void PlayerDropCartStartCoroutine(CardInfoScript card)
+    {
+        StartCoroutine(PlayerDropCard(card));
+    }
+
+    private IEnumerator PlayerDropCard(CardInfoScript card)
+    {
+        IsSingleCardPlaying = true;
+
+        card.GetComponent<CardMove>().PlayerMoveToField(_playerField, _playerHand.GetComponent<DropField>().EmptyHandCard);
+        yield return new WaitForSeconds(0.6f);
+
+        PlayerHandCards.Remove(card);
+        PlayerFieldCards.Add(card);
+        ChangePlayerPoints();
+
+        PlayerDropCardEvent.Invoke(card);
 
         if ((card.SelfCard.SelfBoost != 0) || (card.SelfCard.SelfDamage != 0))
         {
@@ -232,21 +251,9 @@ public class GameManager : MonoBehaviour
             OrderCard.Invoke(card);
         }
 
-        ChangeEnemyPoints();
-        EnemyDropCardEvent.Invoke(card);
-    }
-
-    private void PlayerDropCard(CardInfoScript card)
-    {
-        IsSingleCardPlaying = true;
-
-        PlayerHandCards.Remove(card);
-        PlayerFieldCards.Add(card);
-        ChangePlayerPoints();
-
         if (card.SelfCard.Boost != 0)
         {
-            if (PlayerFieldCards.Count == 1) return;
+            if (PlayerFieldCards.Count == 1) yield break;
 
             foreach (CardInfoScript cardd in PlayerFieldCards)
             {
@@ -259,7 +266,7 @@ public class GameManager : MonoBehaviour
 
         if (card.SelfCard.Damage != 0)
         {
-            if (EnemyFieldCards.Count == 0) return;
+            if (EnemyFieldCards.Count == 0) yield break;
 
             foreach (CardInfoScript cardd in EnemyFieldCards)
             {
@@ -269,14 +276,6 @@ public class GameManager : MonoBehaviour
             _line.SetColors(Color.white, Color.red);
             StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
         }
-
-        if ((card.SelfCard.SelfBoost != 0) || (card.SelfCard.SelfDamage != 0))
-        {
-            ChangePoints(card, card);
-            OrderCard.Invoke(card);
-        }
-
-        ChangePlayerPoints();
     }
 
     private void ChangeEnemyPoints()
@@ -387,8 +386,6 @@ public class GameManager : MonoBehaviour
         {
             ChangePoints(ChooseOurCard(true), card);
 
-            ChangePlayerPoints();
-
             foreach (CardInfoScript cardd in PlayerFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = false;
@@ -399,8 +396,6 @@ public class GameManager : MonoBehaviour
         if (isDamage)
         {
             ChangePoints(ChooseEnemyCard(true), card);
-
-            ChangeEnemyPoints();
 
             foreach (CardInfoScript cardd in EnemyFieldCards)
             {
@@ -496,5 +491,7 @@ public class GameManager : MonoBehaviour
         CheckColorPointsCard(startCard);
 
         IsDestroyCard(targetCard);
+        ChangeEnemyPoints();
+        ChangePlayerPoints();
     }
 }

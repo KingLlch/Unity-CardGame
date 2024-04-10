@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    private DropField _playerTable;
     private GameManager _gameManager;
 
     private AudioSource _deploymentAudioSource;
@@ -13,12 +12,11 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         _gameManager = GameObject.Find("Main Camera/GameManager").GetComponent<GameManager>();
-        _playerTable = GameObject.Find("UI/MainCanvas/PlayerTable/TableLayout").GetComponent<DropField>();
 
         _deploymentAudioSource = GameObject.Find("Main Camera/SoundManager/DeploymentAudioSource").GetComponent<AudioSource>();
         _startTarhetAudioSource = GameObject.Find("Main Camera/SoundManager/StartTargetAudioSource").GetComponent<AudioSource>();
 
-        _playerTable.DropCard.AddListener(DeploymentSound);
+        _gameManager.PlayerDropCardEvent.AddListener(DeploymentSound);
         _gameManager.EnemyDropCardEvent.AddListener(DeploymentSound);
 
         _gameManager.OrderCard.AddListener(StartOrderSound);
