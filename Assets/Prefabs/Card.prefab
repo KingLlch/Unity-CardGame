@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7083035268470478073}
   - component: {fileID: 5089990239235329303}
   - component: {fileID: 9117197771455709937}
+  - component: {fileID: 7245611705863959289}
   m_Layer: 0
   m_Name: PointsImage
   m_TagString: Untagged
@@ -76,6 +77,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 7
+--- !u!114 &7245611705863959289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177449233669446599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1521481745044542973
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,6 +183,7 @@ GameObject:
   - component: {fileID: 3822636935777310630}
   - component: {fileID: -5743592158190691174}
   - component: {fileID: -1549182892061513566}
+  - component: {fileID: 5999836164066178820}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -353,6 +370,21 @@ MonoBehaviour:
   IChoseCard:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5999836164066178820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2441212105074888676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 10, y: -5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2592180046027997527
 GameObject:
   m_ObjectHideFlags: 0

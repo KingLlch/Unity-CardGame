@@ -28,7 +28,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _offset = transform.position - _mainCamera.ScreenToWorldPoint(new Vector3 (eventData.position.x * _mainCamera.farClipPlane, eventData.position.y * _mainCamera.farClipPlane, 1));
+        _offset = transform.position - _mainCamera.ScreenToWorldPoint(new Vector3 (eventData.position.x, eventData.position.y, _mainCamera.farClipPlane));
 
         CurrentCardParentTransform = transform.parent;
         FutureCardParentTransform = transform.parent;
@@ -48,9 +48,8 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         if (!IsDraggable) return;
 
-        transform.position = (_mainCamera.ScreenToWorldPoint(new Vector3(eventData.position.x * _mainCamera.farClipPlane, eventData.position.y * _mainCamera.farClipPlane, 1)) + _offset);
+        transform.position = (_mainCamera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, _mainCamera.farClipPlane)) + _offset);
 
-        Debug.Log(transform.position);
         ChangePosition();
     }
 
@@ -100,7 +99,11 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void PlayerMoveToField(Transform field, Transform emptyHandCard)
     {
-       transform.position = emptyHandCard.transform.position;
-       transform.DOMove(field.GetComponent<DropField>().EmptyTableCard.position, 0.5f);
+        transform.position = emptyHandCard.transform.position;
+       // transform.SetParent(FutureCardParentTransform.parent);
+        //transform.SetAsLastSibling();
+        transform.DOMove(field.GetComponent<DropField>().EmptyTableCard.position, 0.5f);
+      //  transform.SetParent(FutureCardParentTransform);
+       // transform.SetSiblingIndex(SiblingIndex);
     }
 }

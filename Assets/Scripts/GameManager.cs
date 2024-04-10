@@ -260,7 +260,9 @@ public class GameManager : MonoBehaviour
                 cardd.transform.GetComponent<ChoseCard>().enabled = true;
             }
 
-            _line.SetColors(Color.white, Color.green);
+            _line.startColor = Color.white;
+            _line.endColor = Color.green;
+
             StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
         }
 
@@ -273,7 +275,9 @@ public class GameManager : MonoBehaviour
                 cardd.transform.GetComponent<ChoseCard>().enabled = true;
             }
 
-            _line.SetColors(Color.white, Color.red);
+            _line.startColor = Color.white;
+            _line.endColor = Color.red;
+
             StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
         }
     }
@@ -407,7 +411,6 @@ public class GameManager : MonoBehaviour
         _line.SetPosition(1, UnityEngine.Vector3.zero);
 
         card.ImageEdge.color = card.SelfCard.ColorTheme;
-        //card.transform.position -= new UnityEngine.Vector3(0, 0, 0);
         EndTurnButton.interactable = true;
 
         OrderCard.Invoke(card);
@@ -421,7 +424,7 @@ public class GameManager : MonoBehaviour
         {
 
             _line.SetPosition(0, card.transform.position);
-            _line.SetPosition(1, _mainCamera.ScreenToWorldPoint(Input.mousePosition));
+            _line.SetPosition(1, _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _mainCamera.farClipPlane)));
 
             yield return null;
         }
