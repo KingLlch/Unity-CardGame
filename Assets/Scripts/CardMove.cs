@@ -2,13 +2,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using UnityEditor;
 
 public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    public GameManager GameManager;
     private Camera _mainCamera;
     private Vector3 _offset;
+    private GameObject _mainCanvas;
 
+    public GameManager GameManager;
     public bool IsDraggable;
 
     [HideInInspector] public int StartSiblingIndex;
@@ -24,6 +26,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         _mainCamera = Camera.main;
         GameManager = FindObjectOfType<GameManager>();
+        _mainCanvas = GameObject.Find("UI/MainCanvas");
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -49,7 +52,6 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         if (!IsDraggable) return;
 
         transform.position = (_mainCamera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, _mainCamera.farClipPlane)) + _offset);
-
         ChangePosition();
     }
 
@@ -92,18 +94,27 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         ChangeCardPosition.Invoke();
     }
 
-    public void MoveToField(Transform field)
+    public void EnemyMoveToField(Transform field)
     {
         transform.DOMove(field.position, 0.5f);
     }
 
     public void PlayerMoveToField(Transform field, Transform emptyHandCard)
     {
+        transform.GetComponent<CardInfoScript>().IsAnimationCard = true;
         transform.position = emptyHandCard.transform.position;
-       // transform.SetParent(FutureCardParentTransform.parent);
-        //transform.SetAsLastSibling();
         transform.DOMove(field.GetComponent<DropField>().EmptyTableCard.position, 0.5f);
-      //  transform.SetParent(FutureCardParentTransform);
-       // transform.SetSiblingIndex(SiblingIndex);
+    }
+
+    public void MoveTopHierarchy()
+    {
+        transform.SetParent(_mainCanvas.transform);
+        transform.SetAsLastSibling();
+    }
+
+    public void MoveBackHierarchy()
+    {
+        transform.SetParent(CurrentCardParentTransform);
+        transform.SetSiblingIndex(SiblingIndex);
     }
 }

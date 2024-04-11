@@ -82,11 +82,11 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             if (TypeField == TypeField.SELF_TABLE && card.GameManager.PlayerFieldCards.Count < 9)
             {
-                DropCard.Invoke(card.GetComponent<CardInfoScript>());
                 card.CurrentCardParentTransform = transform;
 
                 card.transform.SetParent(transform);
                 card.transform.SetSiblingIndex(card.SiblingIndex);
+                DropCard.Invoke(card.GetComponent<CardInfoScript>());
             }
 
             else

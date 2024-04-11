@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
@@ -25,7 +26,7 @@ public class SoundManager : MonoBehaviour
 
     private void DeploymentSound(CardInfoScript card)
     {
-        _deploymentAudioSource.clip = card.SelfCard.DeploymentSound;
+        _deploymentAudioSource.clip = Resources.Load<AudioClip>("Sounds/Cards/Deployment/" + card.SelfCard.Name + Random.Range(0,6));
         _deploymentAudioSource.Play();
     }
 

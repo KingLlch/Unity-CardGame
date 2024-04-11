@@ -18,6 +18,9 @@ public class CardInfoScript : MonoBehaviour
     public TextMeshProUGUI Description;
 
     public bool IsHideCard;
+    public bool IsAnimationCard;
+
+    public Shadow ShadowCard;
 
     private GameManager _gameManager;
 
@@ -59,6 +62,8 @@ public class CardInfoScript : MonoBehaviour
         Description.colorGradient = new VertexGradient(card.ColorTheme, card.ColorTheme, Color.black, Color.black);
         ImageEdge.color = card.ColorTheme;
 
+        ShadowCard.enabled = true;
+
     }
 
     public void HideCardInfo(Card card)
@@ -66,18 +71,16 @@ public class CardInfoScript : MonoBehaviour
         SelfCard = card;
         CardBack.SetActive(true);
         IsHideCard = true;
+        ShadowCard.enabled = false;
     }
 
 
     public void ShowDescription()
     {
-        if (!IsHideCard)
+        if ((!IsHideCard) && (!_gameManager.IsDrag) && (!IsAnimationCard))
         {
-            if (!_gameManager.IsDrag)
-            {
-                DescriptionObject.SetActive(true);
-                DescriptionObject.transform.SetParent(transform.parent.parent);
-            }
+             DescriptionObject.SetActive(true);
+            DescriptionObject.transform.SetParent(transform.parent.parent);
         }
     }
 
