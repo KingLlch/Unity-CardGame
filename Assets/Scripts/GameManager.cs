@@ -215,7 +215,10 @@ public class GameManager : MonoBehaviour
             ChangePoints(ChooseEnemyCard(false), card, true);
         }
 
-        if ((card.SelfCard.SelfBoost != 0) || (card.SelfCard.SelfDamage != 0))
+        if ((card.SelfCard.SelfBoost != 0) && (card.SelfCard.SelfDamage != 0) || 
+           ((!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField) || 
+           ((card.SelfCard.AddictionWithSelfField && (EnemyFieldCards.Count != 1)) || 
+           (card.SelfCard.AddictionWithEnemyField && (PlayerFieldCards.Count != 0)))))
         {
             ChangePoints(card, card, false, true);
             OrderCard.Invoke(card);
@@ -273,7 +276,10 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
         }
 
-        if ((card.SelfCard.SelfBoost != 0) || (card.SelfCard.SelfDamage != 0))
+        if ((card.SelfCard.SelfBoost != 0) && (card.SelfCard.SelfDamage != 0) ||
+           ((!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField) ||
+           ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1)) ||
+           (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0)))))
         {
             ChangePoints(card, card, false, true);
             OrderCard.Invoke(card);

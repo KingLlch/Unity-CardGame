@@ -19,6 +19,9 @@ public struct Card
     public int SelfBoost;
     public int SelfDamage;
 
+    public bool AddictionWithSelfField;
+    public bool AddictionWithEnemyField;
+
     public bool EndTurnAction;
     public int EndTurnDamage;
     public int EndTurnBoost;
@@ -30,7 +33,7 @@ public struct Card
         int damage = 0,
         int selfBoost = 0,
         int selfDamage = 0,
-        bool endTurnAction = false, int endTurnDamage = 0, int endTurnBoost = 0)
+        bool addictionWithSelfField = false, bool addictionWithEnemyField = false, bool endTurnAction = false, int endTurnDamage = 0, int endTurnBoost = 0)
     {
         Name = name;
         SecondName = secondName;
@@ -47,6 +50,9 @@ public struct Card
 
         SelfBoost = selfBoost;
         SelfDamage = selfDamage;
+
+        AddictionWithSelfField = addictionWithSelfField;
+        AddictionWithEnemyField = addictionWithEnemyField;
 
         EndTurnAction = endTurnAction;
         EndTurnDamage = endTurnDamage;
@@ -71,7 +77,7 @@ public class CardManager : MonoBehaviour
              3, 3, 0, 2));
         CardManagerList.AllCards.Add(new Card("Lina", "Fiery Soul", "At the end of the turn, deal 1 damage to a random enemy unit.",
              "Sprites/Cards/Lina3", "Sounds/Cards/StartOrder/LinaFierySoul", Color.red, 
-             3, 3, 0, 0, 0, 0, true , 1, 0));
+             3, 3, 0, 0, 0, 0, false, false, true , 1, 0));
         CardManagerList.AllCards.Add(new Card("Lina", "Laguna Blade", "Damage enemy card by 10",
              "Sprites/Cards/Lina4", "Sounds/Cards/StartOrder/LinaLagunaBlade", Color.red, 
              1, 1, 0, 10));
@@ -91,7 +97,7 @@ public class CardManager : MonoBehaviour
 
         CardManagerList.AllCards.Add(new Card("Huskar", "Life Break", "Damage self and enemy card by 7",
             "Sprites/Cards/Huskar1", "Sounds/Cards/StartOrder/CentaurDoubleEdge", Color.yellow,
-            15, 15, 0, 7, 0, 7));
+            15, 15, 0, 7, 0, 7, true));
         CardManagerList.AllCards.Add(new Card("Windranger", "Powershot", "Damage enemy card by 4",
             "Sprites/Cards/Windranger1", "Sounds/Cards/StartOrder/WindrangerPowershot", Color.green,
             4, 4, 0, 4));
@@ -107,13 +113,13 @@ public class CardManager : MonoBehaviour
             2, 2, 0, 7));
         CardManagerList.AllCards.Add(new Card("Bane", "BrainSap", "Damage enemy card and boost self by 4",
             "Sprites/Cards/Bane1", "Sounds/Cards/StartOrder/BaneBrainSap", Color.cyan,
-            4, 4, 0, 4, 4));
+            4, 4, 0, 4, 4, 0, false, true));
         CardManagerList.AllCards.Add(new Card("Zeus", "Lightning Bolt", "Damage enemy card by 5",
             "Sprites/Cards/Zeus1", "Sounds/Cards/StartOrder/ZeusLightningBolt", Color.blue,
             3, 3, 0, 5));
         CardManagerList.AllCards.Add(new Card("Abaddon", "Mist Coil", "Boost friendly card by 4 and damage self by 4",
             "Sprites/Cards/Abaddon1", "Sounds/Cards/StartOrder/AbaddonMistCoil", Color.black,
-            8, 8, 4, 0, 0, 4));
+            8, 8, 4, 0, 0, 4, true, false));
 
     }
 }
