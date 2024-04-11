@@ -276,14 +276,23 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
         }
 
-        if ((card.SelfCard.SelfBoost != 0) && (card.SelfCard.SelfDamage != 0) ||
-           ((!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField) ||
-           ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1)) ||
-           (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0)))))
+        if ((card.SelfCard.SelfBoost == 0) && (card.SelfCard.SelfDamage == 0))
+        {
+
+        }
+
+        else if (!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField)
         {
             ChangePoints(card, card, false, true);
             OrderCard.Invoke(card);
         }
+
+        else if ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1)) ||
+                (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0)))
+        {
+            ChangePoints(card, card, false, true);
+        }
+
     }
 
     private void ChangeEnemyPoints()
