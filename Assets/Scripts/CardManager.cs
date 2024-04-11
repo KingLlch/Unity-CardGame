@@ -96,7 +96,7 @@ public class CardManager : MonoBehaviour
              12, 12, 0, 0, 0, 3));
 
         CardManagerList.AllCards.Add(new Card("Huskar", "Life Break", "Damage self and enemy card by 7",
-            "Sprites/Cards/Huskar1", "Sounds/Cards/StartOrder/CentaurDoubleEdge", Color.yellow,
+            "Sprites/Cards/Huskar1", "Sounds/Cards/StartOrder/HuskarLifeBreak", Color.yellow,
             15, 15, 0, 7, 0, 7, true));
         CardManagerList.AllCards.Add(new Card("Windranger", "Powershot", "Damage enemy card by 4",
             "Sprites/Cards/Windranger1", "Sounds/Cards/StartOrder/WindrangerPowershot", Color.green,

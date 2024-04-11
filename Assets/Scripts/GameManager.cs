@@ -286,13 +286,6 @@ public class GameManager : MonoBehaviour
             ChangePoints(card, card, false, true);
             OrderCard.Invoke(card);
         }
-
-        else if ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1)) ||
-                (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0)))
-        {
-            ChangePoints(card, card, false, true);
-        }
-
     }
 
     private void ChangeEnemyPoints()
@@ -401,17 +394,28 @@ public class GameManager : MonoBehaviour
 
         if (isBoost)
         {
+            if ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1)) ||
+            (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0)))
+            {
+                ChangePoints(card, card, false, true);
+            }
+
             ChangePoints(ChooseOurCard(true), card, true);
 
             foreach (CardInfoScript cardd in PlayerFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = false;
             }
-
         }
 
         if (isDamage)
         {
+            if ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1)) ||
+            (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0)))
+            {
+                ChangePoints(card, card, false, true);
+            }
+
             ChangePoints(ChooseEnemyCard(true), card, true);
 
             foreach (CardInfoScript cardd in EnemyFieldCards)
