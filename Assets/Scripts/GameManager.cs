@@ -50,17 +50,18 @@ public class GameManager : MonoBehaviour
 
     public GameObject CardPref;
     public UnityEngine.UI.Button EndTurnButton;
-
-    public List<CardInfoScript> PlayerHandCards = new List<CardInfoScript>();
-    public List<CardInfoScript> PlayerFieldCards = new List<CardInfoScript>();
-
-    public List<CardInfoScript> EnemyHandCards = new List<CardInfoScript>();
-    public List<CardInfoScript> EnemyFieldCards = new List<CardInfoScript>();
-
-    public bool IsChoosing;
-    [HideInInspector] public bool IsSingleCardPlaying;
+    public EffectsManager EffectsManager;
 
     private CardInfoScript _choosenCard;
+
+    [HideInInspector] public List<CardInfoScript> PlayerHandCards = new List<CardInfoScript>();
+    [HideInInspector] public List<CardInfoScript> PlayerFieldCards = new List<CardInfoScript>();
+
+    [HideInInspector] public List<CardInfoScript> EnemyHandCards = new List<CardInfoScript>();
+    [HideInInspector] public List<CardInfoScript> EnemyFieldCards = new List<CardInfoScript>();
+
+    [HideInInspector] public bool IsChoosing;
+    [HideInInspector] public bool IsSingleCardPlaying;
 
     [HideInInspector] public UnityEvent<CardInfoScript> EnemyDropCardEvent;
     [HideInInspector] public UnityEvent<CardInfoScript> PlayerDropCardEvent;
@@ -89,6 +90,8 @@ public class GameManager : MonoBehaviour
         _imageTurnTime[0] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime").GetComponent<UnityEngine.UI.Image>();
         _imageTurnTime[1] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime1").GetComponent<UnityEngine.UI.Image>();
         _line = GameObject.Find("UI/MainCanvas/Line").GetComponent<LineRenderer>();
+
+        EffectsManager = FindObjectOfType<EffectsManager>();
         _mainCamera = Camera.main;
     }
 
@@ -285,6 +288,8 @@ public class GameManager : MonoBehaviour
                 cardd.transform.GetComponent<ChoseCard>().enabled = true;
             }
 
+            card.transform.GetComponent<ChoseCard>().enabled = false;
+
             _line.startColor = Color.white;
             _line.endColor = Color.green;
 
@@ -391,7 +396,7 @@ public class GameManager : MonoBehaviour
 
         else
         {
-            return EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)];
+            return EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count - 1)];
         }
     }
 
@@ -518,12 +523,12 @@ public class GameManager : MonoBehaviour
                 {
                     if ((card.SelfCard.EndTurnDamage != 0) && (EnemyFieldCards.Count > 0))
                     {
-                        ChangePoints(EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)], card, true);
+                        ChangePoints(EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)], card, false, false, true);
                     }
 
                     if ((card.SelfCard.EndTurnBoost != 0) && (PlayerFieldCards.Count > 0))
                     {
-                        ChangePoints(PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)], card, true);
+                        ChangePoints(PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)], card, false, false, true);
                     }
                 }
             }
@@ -536,14 +541,15 @@ public class GameManager : MonoBehaviour
             {
                 if (card.SelfCard.EndTurnAction == true)
                 {
+                    Debug.Log("EnemyEndTurnAction");
                     if ((card.SelfCard.EndTurnDamage != 0) && (PlayerFieldCards.Count > 0))
                     {
-                        ChangePoints(PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)], card, true);
+                        ChangePoints(PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)], card, false, false, true);
                     }
 
                     if ((card.SelfCard.EndTurnBoost != 0) && (EnemyFieldCards.Count > 0))
                     {
-                        ChangePoints(EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)], card, true);
+                        ChangePoints(EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count)], card, false, false, true);
                     }
                 }
             }
@@ -554,20 +560,44 @@ public class GameManager : MonoBehaviour
     {
         if (deploymentAction)
         {
-            if (startCard.SelfCard.Boost != 0) targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.Boost, startCard.SelfCard);
-            if (startCard.SelfCard.Damage != 0) targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage, startCard.SelfCard);
+            if (startCard.SelfCard.Boost != 0)
+            {
+                targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.Boost, startCard.SelfCard);
+                EffectsManager.Boost(startCard.transform,targetCard.transform);
+            }
+            if (startCard.SelfCard.Damage != 0) 
+            { 
+                targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage, startCard.SelfCard);
+                EffectsManager.Damage(startCard.transform, targetCard.transform);
+            }
         }
 
         if (selfAction)
         {
-            if (startCard.SelfCard.SelfBoost != 0) targetCard.ChangePoints(ref startCard.SelfCard, startCard.SelfCard.SelfBoost, startCard.SelfCard);
-            if (startCard.SelfCard.SelfDamage != 0) targetCard.ChangePoints(ref startCard.SelfCard, -startCard.SelfCard.SelfDamage, startCard.SelfCard);
+            if (startCard.SelfCard.SelfBoost != 0)
+            {
+                targetCard.ChangePoints(ref startCard.SelfCard, startCard.SelfCard.SelfBoost, startCard.SelfCard);
+                EffectsManager.SelfBoost(startCard.transform);
+            }
+            if (startCard.SelfCard.SelfDamage != 0)
+            {
+                targetCard.ChangePoints(ref startCard.SelfCard, -startCard.SelfCard.SelfDamage, startCard.SelfCard);
+                EffectsManager.SelfDamage(startCard.transform);
+            }
         }
 
         if (endTurnAction)
         {
-            if (startCard.SelfCard.EndTurnDamage != 0) targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.EndTurnDamage, startCard.SelfCard);
-            if (startCard.SelfCard.EndTurnBoost != 0) targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.EndTurnBoost, startCard.SelfCard);
+            if (startCard.SelfCard.EndTurnBoost != 0)
+            {
+                targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.EndTurnBoost, startCard.SelfCard);
+                EffectsManager.EndTurnBoost(startCard.transform, targetCard.transform);
+            }
+            if (startCard.SelfCard.EndTurnDamage != 0)
+            {
+                targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.EndTurnDamage, startCard.SelfCard);
+                EffectsManager.EndTurnDamage(startCard.transform, targetCard.transform);
+            }
         }
 
         CheckColorPointsCard(targetCard);

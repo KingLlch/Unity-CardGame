@@ -24,7 +24,7 @@ public class ChoseCard : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        transform.GetComponent<CardInfoScript>().ImageEdge.color = Color.red;
+        transform.GetComponent<CardInfoScript>().ImageEdge.color = Color.white;
     }
 
     public void OnPointerExit(PointerEventData eventData)
