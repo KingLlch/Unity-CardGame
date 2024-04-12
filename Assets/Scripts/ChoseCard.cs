@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class ChoseCard : MonoBehaviour, IPointerClickHandler
+public class ChoseCard : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [HideInInspector] public UnityEvent<CardInfoScript> IChoseCard;
 
@@ -20,5 +20,15 @@ public class ChoseCard : MonoBehaviour, IPointerClickHandler
        {    
             IChoseCard.Invoke(eventData.pointerCurrentRaycast.gameObject.GetComponent<CardInfoScript>());
        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        transform.GetComponent<CardInfoScript>().ImageEdge.color = Color.red;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        transform.GetComponent<CardInfoScript>().ImageEdge.color = transform.GetComponent<CardInfoScript>().SelfCard.ColorTheme;
     }
 }

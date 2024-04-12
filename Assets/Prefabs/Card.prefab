@@ -309,6 +309,7 @@ MonoBehaviour:
   Name: {fileID: 6236580174244072488}
   SecondName: {fileID: 1556932504444547871}
   Description: {fileID: 6023029153618601706}
+  SiblingIndex: 0
   IsHideCard: 0
   IsAnimationCard: 0
   ShadowCard: {fileID: 5999836164066178820}

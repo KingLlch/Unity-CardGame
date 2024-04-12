@@ -57,8 +57,6 @@ public class GameManager : MonoBehaviour
     public List<CardInfoScript> EnemyHandCards = new List<CardInfoScript>();
     public List<CardInfoScript> EnemyFieldCards = new List<CardInfoScript>();
 
-    public Color ColorBase;
-
     public bool IsChoosing;
     [HideInInspector] public bool IsSingleCardPlaying;
 
@@ -435,6 +433,7 @@ public class GameManager : MonoBehaviour
             foreach (CardInfoScript cardd in PlayerFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = false;
+                cardd.ImageEdge.color = cardd.SelfCard.ColorTheme;
             }
 
             if (card.SelfCard.RangeBoost > 0)
@@ -464,6 +463,7 @@ public class GameManager : MonoBehaviour
             foreach (CardInfoScript cardd in EnemyFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = false;
+                cardd.ImageEdge.color = cardd.SelfCard.ColorTheme;
             }
 
             if (card.SelfCard.RangeDamage > 0)
