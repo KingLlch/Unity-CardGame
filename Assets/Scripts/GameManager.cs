@@ -321,17 +321,17 @@ public class GameManager : MonoBehaviour
 
         if (card.SelfCard.Points == card.SelfCard.MaxPoints)
         {
-            card.Point.color = Color.black;
+            card.Point.colorGradient = new VertexGradient(Color.white, Color.white, Color.black, Color.black);
         }
 
         else if (card.SelfCard.Points < card.SelfCard.MaxPoints)
         {
-            card.Point.color = Color.red;
+            card.Point.colorGradient = new VertexGradient(Color.red, Color.red, Color.black, Color.black);
         }
 
         else
         {
-            card.Point.color = Color.green;
+            card.Point.colorGradient = new VertexGradient(Color.green, Color.green, Color.black, Color.black);
         }
     }
 
