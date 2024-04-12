@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class CardInfoScript : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class CardInfoScript : MonoBehaviour
     public TextMeshProUGUI SecondName;
     public TextMeshProUGUI Description;
 
+    public int SiblingIndex;
     public bool IsHideCard;
     public bool IsAnimationCard;
 
@@ -95,4 +97,27 @@ public class CardInfoScript : MonoBehaviour
         Point.text = card.Points.ToString();
     }
 
+    public void CheckSiblingIndex()
+    {
+        SiblingIndex = transform.GetSiblingIndex();
+    }
+
+    public List<CardInfoScript> ReturnNearCard()
+    {
+        if ((SiblingIndex + 1 < transform.parent.childCount) && (SiblingIndex - 1 >= 0))
+        {
+            return new List<CardInfoScript> { transform.parent.GetChild(SiblingIndex + 1).GetComponent<CardInfoScript>(), transform.parent.GetChild(SiblingIndex - 1).GetComponent<CardInfoScript>() };
+        }
+
+        else if (SiblingIndex + 1 < transform.parent.childCount)
+        {
+            return new List<CardInfoScript> { transform.parent.GetChild(SiblingIndex + 1).GetComponent<CardInfoScript>() };
+        }
+        else if (SiblingIndex - 1 >= 0)
+        {
+            return new List<CardInfoScript> { transform.parent.GetChild(SiblingIndex - 1).GetComponent<CardInfoScript>() }; 
+        }
+
+        else return null;
+    }
 }
