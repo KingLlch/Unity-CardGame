@@ -216,15 +216,12 @@ public class GameManager : MonoBehaviour
             {
                 botChoosedCard.CheckSiblingIndex();
 
-                if ((botChoosedCard.ReturnNearCard() != null) && (botChoosedCard.ReturnNearCard().Count == 2))
+                if (botChoosedCard.ReturnNearCard() != null)
                 {
-                    ChangePoints(botChoosedCard.ReturnNearCard()[0], card, true);
-                    ChangePoints(botChoosedCard.ReturnNearCard()[1], card, true);
-                }
-
-                else if ((botChoosedCard.ReturnNearCard() != null) && (botChoosedCard.ReturnNearCard().Count == 1))
-                {
-                    ChangePoints(botChoosedCard.ReturnNearCard()[0], card, true);
+                    for (int i = 0; i < botChoosedCard.ReturnNearCard().Count; i++)
+                    {
+                        ChangePoints(botChoosedCard.ReturnNearCard()[i], card, true);
+                    }
                 }
             }
         }
@@ -238,15 +235,12 @@ public class GameManager : MonoBehaviour
             {
                 botChoosedCard.CheckSiblingIndex();
 
-                if ((botChoosedCard.ReturnNearCard() != null) && (botChoosedCard.ReturnNearCard().Count == 2))
+                if (botChoosedCard.ReturnNearCard() != null)
                 {
-                    ChangePoints(botChoosedCard.ReturnNearCard()[0], card, true);
-                    ChangePoints(botChoosedCard.ReturnNearCard()[1], card, true);
-                }
-
-                else if ((botChoosedCard.ReturnNearCard() != null) && (botChoosedCard.ReturnNearCard().Count == 1))
-                {
-                    ChangePoints(botChoosedCard.ReturnNearCard()[0], card, true);
+                    for (int i = 0; i < botChoosedCard.ReturnNearCard().Count; i++)
+                    {
+                        ChangePoints(botChoosedCard.ReturnNearCard()[i], card, true);
+                    }
                 }
             }
         }
@@ -447,15 +441,12 @@ public class GameManager : MonoBehaviour
             {
                 ChooseOurCard(true).CheckSiblingIndex();
 
-                if ((ChooseOurCard(true).ReturnNearCard() != null) && (ChooseEnemyCard(true).ReturnNearCard().Count == 2))
+                if (ChooseEnemyCard(true).ReturnNearCard() != null)
                 {
-                    ChangePoints(ChooseOurCard(true).ReturnNearCard()[0], card, true);
-                    ChangePoints(ChooseOurCard(true).ReturnNearCard()[1], card, true);
-                }
-
-                else if ((ChooseOurCard(true).ReturnNearCard() != null) && (ChooseOurCard(true).ReturnNearCard().Count == 1))
-                {
-                    ChangePoints(ChooseOurCard(true).ReturnNearCard()[0], card, true);
+                    for (int i = 0; i < ChooseOurCard(true).ReturnNearCard().Count; i++)
+                    {
+                        ChangePoints(ChooseOurCard(true).ReturnNearCard()[i], card, true);
+                    }
                 }
             }
         }
@@ -479,15 +470,12 @@ public class GameManager : MonoBehaviour
             {
                 ChooseEnemyCard(true).CheckSiblingIndex();
                 
-                if ((ChooseEnemyCard(true).ReturnNearCard() != null) && (ChooseEnemyCard(true).ReturnNearCard().Count == 2))
+                if (ChooseEnemyCard(true).ReturnNearCard() != null)
                 {
-                    ChangePoints(ChooseEnemyCard(true).ReturnNearCard()[0], card, true);
-                    ChangePoints(ChooseEnemyCard(true).ReturnNearCard()[1], card, true);
-                }
-
-                else if ((ChooseEnemyCard(true).ReturnNearCard() != null) && (ChooseEnemyCard(true).ReturnNearCard().Count == 1))
-                {
-                    ChangePoints(ChooseEnemyCard(true).ReturnNearCard()[0], card, true);
+                    for (int i = 0; i < ChooseEnemyCard(true).ReturnNearCard().Count; i++)
+                    {
+                        ChangePoints(ChooseEnemyCard(true).ReturnNearCard()[i], card, true);
+                    }
                 }
             }
         }
