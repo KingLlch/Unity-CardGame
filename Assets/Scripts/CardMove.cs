@@ -31,12 +31,12 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _offset = transform.position - _mainCamera.ScreenToWorldPoint(new Vector3 (eventData.position.x, eventData.position.y, _mainCamera.farClipPlane));
+        _offset = transform.position - _mainCamera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, _mainCamera.farClipPlane));
 
         CurrentCardParentTransform = transform.parent;
         FutureCardParentTransform = transform.parent;
 
-        IsDraggable = ((CurrentCardParentTransform.GetComponent<DropField>().TypeField == TypeField.SELF_HAND) && (GameManager.IsPlayerTurn) && (!GameManager.IsChoosing) && (!GameManager.IsSingleCardPlaying) );
+        IsDraggable = ((CurrentCardParentTransform.GetComponent<DropField>().TypeField == TypeField.SELF_HAND) && (GameManager.IsPlayerTurn) && (!GameManager.IsChoosing) && (!GameManager.IsSingleCardPlaying));
 
         if (!IsDraggable) return;
 
@@ -68,7 +68,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         if (!eventData.pointerCurrentRaycast.gameObject.GetComponent<DropField>())
         {
             transform.SetParent(CurrentCardParentTransform);
-            transform.SetSiblingIndex(StartSiblingIndex);  
+            transform.SetSiblingIndex(StartSiblingIndex);
         }
 
         ChangeCardPosition.RemoveAllListeners();
@@ -96,7 +96,9 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void EnemyMoveToField(Transform field)
     {
-        transform.DOMove(field.position, 0.5f);
+        if (field.childCount > 0)
+            transform.DOMove(field.GetChild(field.childCount - 1).position + new Vector3(50, 0, 0), 0.5f);
+        else transform.DOMove(field.position, 0.5f);
     }
 
     public void PlayerMoveToField(Transform field, Transform emptyHandCard)

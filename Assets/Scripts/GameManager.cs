@@ -232,7 +232,7 @@ public class GameManager : MonoBehaviour
             botChoosedCard = ChooseEnemyCard(false);
             ChangePoints(botChoosedCard, card, true);
 
-            if(card.SelfCard.RangeDamage > 0)
+            if (card.SelfCard.RangeDamage > 0)
             {
                 botChoosedCard.CheckSiblingIndex();
 
@@ -246,9 +246,9 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if ((card.SelfCard.SelfBoost != 0) && (card.SelfCard.SelfDamage != 0) || 
-           ((!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField) || 
-           ((card.SelfCard.AddictionWithSelfField && (EnemyFieldCards.Count != 1)) || 
+        if ((card.SelfCard.SelfBoost != 0) && (card.SelfCard.SelfDamage != 0) ||
+           ((!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField) ||
+           ((card.SelfCard.AddictionWithSelfField && (EnemyFieldCards.Count != 1)) ||
            (card.SelfCard.AddictionWithEnemyField && (PlayerFieldCards.Count != 0)))))
         {
             ChangePoints(card, card, false, true);
@@ -474,7 +474,7 @@ public class GameManager : MonoBehaviour
             if (card.SelfCard.RangeDamage > 0)
             {
                 ChooseEnemyCard(true).CheckSiblingIndex();
-                
+
                 if (ChooseEnemyCard(true).ReturnNearCard() != null)
                 {
                     for (int i = 0; i < ChooseEnemyCard(true).ReturnNearCard().Count; i++)
@@ -563,12 +563,16 @@ public class GameManager : MonoBehaviour
             if (startCard.SelfCard.Boost != 0)
             {
                 targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.Boost, startCard.SelfCard);
-                EffectsManager.Boost(startCard.transform,targetCard.transform);
+
+                if (startCard.SelfCard.Boost > 0) EffectsManager.Boost(startCard.transform, targetCard.transform);
+                else EffectsManager.Damage(startCard.transform, targetCard.transform);
             }
-            if (startCard.SelfCard.Damage != 0) 
-            { 
+            if (startCard.SelfCard.Damage != 0)
+            {
                 targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage, startCard.SelfCard);
-                EffectsManager.Damage(startCard.transform, targetCard.transform);
+
+                if (startCard.SelfCard.Damage > 0) EffectsManager.Damage(startCard.transform, targetCard.transform);
+                else EffectsManager.Boost(startCard.transform, targetCard.transform);
             }
         }
 
@@ -591,12 +595,16 @@ public class GameManager : MonoBehaviour
             if (startCard.SelfCard.EndTurnBoost != 0)
             {
                 targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.EndTurnBoost, startCard.SelfCard);
-                EffectsManager.EndTurnBoost(startCard.transform, targetCard.transform);
+
+                if (startCard.SelfCard.EndTurnBoost > 0) EffectsManager.EndTurnBoost(startCard.transform, targetCard.transform);
+                else EffectsManager.EndTurnDamage(startCard.transform, targetCard.transform);
             }
             if (startCard.SelfCard.EndTurnDamage != 0)
             {
                 targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.EndTurnDamage, startCard.SelfCard);
-                EffectsManager.EndTurnDamage(startCard.transform, targetCard.transform);
+
+                if (startCard.SelfCard.EndTurnDamage > 0) EffectsManager.EndTurnDamage(startCard.transform, targetCard.transform);
+                else EffectsManager.EndTurnBoost(startCard.transform, targetCard.transform);
             }
         }
 

@@ -78,7 +78,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         if (!card.IsDraggable) return;
 
-        if ((TypeField == TypeField.SELF_TABLE ) || (TypeField == TypeField.SELF_HAND))
+        if ((TypeField == TypeField.SELF_TABLE) || (TypeField == TypeField.SELF_HAND))
         {
             if (TypeField == TypeField.SELF_TABLE && card.GameManager.PlayerFieldCards.Count < 9)
             {

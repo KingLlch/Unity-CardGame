@@ -16,10 +16,10 @@ public class ChoseCard : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
 
     public void OnPointerClick(PointerEventData eventData)
     {
-       if (eventData.pointerCurrentRaycast.gameObject.GetComponent<CardInfoScript>())
-       {    
+        if (eventData.pointerCurrentRaycast.gameObject.GetComponent<CardInfoScript>())
+        {
             IChoseCard.Invoke(eventData.pointerCurrentRaycast.gameObject.GetComponent<CardInfoScript>());
-       }
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)

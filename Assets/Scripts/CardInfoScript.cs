@@ -81,7 +81,7 @@ public class CardInfoScript : MonoBehaviour
     {
         if ((!IsHideCard) && (!_gameManager.IsDrag) && (!IsAnimationCard))
         {
-             DescriptionObject.SetActive(true);
+            DescriptionObject.SetActive(true);
             DescriptionObject.transform.SetParent(transform.parent.parent);
         }
     }
@@ -109,7 +109,7 @@ public class CardInfoScript : MonoBehaviour
         for (int i = 1; i <= range; i++)
         {
 
-            if (SiblingIndex + i < transform.parent.childCount) 
+            if (SiblingIndex + i < transform.parent.childCount)
             {
                 NearCard.Add(transform.parent.GetChild(SiblingIndex + i).GetComponent<CardInfoScript>());
             }
