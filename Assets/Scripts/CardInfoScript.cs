@@ -101,19 +101,52 @@ public class CardInfoScript : MonoBehaviour
     {
         SiblingIndex = transform.GetSiblingIndex();
     }
+    public List<CardInfoScript> ReturnRightNearCard(int range = 1)
+    {
+        List<CardInfoScript> RightNearCard = new List<CardInfoScript>();
 
-    public List<CardInfoScript> ReturnNearCard(int range = 1)
+        for (int i = 1; i <= range; i++)
+        {
+            if (SiblingIndex + i < transform.parent.childCount)
+            {
+                RightNearCard.Add(transform.parent.GetChild(SiblingIndex + i).GetComponent<CardInfoScript>());
+            }
+        }
+
+        if (RightNearCard.Count != 0) return RightNearCard;
+        else return null;
+    }
+
+    public List<CardInfoScript> ReturnLeftNearCard(int range = 1)
+    {
+        List<CardInfoScript> LeftNearCard = new List<CardInfoScript>();
+
+        for (int i = 1; i <= range; i++)
+        {
+            if (SiblingIndex - i >= 0)
+            {
+                LeftNearCard.Add(transform.parent.GetChild(SiblingIndex - i).GetComponent<CardInfoScript>());
+            }
+        }
+
+        if (LeftNearCard.Count != 0) return LeftNearCard;
+        else return null;
+    }
+
+    /*public List<CardInfoScript> ReturnNearCard(int range = 1)
     {
         List<CardInfoScript> NearCard = new List<CardInfoScript>();
 
         for (int i = 1; i <= range; i++)
         {
-
             if (SiblingIndex + i < transform.parent.childCount)
             {
                 NearCard.Add(transform.parent.GetChild(SiblingIndex + i).GetComponent<CardInfoScript>());
             }
+        }
 
+        for (int i = 1; i <= range; i++)
+        {
             if (SiblingIndex - i >= 0)
             {
                 NearCard.Add(transform.parent.GetChild(SiblingIndex - i).GetComponent<CardInfoScript>());
@@ -122,5 +155,5 @@ public class CardInfoScript : MonoBehaviour
 
         if (NearCard.Count != 0) return NearCard;
         else return null;
-    }
+    }*/
 }

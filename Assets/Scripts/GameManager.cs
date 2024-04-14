@@ -217,11 +217,19 @@ public class GameManager : MonoBehaviour
             {
                 botChoosedCard.CheckSiblingIndex();
 
-                if (botChoosedCard.ReturnNearCard() != null)
+               if (botChoosedCard.ReturnRightNearCard() != null)
                 {
-                    for (int i = 0; i < botChoosedCard.ReturnNearCard().Count; i++)
+                    for (int i = 0; i < botChoosedCard.ReturnRightNearCard().Count; i++)
                     {
-                        ChangePoints(botChoosedCard.ReturnNearCard()[i], card, true);
+                        ChangePoints(botChoosedCard.ReturnRightNearCard()[i], card, true, false, false, i + 1);
+                    }
+                }
+
+                if (botChoosedCard.ReturnLeftNearCard() != null)
+                {
+                    for (int i = 0; i < botChoosedCard.ReturnLeftNearCard().Count; i++)
+                    {
+                        ChangePoints(botChoosedCard.ReturnLeftNearCard()[i], card, true, false, false, i + 1);
                     }
                 }
             }
@@ -236,11 +244,19 @@ public class GameManager : MonoBehaviour
             {
                 botChoosedCard.CheckSiblingIndex();
 
-                if (botChoosedCard.ReturnNearCard() != null)
+                if (botChoosedCard.ReturnRightNearCard() != null)
                 {
-                    for (int i = 0; i < botChoosedCard.ReturnNearCard().Count; i++)
+                    for (int i = 0; i < botChoosedCard.ReturnRightNearCard().Count; i++)
                     {
-                        ChangePoints(botChoosedCard.ReturnNearCard()[i], card, true);
+                        ChangePoints(botChoosedCard.ReturnRightNearCard()[i], card, true, false, false, i + 1);
+                    }
+                }
+
+                if (botChoosedCard.ReturnLeftNearCard() != null)
+                {
+                    for (int i = 0; i < botChoosedCard.ReturnLeftNearCard().Count; i++)
+                    {
+                        ChangePoints(botChoosedCard.ReturnLeftNearCard()[i], card, true, false, false, i + 1);
                     }
                 }
             }
@@ -445,11 +461,19 @@ public class GameManager : MonoBehaviour
             {
                 ChooseOurCard(true).CheckSiblingIndex();
 
-                if (ChooseEnemyCard(true).ReturnNearCard() != null)
+                if (ChooseOurCard(true).ReturnRightNearCard() != null)
                 {
-                    for (int i = 0; i < ChooseOurCard(true).ReturnNearCard().Count; i++)
+                    for (int i = 0; i < ChooseOurCard(true).ReturnRightNearCard().Count; i++)
                     {
-                        ChangePoints(ChooseOurCard(true).ReturnNearCard()[i], card, true);
+                        ChangePoints(ChooseOurCard(true).ReturnRightNearCard()[i], card, true, false, false, i + 1);
+                    }
+                }
+
+                if (ChooseOurCard(true).ReturnLeftNearCard() != null)
+                {
+                    for (int i = 0; i < ChooseOurCard(true).ReturnLeftNearCard().Count; i++)
+                    {
+                        ChangePoints(ChooseOurCard(true).ReturnLeftNearCard()[i], card, true, false, false, i + 1);
                     }
                 }
             }
@@ -475,11 +499,19 @@ public class GameManager : MonoBehaviour
             {
                 ChooseEnemyCard(true).CheckSiblingIndex();
 
-                if (ChooseEnemyCard(true).ReturnNearCard() != null)
+                if (ChooseEnemyCard(true).ReturnRightNearCard() != null)
                 {
-                    for (int i = 0; i < ChooseEnemyCard(true).ReturnNearCard().Count; i++)
+                    for (int i = 0; i < ChooseEnemyCard(true).ReturnRightNearCard().Count; i++)
                     {
-                        ChangePoints(ChooseEnemyCard(true).ReturnNearCard()[i], card, true);
+                        ChangePoints(ChooseEnemyCard(true).ReturnRightNearCard()[i], card, true, false, false, i + 1);
+                    }
+                }
+
+                if (ChooseEnemyCard(true).ReturnLeftNearCard() != null)
+                {
+                    for (int i = 0; i < ChooseEnemyCard(true).ReturnLeftNearCard().Count; i++)
+                    {
+                        ChangePoints(ChooseEnemyCard(true).ReturnLeftNearCard()[i], card, true, false, false, i + 1);
                     }
                 }
             }
@@ -556,20 +588,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ChangePoints(CardInfoScript targetCard, CardInfoScript startCard, bool deploymentAction = false, bool selfAction = false, bool endTurnAction = false)
+    private void ChangePoints(CardInfoScript targetCard, CardInfoScript startCard, bool deploymentAction = false, bool selfAction = false, bool endTurnAction = false, int distanceNearCard = 0)
     {
         if (deploymentAction)
         {
             if (startCard.SelfCard.Boost != 0)
             {
-                targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.Boost, startCard.SelfCard);
+                targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.Boost + distanceNearCard * startCard.SelfCard.ChangeBoost, startCard.SelfCard);
 
                 if (startCard.SelfCard.Boost > 0) EffectsManager.Boost(startCard.transform, targetCard.transform);
                 else EffectsManager.Damage(startCard.transform, targetCard.transform);
             }
             if (startCard.SelfCard.Damage != 0)
             {
-                targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage, startCard.SelfCard);
+                targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage - distanceNearCard * startCard.SelfCard.ChangeDamage, startCard.SelfCard);
 
                 if (startCard.SelfCard.Damage > 0) EffectsManager.Damage(startCard.transform, targetCard.transform);
                 else EffectsManager.Boost(startCard.transform, targetCard.transform);
