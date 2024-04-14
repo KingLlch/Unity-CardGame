@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public struct Card
@@ -32,6 +33,9 @@ public struct Card
     public int EndTurnDamage;
     public int EndTurnBoost;
 
+    public bool Summon;
+    public int SummonCardCount;
+
     public Card(string name, string secondName, string description,
         string spritePath, string startOrderSoundPath, Color color,
         int maxPoints, int points,
@@ -39,7 +43,8 @@ public struct Card
         int damage = 0, int rangeDamage = 0, int changeDamage = 0,
         int selfBoost = 0,
         int selfDamage = 0,
-        bool addictionWithSelfField = false, bool addictionWithEnemyField = false, bool endTurnAction = false, int endTurnDamage = 0, int endTurnBoost = 0)
+        bool addictionWithSelfField = false, bool addictionWithEnemyField = false, bool endTurnAction = false, int endTurnDamage = 0, int endTurnBoost = 0,
+        bool summon = false, int summonCardCount = 0)
     {
         Name = name;
         SecondName = secondName;
@@ -68,12 +73,46 @@ public struct Card
         EndTurnAction = endTurnAction;
         EndTurnDamage = endTurnDamage;
         EndTurnBoost = endTurnBoost;
+
+        Summon = summon;
+        SummonCardCount = summonCardCount;
+    }
+}
+
+public struct SummonCard
+{
+    public string Name;
+    public string SecondName;
+    public string Description;
+
+    public int MaxPoints;
+    public int Points;
+
+    public Sprite Image;
+    public AudioClip StartOrderSound;
+    public Color ColorTheme;
+
+    public SummonCard(string name, string secondName, string description,
+    string spritePath, string startOrderSoundPath, Color color,
+    int maxPoints, int points)
+
+    {
+        Name = name;
+        SecondName = secondName;
+        Description = description;
+        MaxPoints = maxPoints;
+        Points = points;
+
+        Image = Resources.Load<Sprite>(spritePath);
+        StartOrderSound = Resources.Load<AudioClip>(startOrderSoundPath);
+        ColorTheme = color;
     }
 }
 
 public static class CardManagerList
 {
     public static List<Card> AllCards = new List<Card>();
+    public static List<SummonCard> SummonCards = new List<SummonCard>();
 }
 
 public class CardManager : MonoBehaviour
@@ -228,6 +267,29 @@ public class CardManager : MonoBehaviour
             4, 0, 0, 
             0, 0, 0, 
             0, 4, true, false));
+
+        CardManagerList.AllCards.Add(new Card("ChaosKnight", "Phantasm", "Create 2 Chaos Knight near",
+            "Sprites/Cards/ChaosKnight1", "Sounds/Cards/StartOrder/ChaosKnightPhantasm", Color.red,
+            6, 6,
+            0, 0, 0,
+            0, 0, 0,
+            0, 0,false,false,false,
+            0, 0,
+            true));
+
+        CardManagerList.AllCards.Add(new Card("Lycan", "Summon Wolves", "Create 2 Wolves(1) near",
+            "Sprites/Cards/Lycan1", "Sounds/Cards/StartOrder/LycanSummonWolves", Color.black,
+            11, 11,
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, false, false, false,
+            0, 0, true,1));
+
+        //SUMMONS
+
+        CardManagerList.SummonCards.Add(new SummonCard("Wolf", "Summon", "",
+            "Sprites/Cards/Wolf1", "Sounds/Cards/StartOrder/Wolf", Color.black,
+            2, 2));
 
     }
 }

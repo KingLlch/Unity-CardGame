@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CardInfoScript : MonoBehaviour
 {
     public Card SelfCard;
+    public SummonCard SummonSelfCard;
 
     public GameObject DescriptionObject;
     public GameObject CardBack;
