@@ -119,6 +119,18 @@ public class CardManager : MonoBehaviour
             0, 0,
             2, 0));
 
+        CardManagerList.AllCards.Add(new Card("Luna", "Moon Glaives", "Damage 3 enemy card by 1",
+            "Sprites/Cards/Luna2", "Sounds/Cards/StartOrder/LunaMoonGlaives", Color.blue,
+            3, 3,
+            0, 0,
+            1, 1));
+
+        CardManagerList.AllCards.Add(new Card("Luna", "Eclipse", "Damage 5 enemy card by 2",
+            "Sprites/Cards/Luna3", "Sounds/Cards/StartOrder/LunaEclipse", Color.blue,
+            4, 4,
+            0, 0,
+            2, 2));
+
         CardManagerList.AllCards.Add(new Card("Templar Assasin", "Refraction", "Boost friendly card by 6",
              "Sprites/Cards/TemplarAssasin1", "Sounds/Cards/StartOrder/TemplarAssasinRefraction", Color.magenta,
              1, 1,
@@ -145,7 +157,7 @@ public class CardManager : MonoBehaviour
             7, 0,
             0, 7, false, true));
 
-        CardManagerList.AllCards.Add(new Card("Windranger", "Powershot", "Damage enemy card by 3 and card near by 1",
+        CardManagerList.AllCards.Add(new Card("Windranger", "Powershot", "Damage enemy card by 3 and card near by 3",
             "Sprites/Cards/Windranger1", "Sounds/Cards/StartOrder/WindrangerPowershot", Color.green,
             4, 4,
             0, 0,
@@ -162,6 +174,18 @@ public class CardManager : MonoBehaviour
             8, 8,
             0, 0,
             3, 0));
+
+        CardManagerList.AllCards.Add(new Card("Earthshaker", "Echo Slam", "Damage all enemy card by 1",
+            "Sprites/Cards/Earthshaker2", "Sounds/Cards/StartOrder/EarthshakerEchoSlam", Color.yellow,
+            4, 4,
+            0, 0,
+            1, 8));
+
+        CardManagerList.AllCards.Add(new Card("Chen", "Hand Of God", "Boost all friendly card by 1",
+            "Sprites/Cards/Chen1", "Sounds/Cards/StartOrder/ChenHandOfGod", Color.yellow,
+            3, 3,
+            1, 8,
+            0, 0));
 
         CardManagerList.AllCards.Add(new Card("Sniper", "Assasinate", "Damage enemy card by 7",
             "Sprites/Cards/Sniper1", "Sounds/Cards/StartOrder/SniperAssasinate", Color.yellow,
