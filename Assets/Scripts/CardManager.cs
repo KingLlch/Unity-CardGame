@@ -80,6 +80,13 @@ public class CardManager : MonoBehaviour
 {
     private void Awake()
     {
+
+        CardManagerList.AllCards.Add(new Card("Debug", "Debug", "Debug",
+            "Sprites/Cards/Lina1", "Sounds/Cards/StartOrder/LinaDragonSlave", Color.white,
+            100, 100,
+            0, 0, 0,
+            0, 0, 0));
+
         /* EXAMPLE
         CardManagerList.AllCards.Add(new Card("Lina", "Dragon Slave", "Damage enemy card by 3",  = NAME, SECOND NAME and DESCRIPTION
             "Sprites/Cards/Lina1", "Sounds/Cards/StartOrder/LinaDragonSlave", Color.red,  = IMAGE, SOUND and COLOR
@@ -156,8 +163,8 @@ public class CardManager : MonoBehaviour
         CardManagerList.AllCards.Add(new Card("Huskar", "Life Break", "Damage self and enemy card by 7",
             "Sprites/Cards/Huskar1", "Sounds/Cards/StartOrder/HuskarLifeBreak", Color.yellow,
             18, 18,
-            7, 0, 0, 
             0, 0, 0, 
+            7, 0, 0, 
             0, 7, false, true));
 
         CardManagerList.AllCards.Add(new Card("Windranger", "Powershot", "Damage enemy card by 3 and card near by 1",
@@ -199,8 +206,8 @@ public class CardManager : MonoBehaviour
         CardManagerList.AllCards.Add(new Card("Bane", "BrainSap", "Damage enemy card and boost self by 4",
             "Sprites/Cards/Bane1", "Sounds/Cards/StartOrder/BaneBrainSap", Color.cyan,
             4, 4,
-            4, 0, 0, 
             0, 0, 0, 
+            4, 0, 0, 
             4, 0, false, true));
 
         CardManagerList.AllCards.Add(new Card("Zeus", "Arc Lightning", "Damage enemy card by 2, and near by 1",

@@ -17,12 +17,12 @@ public class Game
 
     private List<Card> GiveDeckCard()
     {
-        List<Card> list = new List<Card>();
+        List<Card> DeckList = new List<Card>();
         for (int i = 0; i < 10; i++)
         {
-            list.Add(CardManagerList.AllCards[Random.Range(0, CardManagerList.AllCards.Count)]);
+            DeckList.Add(CardManagerList.AllCards[Random.Range(1, CardManagerList.AllCards.Count)]);
         }
-        return list;
+        return DeckList;
     }
 }
 
@@ -74,6 +74,20 @@ public class GameManager : MonoBehaviour
             return _turn % 2 == 0;
         }
     }
+    private void DebugGame()
+    {
+        int i = 0;
+
+        while (i++ < 9)
+        {
+            GameObject cardDebug = Instantiate(CardPref,_enemyField,false);
+            cardDebug.GetComponent<CardInfoScript>().ShowCardInfo(CardManagerList.AllCards[0]);
+            cardDebug.transform.SetParent(_enemyField);
+            EnemyFieldCards.Add(cardDebug.GetComponent<CardInfoScript>());
+
+        }
+
+    }
 
     private void Awake()
     {
@@ -104,6 +118,7 @@ public class GameManager : MonoBehaviour
 
         _currentGame = new Game();
 
+        //DebugGame();
         GiveHandCards(_currentGame.EnemyDeck, _enemyHand);
         GiveHandCards(_currentGame.PlayerDeck, _playerHand);
 
@@ -150,7 +165,11 @@ public class GameManager : MonoBehaviour
 
         int enemyPlayedCard = Random.Range(0, enemyHandCards.Count);
 
-        if ((EnemyFieldCards.Count > 8) || (EnemyHandCards.Count == 0)) yield break;
+        if ((EnemyFieldCards.Count > 8) || (EnemyHandCards.Count == 0))
+        {
+            ChangeTurn();
+            yield break;
+        }
 
         enemyHandCards[enemyPlayedCard].GetComponent<CardMove>().EnemyMoveToField(_enemyField.transform);
         yield return new WaitForSeconds(0.6f);
@@ -461,19 +480,19 @@ public class GameManager : MonoBehaviour
             {
                 ChooseOurCard(true).CheckSiblingIndex();
 
-                if (ChooseOurCard(true).ReturnRightNearCard() != null)
+                if (ChooseOurCard(true).ReturnRightNearCard(card.SelfCard.RangeBoost) != null)
                 {
-                    for (int i = 0; i < ChooseOurCard(true).ReturnRightNearCard().Count; i++)
+                    for (int i = 0; i < ChooseOurCard(true).ReturnRightNearCard(card.SelfCard.RangeBoost).Count; i++)
                     {
-                        ChangePoints(ChooseOurCard(true).ReturnRightNearCard()[i], card, true, false, false, i + 1);
+                        ChangePoints(ChooseOurCard(true).ReturnRightNearCard(card.SelfCard.RangeBoost)[i], card, true, false, false, i + 1);
                     }
                 }
 
-                if (ChooseOurCard(true).ReturnLeftNearCard() != null)
+                if (ChooseOurCard(true).ReturnLeftNearCard(card.SelfCard.RangeBoost) != null)
                 {
-                    for (int i = 0; i < ChooseOurCard(true).ReturnLeftNearCard().Count; i++)
+                    for (int i = 0; i < ChooseOurCard(true).ReturnLeftNearCard(card.SelfCard.RangeBoost).Count; i++)
                     {
-                        ChangePoints(ChooseOurCard(true).ReturnLeftNearCard()[i], card, true, false, false, i + 1);
+                        ChangePoints(ChooseOurCard(true).ReturnLeftNearCard(card.SelfCard.RangeBoost)[i], card, true, false, false, i + 1);
                     }
                 }
             }
@@ -499,19 +518,19 @@ public class GameManager : MonoBehaviour
             {
                 ChooseEnemyCard(true).CheckSiblingIndex();
 
-                if (ChooseEnemyCard(true).ReturnRightNearCard() != null)
+                if (ChooseEnemyCard(true).ReturnRightNearCard(card.SelfCard.RangeDamage) != null)
                 {
-                    for (int i = 0; i < ChooseEnemyCard(true).ReturnRightNearCard().Count; i++)
+                    for (int i = 0; i < ChooseEnemyCard(true).ReturnRightNearCard(card.SelfCard.RangeDamage).Count; i++)
                     {
-                        ChangePoints(ChooseEnemyCard(true).ReturnRightNearCard()[i], card, true, false, false, i + 1);
+                        ChangePoints(ChooseEnemyCard(true).ReturnRightNearCard(card.SelfCard.RangeDamage)[i], card, true, false, false, i + 1);
                     }
                 }
 
-                if (ChooseEnemyCard(true).ReturnLeftNearCard() != null)
+                if (ChooseEnemyCard(true).ReturnLeftNearCard(card.SelfCard.RangeDamage) != null)
                 {
-                    for (int i = 0; i < ChooseEnemyCard(true).ReturnLeftNearCard().Count; i++)
+                    for (int i = 0; i < ChooseEnemyCard(true).ReturnLeftNearCard(card.SelfCard.RangeDamage).Count; i++)
                     {
-                        ChangePoints(ChooseEnemyCard(true).ReturnLeftNearCard()[i], card, true, false, false, i + 1);
+                        ChangePoints(ChooseEnemyCard(true).ReturnLeftNearCard(card.SelfCard.RangeDamage)[i], card, true, false, false, i + 1);
                     }
                 }
             }
@@ -573,7 +592,6 @@ public class GameManager : MonoBehaviour
             {
                 if (card.SelfCard.EndTurnAction == true)
                 {
-                    Debug.Log("EnemyEndTurnAction");
                     if ((card.SelfCard.EndTurnDamage != 0) && (PlayerFieldCards.Count > 0))
                     {
                         ChangePoints(PlayerFieldCards[Random.Range(0, PlayerFieldCards.Count)], card, false, false, true);
