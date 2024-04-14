@@ -227,7 +227,7 @@ public class CardManager : MonoBehaviour
             8, 8,
             4, 0, 0, 
             0, 0, 0, 
-            4, 0, true, false));
+            0, 4, true, false));
 
     }
 }

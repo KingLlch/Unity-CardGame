@@ -1,8 +1,7 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using DG.Tweening;
-using UnityEditor;
 
 public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {

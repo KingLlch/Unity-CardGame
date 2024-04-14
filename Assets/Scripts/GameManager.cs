@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -118,8 +117,8 @@ public class GameManager : MonoBehaviour
 
         _currentGame = new Game();
 
-        //DebugGame();
-        GiveHandCards(_currentGame.EnemyDeck, _enemyHand);
+        DebugGame();
+        //GiveHandCards(_currentGame.EnemyDeck, _enemyHand);
         GiveHandCards(_currentGame.PlayerDeck, _playerHand);
 
         StartCoroutine(TurnFunk());
