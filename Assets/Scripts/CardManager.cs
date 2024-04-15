@@ -79,40 +79,10 @@ public struct Card
     }
 }
 
-public struct SummonCard
-{
-    public string Name;
-    public string SecondName;
-    public string Description;
-
-    public int MaxPoints;
-    public int Points;
-
-    public Sprite Image;
-    public AudioClip StartOrderSound;
-    public Color ColorTheme;
-
-    public SummonCard(string name, string secondName, string description,
-    string spritePath, string startOrderSoundPath, Color color,
-    int maxPoints, int points)
-
-    {
-        Name = name;
-        SecondName = secondName;
-        Description = description;
-        MaxPoints = maxPoints;
-        Points = points;
-
-        Image = Resources.Load<Sprite>(spritePath);
-        StartOrderSound = Resources.Load<AudioClip>(startOrderSoundPath);
-        ColorTheme = color;
-    }
-}
-
 public static class CardManagerList
 {
     public static List<Card> AllCards = new List<Card>();
-    public static List<SummonCard> SummonCards = new List<SummonCard>();
+    public static List<Card> SummonCards = new List<Card>();
 }
 
 public class CardManager : MonoBehaviour
@@ -275,7 +245,7 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             0, 0,false,false,false,
             0, 0,
-            true));
+            true, -1));
 
         CardManagerList.AllCards.Add(new Card("Lycan", "Summon Wolves", "Create 2 Wolves(1) near",
             "Sprites/Cards/Lycan1", "Sounds/Cards/StartOrder/LycanSummonWolves", Color.black,
@@ -283,11 +253,12 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             0, 0, 0,
             0, 0, false, false, false,
-            0, 0, true,1));
+            0, 0, 
+            true, 0));
 
         //SUMMONS
 
-        CardManagerList.SummonCards.Add(new SummonCard("Wolf", "Summon", "",
+        CardManagerList.SummonCards.Add(new Card("Wolf", "Summon", "",
             "Sprites/Cards/Wolf1", "Sounds/Cards/StartOrder/Wolf", Color.black,
             2, 2));
 

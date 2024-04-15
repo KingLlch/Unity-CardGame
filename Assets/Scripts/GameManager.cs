@@ -117,8 +117,8 @@ public class GameManager : MonoBehaviour
 
         _currentGame = new Game();
 
-        DebugGame();
-        //GiveHandCards(_currentGame.EnemyDeck, _enemyHand);
+        //DebugGame();
+        GiveHandCards(_currentGame.EnemyDeck, _enemyHand);
         GiveHandCards(_currentGame.PlayerDeck, _playerHand);
 
         StartCoroutine(TurnFunk());
@@ -280,13 +280,18 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if ((card.SelfCard.SelfBoost != 0) && (card.SelfCard.SelfDamage != 0) ||
-           ((!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField) ||
+        if (((!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField) ||
            ((card.SelfCard.AddictionWithSelfField && (EnemyFieldCards.Count != 1)) ||
            (card.SelfCard.AddictionWithEnemyField && (PlayerFieldCards.Count != 0)))))
         {
             ChangePoints(card, card, false, true);
             OrderCard.Invoke(card);
+        }
+
+        if (card.SelfCard.Summon)
+        {
+            OrderCard.Invoke(card);
+            SpawnCard(card);
         }
 
         EnemyDropCardEvent.Invoke(card);
@@ -343,12 +348,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
         }
 
-        if ((card.SelfCard.SelfBoost == 0) && (card.SelfCard.SelfDamage == 0))
-        {
-
-        }
-
-        else if (!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField)
+        if (!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField)
         {
             ChangePoints(card, card, false, true);
             OrderCard.Invoke(card);
@@ -615,7 +615,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject summonCard;
 
-        if (card.SelfCard.SummonCardCount == 0)
+        if (card.SelfCard.SummonCardCount == -1)
         {
             summonCard = Instantiate(CardPref, card.transform.parent, false);
             card.CheckSiblingIndex();
@@ -636,14 +636,14 @@ public class GameManager : MonoBehaviour
             card.CheckSiblingIndex();
             summonCard.transform.SetSiblingIndex(card.SiblingIndex + 1);
             PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
-            summonCard.GetComponent<CardInfoScript>().ShowCardInfo((Card)CardManagerList.SummonCards[card.SelfCard.SummonCardCount - 1]);
-            Debug.Log(summonCard.GetComponent<CardInfoScript>().SummonSelfCard.Points);
+            summonCard.GetComponent<CardInfoScript>().ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.SummonCardCount]);
+            Debug.Log(summonCard.GetComponent<CardInfoScript>().SelfCard.Points);
 
             summonCard = Instantiate(CardPref, card.transform.parent, false);
             card.CheckSiblingIndex();
             summonCard.transform.SetSiblingIndex(card.SiblingIndex);
             PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
-            summonCard.GetComponent<CardInfoScript>().ShowCardInfo((Card)CardManagerList.SummonCards[card.SelfCard.SummonCardCount - 1]);
+            summonCard.GetComponent<CardInfoScript>().ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.SummonCardCount]);
 
         }
 
