@@ -24,8 +24,8 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private void Awake()
     {
         _mainCamera = Camera.main;
-        GameManager = FindObjectOfType<GameManager>();
         _mainCanvas = GameObject.Find("UI/MainCanvas");
+        GameManager = FindObjectOfType<GameManager>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)

@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
+    public GameManager GameManager;
     public TypeField TypeField;
     public Transform EmptyTableCard;
     public Transform EmptyHandCard;
@@ -18,6 +19,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         EmptyHandCard = GameObject.Find("EmptyHandCard").transform;
         EmptyTableCard = GameObject.Find("EmptyTableCard").transform;
+        GameManager = FindObjectOfType<GameManager>();
     }
 
     private void ChangeCardPosition()
@@ -80,7 +82,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         if ((TypeField == TypeField.SELF_TABLE) || (TypeField == TypeField.SELF_HAND))
         {
-            if (TypeField == TypeField.SELF_TABLE && card.GameManager.PlayerFieldCards.Count < 9)
+            if (TypeField == TypeField.SELF_TABLE && card.GameManager.PlayerFieldCards.Count < GameManager.MaxNumberCardInField)
             {
                 card.CurrentCardParentTransform = transform;
 

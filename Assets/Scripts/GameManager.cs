@@ -66,6 +66,10 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public UnityEvent<CardInfoScript> PlayerDropCardEvent;
     [HideInInspector] public UnityEvent<CardInfoScript> OrderCard;
 
+
+    //ChangeGameCharacteristics
+    public int MaxNumberCardInField = 10;
+
     public bool IsPlayerTurn
     {
         get
@@ -77,7 +81,7 @@ public class GameManager : MonoBehaviour
     {
         int i = 0;
 
-        while (i++ < 9)
+        while (i++ < MaxNumberCardInField)
         {
             GameObject cardDebug = Instantiate(CardPref,_enemyField,false);
             cardDebug.GetComponent<CardInfoScript>().ShowCardInfo(CardManagerList.AllCards[0]);
@@ -164,7 +168,7 @@ public class GameManager : MonoBehaviour
 
         int enemyPlayedCard = Random.Range(0, enemyHandCards.Count);
 
-        if ((EnemyFieldCards.Count > 8) || (EnemyHandCards.Count == 0))
+        if ((EnemyFieldCards.Count > MaxNumberCardInField) || (EnemyHandCards.Count == 0))
         {
             ChangeTurn();
             yield break;
