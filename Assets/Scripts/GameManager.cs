@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
 
         _currentGame = new Game();
 
-        //DebugGame();
+        DebugGame();
         GiveHandCards(_currentGame.EnemyDeck, _enemyHand);
         GiveHandCards(_currentGame.PlayerDeck, _playerHand);
 
@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
 
         int enemyPlayedCard = Random.Range(0, enemyHandCards.Count);
 
-        if ((EnemyFieldCards.Count > MaxNumberCardInField) || (EnemyHandCards.Count == 0))
+        if ((EnemyFieldCards.Count >= MaxNumberCardInField) || (EnemyHandCards.Count == 0))
         {
             ChangeTurn();
             yield break;
@@ -295,7 +295,7 @@ public class GameManager : MonoBehaviour
         if (card.SelfCard.Summon)
         {
             OrderCard.Invoke(card);
-            SpawnCard(card);
+            SpawnCard(card, false);
         }
 
         EnemyDropCardEvent.Invoke(card);
@@ -352,7 +352,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
         }
 
-        if (!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField)
+        if (((card.SelfCard.SelfBoost!=0)||(card.SelfCard.SelfDamage != 0)) && (!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField))
         {
             ChangePoints(card, card, false, true);
             OrderCard.Invoke(card);
@@ -361,7 +361,7 @@ public class GameManager : MonoBehaviour
         if (card.SelfCard.Summon)
         {
             OrderCard.Invoke(card);
-            SpawnCard(card);
+            SpawnCard(card,true);
         }
     }
 
@@ -615,40 +615,47 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SpawnCard(CardInfoScript card)
+    public void SpawnCard(CardInfoScript card, bool player)
     {
         GameObject summonCard;
 
         if (card.SelfCard.SummonCardCount == -1)
         {
+            if (!((player && PlayerFieldCards.Count < MaxNumberCardInField) || (!player && EnemyFieldCards.Count < MaxNumberCardInField))) { return; }
             summonCard = Instantiate(CardPref, card.transform.parent, false);
             card.CheckSiblingIndex();
             summonCard.transform.SetSiblingIndex(card.SiblingIndex + 1);
             PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
             summonCard.GetComponent<CardInfoScript>().ShowCardInfo(card.SelfCard);
+            summonCard.GetComponent<ChoseCard>().enabled = false;
 
+            if (!((player && PlayerFieldCards.Count < MaxNumberCardInField) || (!player && EnemyFieldCards.Count < MaxNumberCardInField))) { return; }
             summonCard = Instantiate(CardPref, card.transform.parent, false);
             card.CheckSiblingIndex();
             summonCard.transform.SetSiblingIndex(card.SiblingIndex);
             PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
             summonCard.GetComponent<CardInfoScript>().ShowCardInfo(card.SelfCard);
+            summonCard.GetComponent<ChoseCard>().enabled = false;
         }
 
         else
         {
+            if (!((player && PlayerFieldCards.Count < MaxNumberCardInField) || (!player && EnemyFieldCards.Count < MaxNumberCardInField))) { return; }
             summonCard = Instantiate(CardPref, card.transform.parent, false);
             card.CheckSiblingIndex();
             summonCard.transform.SetSiblingIndex(card.SiblingIndex + 1);
             PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
             summonCard.GetComponent<CardInfoScript>().ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.SummonCardCount]);
             Debug.Log(summonCard.GetComponent<CardInfoScript>().SelfCard.Points);
+            summonCard.GetComponent<ChoseCard>().enabled = false;
 
+            if (!((player && PlayerFieldCards.Count < MaxNumberCardInField) || (!player && EnemyFieldCards.Count < MaxNumberCardInField))) { return; }
             summonCard = Instantiate(CardPref, card.transform.parent, false);
             card.CheckSiblingIndex();
             summonCard.transform.SetSiblingIndex(card.SiblingIndex);
             PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
             summonCard.GetComponent<CardInfoScript>().ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.SummonCardCount]);
-
+            summonCard.GetComponent<ChoseCard>().enabled = false;
         }
 
         ChangeEnemyPoints();
