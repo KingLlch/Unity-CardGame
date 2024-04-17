@@ -82,8 +82,13 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         if ((TypeField == TypeField.SELF_TABLE) || (TypeField == TypeField.SELF_HAND))
         {
-            if (TypeField == TypeField.SELF_TABLE && card.GameManager.PlayerFieldCards.Count < GameManager.MaxNumberCardInField)
+            if (TypeField == TypeField.SELF_TABLE && GameManager.PlayerFieldCards.Count < GameManager.MaxNumberCardInField)
             {
+                if (GameManager.PlayerFieldCards.Count < GameManager.MaxNumberCardInField)
+                {
+                    GameManager.ThrowCard(card.GetComponent<CardInfoScript>());
+                }
+
                 card.CurrentCardParentTransform = transform;
 
                 card.transform.SetParent(transform);

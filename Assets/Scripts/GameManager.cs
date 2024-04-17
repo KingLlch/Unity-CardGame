@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject CardPref;
     public UnityEngine.UI.Button EndTurnButton;
-    public EffectsManager EffectsManager;
+    [HideInInspector] public EffectsManager EffectsManager;
 
     private CardInfoScript _choosenCard;
 
@@ -66,6 +66,10 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public UnityEvent<CardInfoScript> PlayerDropCardEvent;
     [HideInInspector] public UnityEvent<CardInfoScript> OrderCard;
 
+    [SerializeField] private GameObject _endGamePanel;
+    [SerializeField] private GameObject _endGamePanelWin;
+    [SerializeField] private GameObject _endGamePanelLose;
+    [SerializeField] private GameObject _endGamePanelDraw;
 
     //ChangeGameCharacteristics
     public int MaxNumberCardInField = 10;
@@ -77,6 +81,7 @@ public class GameManager : MonoBehaviour
             return _turn % 2 == 0;
         }
     }
+
     private void DebugGame()
     {
         int i = 0;
@@ -162,7 +167,7 @@ public class GameManager : MonoBehaviour
         deck.RemoveAt(0);
     }
 
-    public IEnumerator EnemyTurn(List<CardInfoScript> enemyHandCards)
+    private IEnumerator EnemyTurn(List<CardInfoScript> enemyHandCards)
     {
         yield return new WaitForSeconds(1.0f);
 
@@ -170,6 +175,11 @@ public class GameManager : MonoBehaviour
 
         if ((EnemyFieldCards.Count >= MaxNumberCardInField) || (EnemyHandCards.Count == 0))
         {
+            if (EnemyFieldCards.Count >= MaxNumberCardInField)
+            {
+                ThrowCard(enemyHandCards[enemyPlayedCard]);
+            }
+
             ChangeTurn();
             yield break;
         }
@@ -185,8 +195,13 @@ public class GameManager : MonoBehaviour
         ChangeTurn();
     }
 
-    public void ChangeTurn()
+    private void ChangeTurn()
     {
+        if((PlayerHandCards.Count == 0) && (EnemyHandCards.Count == 0))
+        {
+            EndGame();
+        }
+
         EndTurnActions();
 
         StopAllCoroutines();
@@ -195,6 +210,52 @@ public class GameManager : MonoBehaviour
         IsSingleCardPlaying = false;
         EndTurnButton.interactable = IsPlayerTurn;
         StartCoroutine(TurnFunk());
+    }
+
+    private void EndGame()
+    {
+        StopAllCoroutines();
+        _endGamePanel.SetActive(true);
+
+        if (_playerPoints < _enemyPoints)
+        {
+            _endGamePanelLose.SetActive(true);
+        }
+
+        else if (_playerPoints > _enemyPoints)
+        {
+            _endGamePanelWin.SetActive(true);
+        }
+
+        else
+        {
+            _endGamePanelDraw.SetActive(true);
+        }
+    }
+
+    public void NewGame()
+    {
+        _turn = 0;
+        _playerPoints = 0;
+        _enemyPoints = 0;
+
+        _currentGame = new Game();
+
+        GiveHandCards(_currentGame.EnemyDeck, _enemyHand);
+        GiveHandCards(_currentGame.PlayerDeck, _playerHand);
+
+        StartCoroutine(TurnFunk());
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
+    public void ThrowCard(CardInfoScript card)
+    {
+        EnemyHandCards.Remove(card);
+        Destroy(card);
     }
 
     private IEnumerator TurnFunk()
@@ -212,6 +273,11 @@ public class GameManager : MonoBehaviour
                 _imageTurnTime[1].fillAmount = (float)_turnTime / 30;
                 yield return new WaitForSeconds(1);
             }
+
+            if(_turnTime == 0)
+            {
+                ThrowCard(PlayerHandCards[Random.Range(0, PlayerHandCards.Count)]);
+            } 
 
             ChangeTurn();
         }
@@ -418,6 +484,7 @@ public class GameManager : MonoBehaviour
         _enemyPointsTMPro.text = _enemyPoints.ToString();
     }
 
+
     private CardInfoScript ChooseEnemyCard(bool isPlayerChoose)
     {
         if (isPlayerChoose)
@@ -573,7 +640,7 @@ public class GameManager : MonoBehaviour
         _choosenCard = card;
     }
 
-    public void EndTurnActions()
+    private void EndTurnActions()
     {
         if (IsPlayerTurn)
         {
@@ -615,7 +682,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SpawnCard(CardInfoScript card, bool player)
+    private void SpawnCard(CardInfoScript card, bool player)
     {
         GameObject summonCard;
 
