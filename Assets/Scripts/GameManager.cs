@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
 
     //ChangeGameCharacteristics
     public int MaxNumberCardInField = 10;
+    public int TurnDuration = 30;
 
     public bool IsPlayerTurn
     {
@@ -126,7 +127,7 @@ public class GameManager : MonoBehaviour
 
         _currentGame = new Game();
 
-        DebugGame();
+        //DebugGame();
         GiveHandCards(_currentGame.EnemyDeck, _enemyHand);
         GiveHandCards(_currentGame.PlayerDeck, _playerHand);
 
@@ -167,32 +168,37 @@ public class GameManager : MonoBehaviour
         deck.RemoveAt(0);
     }
 
-    private IEnumerator EnemyTurn(List<CardInfoScript> enemyHandCards)
+    private IEnumerator TurnFunk()
     {
-        yield return new WaitForSeconds(1.0f);
+        _turnTime = TurnDuration;
 
-        int enemyPlayedCard = Random.Range(0, enemyHandCards.Count);
+        _imageTurnTime[0].fillAmount = (float)_turnTime / TurnDuration;
+        _imageTurnTime[1].fillAmount = (float)_turnTime / TurnDuration;
 
-        if ((EnemyFieldCards.Count >= MaxNumberCardInField) || (EnemyHandCards.Count == 0))
+        if (IsPlayerTurn)
         {
-            if (EnemyFieldCards.Count >= MaxNumberCardInField)
+            while (_turnTime-- > 0)
             {
-                ThrowCard(enemyHandCards[enemyPlayedCard]);
+                _imageTurnTime[0].fillAmount = (float)_turnTime / TurnDuration;
+                _imageTurnTime[1].fillAmount = (float)_turnTime / TurnDuration;
+
+
+                yield return new WaitForSeconds(1);
+
+                if(_turnTime == 0 && !IsSingleCardPlaying && PlayerHandCards.Count !=0)
+                {
+                    ThrowCard(PlayerHandCards[Random.Range(0, PlayerHandCards.Count)], true);
+                } 
             }
 
+
             ChangeTurn();
-            yield break;
         }
 
-        enemyHandCards[enemyPlayedCard].GetComponent<CardMove>().EnemyMoveToField(_enemyField.transform);
-        yield return new WaitForSeconds(0.6f);
-
-        enemyHandCards[enemyPlayedCard].ShowCardInfo(enemyHandCards[enemyPlayedCard].SelfCard);
-        enemyHandCards[enemyPlayedCard].transform.SetParent(_enemyField);
-
-        EnemyDropCard(enemyHandCards[enemyPlayedCard]);
-
-        ChangeTurn();
+        else
+        {
+            StartCoroutine(EnemyTurn(EnemyHandCards));
+        }
     }
 
     private void ChangeTurn()
@@ -212,80 +218,32 @@ public class GameManager : MonoBehaviour
         StartCoroutine(TurnFunk());
     }
 
-    private void EndGame()
+    private IEnumerator EnemyTurn(List<CardInfoScript> enemyHandCards)
     {
-        StopAllCoroutines();
-        _endGamePanel.SetActive(true);
+        yield return new WaitForSeconds(1.0f);
 
-        if (_playerPoints < _enemyPoints)
+        int enemyPlayedCard = Random.Range(0, enemyHandCards.Count);
+
+        if ((EnemyFieldCards.Count >= MaxNumberCardInField) || (EnemyHandCards.Count == 0))
         {
-            _endGamePanelLose.SetActive(true);
-        }
-
-        else if (_playerPoints > _enemyPoints)
-        {
-            _endGamePanelWin.SetActive(true);
-        }
-
-        else
-        {
-            _endGamePanelDraw.SetActive(true);
-        }
-    }
-
-    public void NewGame()
-    {
-        _turn = 0;
-        _playerPoints = 0;
-        _enemyPoints = 0;
-
-        _currentGame = new Game();
-
-        GiveHandCards(_currentGame.EnemyDeck, _enemyHand);
-        GiveHandCards(_currentGame.PlayerDeck, _playerHand);
-
-        StartCoroutine(TurnFunk());
-    }
-
-    public void Exit()
-    {
-        Application.Quit();
-    }
-
-    public void ThrowCard(CardInfoScript card)
-    {
-        EnemyHandCards.Remove(card);
-        Destroy(card);
-    }
-
-    private IEnumerator TurnFunk()
-    {
-        _turnTime = 30;
-
-        _imageTurnTime[0].fillAmount = (float)_turnTime / 30;
-        _imageTurnTime[1].fillAmount = (float)_turnTime / 30;
-
-        if (IsPlayerTurn)
-        {
-            while (_turnTime-- > 0)
+            if (EnemyFieldCards.Count >= MaxNumberCardInField)
             {
-                _imageTurnTime[0].fillAmount = (float)_turnTime / 30;
-                _imageTurnTime[1].fillAmount = (float)_turnTime / 30;
-                yield return new WaitForSeconds(1);
+                ThrowCard(enemyHandCards[enemyPlayedCard], false);
             }
 
-            if(_turnTime == 0)
-            {
-                ThrowCard(PlayerHandCards[Random.Range(0, PlayerHandCards.Count)]);
-            } 
-
             ChangeTurn();
+            yield break;
         }
 
-        else
-        {
-            StartCoroutine(EnemyTurn(EnemyHandCards));
-        }
+        enemyHandCards[enemyPlayedCard].GetComponent<CardMove>().EnemyMoveToField(_enemyField.transform);
+        yield return new WaitForSeconds(0.6f);
+
+        enemyHandCards[enemyPlayedCard].ShowCardInfo(enemyHandCards[enemyPlayedCard].SelfCard);
+        enemyHandCards[enemyPlayedCard].transform.SetParent(_enemyField);
+
+        EnemyDropCard(enemyHandCards[enemyPlayedCard]);
+
+        ChangeTurn();
     }
 
     private void EnemyDropCard(CardInfoScript card)
@@ -508,21 +466,6 @@ public class GameManager : MonoBehaviour
         else
         {
             return EnemyFieldCards[Random.Range(0, EnemyFieldCards.Count - 1)];
-        }
-    }
-
-    private void IsDestroyCard(CardInfoScript card)
-    {
-        if (card.SelfCard.Points <= 0)
-        {
-            if (PlayerFieldCards.Contains(card))
-                PlayerFieldCards.Remove(card);
-
-            else if (EnemyFieldCards.Contains(card))
-                EnemyFieldCards.Remove(card);
-
-            Destroy(card.DescriptionObject);
-            Destroy(card.gameObject);
         }
     }
 
@@ -787,5 +730,80 @@ public class GameManager : MonoBehaviour
         IsDestroyCard(targetCard);
         ChangeEnemyPoints();
         ChangePlayerPoints();
+    }
+
+    private void IsDestroyCard(CardInfoScript card)
+    {
+        if (card.SelfCard.Points <= 0)
+        {
+            card.SelfCard.Points = 0;
+            if (PlayerFieldCards.Contains(card))
+                PlayerFieldCards.Remove(card);
+
+            else if (EnemyFieldCards.Contains(card))
+                EnemyFieldCards.Remove(card);
+
+            Destroy(card.DescriptionObject);
+            Destroy(card.gameObject,0.5f);
+        }
+    }
+
+    private void EndGame()
+    {
+        StopAllCoroutines();
+        _endGamePanel.SetActive(true);
+
+        if (_playerPoints < _enemyPoints)
+        {
+            _endGamePanelLose.SetActive(true);
+        }
+
+        else if (_playerPoints > _enemyPoints)
+        {
+            _endGamePanelWin.SetActive(true);
+        }
+
+        else
+        {
+            _endGamePanelDraw.SetActive(true);
+        }
+    }
+
+    public void NewGame()
+    {
+        _endGamePanel.SetActive(false);
+        _endGamePanelWin.SetActive(false);
+        _endGamePanelLose.SetActive(false);
+        _endGamePanelDraw.SetActive(false);
+
+        _turn = 0;
+        _playerPoints = 0;
+        _enemyPoints = 0;
+
+        _currentGame = new Game();
+
+        GiveHandCards(_currentGame.EnemyDeck, _enemyHand);
+        GiveHandCards(_currentGame.PlayerDeck, _playerHand);
+
+        StartCoroutine(TurnFunk());
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
+    public void ThrowCard(CardInfoScript card, bool isPlayer)
+    {
+        if (isPlayer)
+        {
+            PlayerHandCards.Remove(card);
+        }
+        else
+        {
+            EnemyHandCards.Remove(card);
+        }
+
+        Destroy(card.transform.gameObject,0.5f);
     }
 }
