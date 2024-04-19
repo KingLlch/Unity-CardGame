@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     public UnityEngine.UI.Button EndTurnButton;
     [HideInInspector] public EffectsManager EffectsManager;
 
+    public CardInfoScript StartChoseCard;
     private CardInfoScript _choosenCard;
 
     [HideInInspector] public List<CardInfoScript> PlayerHandCards = new List<CardInfoScript>();
@@ -91,11 +92,10 @@ public class GameManager : MonoBehaviour
         {
             GameObject cardDebug = Instantiate(CardPref,_enemyField,false);
             cardDebug.GetComponent<CardInfoScript>().ShowCardInfo(CardManagerList.AllCards[0]);
+            cardDebug.GetComponent<ChoseCard>().enabled = false;
             cardDebug.transform.SetParent(_enemyField);
             EnemyFieldCards.Add(cardDebug.GetComponent<CardInfoScript>());
-
         }
-
     }
 
     private void Awake()
@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
 
         _currentGame = new Game();
 
-        //DebugGame();
+        DebugGame();
         GiveHandCards(_currentGame.EnemyDeck, _enemyHand);
         GiveHandCards(_currentGame.PlayerDeck, _playerHand);
 
@@ -353,6 +353,7 @@ public class GameManager : MonoBehaviour
             foreach (CardInfoScript cardd in PlayerFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = true;
+                cardd.IsOrderCard = true;
             }
 
             card.transform.GetComponent<ChoseCard>().enabled = false;
@@ -368,6 +369,7 @@ public class GameManager : MonoBehaviour
             foreach (CardInfoScript cardd in EnemyFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = true;
+                cardd.IsOrderCard = true;
             }
 
             _line.startColor = Color.white;
@@ -472,8 +474,8 @@ public class GameManager : MonoBehaviour
     private IEnumerator ChoseCardCoroutine(CardInfoScript card, bool isBoost, bool isDamage)
     {
         _choosenCard = null;
-
-        card.ImageEdge.color = Color.green;
+        StartChoseCard = card;
+        card.ImageEdge1.color = Color.green;
         //card.transform.position += new UnityEngine.Vector3(0, 0, 0);
         EndTurnButton.interactable = false;
 
@@ -492,7 +494,8 @@ public class GameManager : MonoBehaviour
             foreach (CardInfoScript cardd in PlayerFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = false;
-                cardd.ImageEdge.color = cardd.SelfCard.ColorTheme;
+                cardd.ImageEdge1.color = Color.white;
+                cardd.IsOrderCard = false;
             }
 
             if (card.SelfCard.RangeBoost > 0)
@@ -530,7 +533,8 @@ public class GameManager : MonoBehaviour
             foreach (CardInfoScript cardd in EnemyFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = false;
-                cardd.ImageEdge.color = cardd.SelfCard.ColorTheme;
+                cardd.ImageEdge1.color = Color.white;
+                cardd.IsOrderCard = false;
             }
 
             if (card.SelfCard.RangeDamage > 0)
@@ -635,7 +639,8 @@ public class GameManager : MonoBehaviour
             summonCard = Instantiate(CardPref, card.transform.parent, false);
             card.CheckSiblingIndex();
             summonCard.transform.SetSiblingIndex(card.SiblingIndex + 1);
-            PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
+            if (player) PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
+            else EnemyFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
             summonCard.GetComponent<CardInfoScript>().ShowCardInfo(card.SelfCard);
             summonCard.GetComponent<ChoseCard>().enabled = false;
 
@@ -643,7 +648,8 @@ public class GameManager : MonoBehaviour
             summonCard = Instantiate(CardPref, card.transform.parent, false);
             card.CheckSiblingIndex();
             summonCard.transform.SetSiblingIndex(card.SiblingIndex);
-            PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
+            if (player) PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
+            else EnemyFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
             summonCard.GetComponent<CardInfoScript>().ShowCardInfo(card.SelfCard);
             summonCard.GetComponent<ChoseCard>().enabled = false;
         }
@@ -654,7 +660,8 @@ public class GameManager : MonoBehaviour
             summonCard = Instantiate(CardPref, card.transform.parent, false);
             card.CheckSiblingIndex();
             summonCard.transform.SetSiblingIndex(card.SiblingIndex + 1);
-            PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
+            if (player) PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
+            else EnemyFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
             summonCard.GetComponent<CardInfoScript>().ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.SummonCardCount]);
             Debug.Log(summonCard.GetComponent<CardInfoScript>().SelfCard.Points);
             summonCard.GetComponent<ChoseCard>().enabled = false;
@@ -663,7 +670,8 @@ public class GameManager : MonoBehaviour
             summonCard = Instantiate(CardPref, card.transform.parent, false);
             card.CheckSiblingIndex();
             summonCard.transform.SetSiblingIndex(card.SiblingIndex);
-            PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
+            if (player) PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
+            else EnemyFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
             summonCard.GetComponent<CardInfoScript>().ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.SummonCardCount]);
             summonCard.GetComponent<ChoseCard>().enabled = false;
         }

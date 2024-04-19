@@ -212,7 +212,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 16.400024, y: 29.299988}
   m_SizeDelta: {x: 100, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6358606340941417035
@@ -243,8 +243,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8e2d800cfce79a34cb487a18bd093b03, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 6f93bd7ae9e8ddf448bee9669ad277d3, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -305,6 +305,7 @@ MonoBehaviour:
   CardBack: {fileID: 7818380968407556095}
   Image: {fileID: 5646225784876631289}
   ImageEdge: {fileID: 3758499303792731026}
+  ImageEdge1: {fileID: 667380371289791919}
   Point: {fileID: 6089050918954820202}
   Name: {fileID: 6236580174244072488}
   SecondName: {fileID: 1556932504444547871}
@@ -312,6 +313,7 @@ MonoBehaviour:
   SiblingIndex: 0
   IsHideCard: 0
   IsAnimationCard: 0
+  IsOrderCard: 0
   ShadowCard: {fileID: 5999836164066178820}
 --- !u!114 &-5743592158190691174
 MonoBehaviour:

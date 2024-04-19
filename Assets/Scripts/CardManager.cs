@@ -198,12 +198,12 @@ public class CardManager : MonoBehaviour
             "Sprites/Cards/Earthshaker2", "Sounds/Cards/StartOrder/EarthshakerEchoSlam", Color.yellow,
             4, 4,
             0, 0, 0,
-            1, 8, 0));
+            1, 9, 0));
 
         CardManagerList.AllCards.Add(new Card("Chen", "Hand Of God", "Boost all friendly card by 1",
             "Sprites/Cards/Chen1", "Sounds/Cards/StartOrder/ChenHandOfGod", Color.yellow,
             3, 3,
-            1, 8, 0,
+            1, 9, 0,
             0, 0, 0));
 
         CardManagerList.AllCards.Add(new Card("Sniper", "Assasinate", "Damage enemy card by 7",

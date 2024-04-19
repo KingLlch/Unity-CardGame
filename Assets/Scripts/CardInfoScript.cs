@@ -12,6 +12,7 @@ public class CardInfoScript : MonoBehaviour
 
     public Image Image;
     public Image ImageEdge;
+    public Image ImageEdge1;
 
     public TextMeshProUGUI Point;
     public TextMeshProUGUI Name;
@@ -21,6 +22,7 @@ public class CardInfoScript : MonoBehaviour
     public int SiblingIndex;
     public bool IsHideCard;
     public bool IsAnimationCard;
+    public bool IsOrderCard;
 
     public Shadow ShadowCard;
 
@@ -79,7 +81,7 @@ public class CardInfoScript : MonoBehaviour
 
     public void ShowDescription()
     {
-        if ((!IsHideCard) && (!_gameManager.IsDrag) && (!IsAnimationCard))
+        if ((!IsHideCard) && (!_gameManager.IsDrag) && (!IsAnimationCard) && (!IsOrderCard) && (DescriptionObject != null))
         {
             DescriptionObject.SetActive(true);
             DescriptionObject.transform.SetParent(transform.parent.parent);
@@ -132,28 +134,4 @@ public class CardInfoScript : MonoBehaviour
         if (LeftNearCard.Count != 0) return LeftNearCard;
         else return null;
     }
-
-    /*public List<CardInfoScript> ReturnNearCard(int range = 1)
-    {
-        List<CardInfoScript> NearCard = new List<CardInfoScript>();
-
-        for (int i = 1; i <= range; i++)
-        {
-            if (SiblingIndex + i < transform.parent.childCount)
-            {
-                NearCard.Add(transform.parent.GetChild(SiblingIndex + i).GetComponent<CardInfoScript>());
-            }
-        }
-
-        for (int i = 1; i <= range; i++)
-        {
-            if (SiblingIndex - i >= 0)
-            {
-                NearCard.Add(transform.parent.GetChild(SiblingIndex - i).GetComponent<CardInfoScript>());
-            }
-        }
-
-        if (NearCard.Count != 0) return NearCard;
-        else return null;
-    }*/
 }
