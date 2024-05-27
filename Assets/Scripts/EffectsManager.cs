@@ -3,12 +3,35 @@ using UnityEngine;
 
 public class EffectsManager : MonoBehaviour
 {
+    private static EffectsManager _instance;
+
+    public static EffectsManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<EffectsManager>();
+            }
+
+            return _instance;
+        }
+    }
+
+
     public ParticleSystem[] DamageParticle;
     public ParticleSystem[] DamageBurstParticle;
 
     public ParticleSystem[] BoostParticle;
     public ParticleSystem[] BoostBurstParticle;
 
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+    }
 
     public void EndTurnBoost(Transform start, Transform end)
     {

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public struct Card
@@ -34,6 +33,7 @@ public struct Card
     public int EndTurnBoost;
 
     public bool Summon;
+    public int SummonCardNumber;
     public int SummonCardCount;
 
     public Card(string name, string secondName, string description,
@@ -44,7 +44,7 @@ public struct Card
         int selfBoost = 0,
         int selfDamage = 0,
         bool addictionWithSelfField = false, bool addictionWithEnemyField = false, bool endTurnAction = false, int endTurnDamage = 0, int endTurnBoost = 0,
-        bool summon = false, int summonCardCount = 0)
+        bool summon = false, int summonCardNumber = 0, int summonCardCount = 0)
     {
         Name = name;
         SecondName = secondName;
@@ -75,6 +75,7 @@ public struct Card
         EndTurnBoost = endTurnBoost;
 
         Summon = summon;
+        SummonCardNumber = summonCardNumber;
         SummonCardCount = summonCardCount;
     }
 }
@@ -245,7 +246,7 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             0, 0,false,false,false,
             0, 0,
-            true, -1));
+            true, -1, 3));
 
         CardManagerList.AllCards.Add(new Card("Lycan", "Summon Wolves", "Create 2 Wolves(1) near",
             "Sprites/Cards/Lycan1", "Sounds/Cards/StartOrder/LycanSummonWolves", Color.black,
@@ -254,7 +255,7 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             0, 0, false, false, false,
             0, 0, 
-            true, 0));
+            true, 0, 2));
 
         //SUMMONS
 

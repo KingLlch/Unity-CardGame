@@ -9,7 +9,6 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private Vector3 _offset;
     private GameObject _mainCanvas;
 
-    public GameManager GameManager;
     public bool IsDraggable;
 
     [HideInInspector] public int StartSiblingIndex;
@@ -25,7 +24,6 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         _mainCamera = Camera.main;
         _mainCanvas = GameObject.Find("UI/MainCanvas");
-        GameManager = FindObjectOfType<GameManager>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -35,11 +33,11 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         CurrentCardParentTransform = transform.parent;
         FutureCardParentTransform = transform.parent;
 
-        IsDraggable = ((CurrentCardParentTransform.GetComponent<DropField>().TypeField == TypeField.SELF_HAND) && (GameManager.IsPlayerTurn) && (!GameManager.IsChoosing) && (!GameManager.IsSingleCardPlaying));
+        IsDraggable = ((CurrentCardParentTransform.GetComponent<DropField>().TypeField == TypeField.SELF_HAND) && (GameManager.Instance.IsPlayerTurn) && (!GameManager.Instance.IsChoosing) && (!GameManager.Instance.IsHandCardPlaying));
 
         if (!IsDraggable) return;
 
-        GameManager.IsDrag = true;
+        GameManager.Instance.IsDrag = true;
 
         StartSiblingIndex = transform.GetSiblingIndex();
         transform.SetParent(CurrentCardParentTransform.parent);
@@ -58,7 +56,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         if (!IsDraggable) return;
 
-        GameManager.IsDrag = false;
+        GameManager.Instance.IsDrag = false;
 
         HideEmptyCard.Invoke();
 

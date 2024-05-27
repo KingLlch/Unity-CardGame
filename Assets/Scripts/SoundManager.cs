@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    private GameManager _gameManager;
-
     private AudioSource _deploymentAudioSource;
     private AudioSource _deploymentEnemyAudioSource;
     private AudioSource _startTarhetAudioSource;
@@ -11,19 +9,17 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        _gameManager = GameObject.Find("Main Camera/GameManager").GetComponent<GameManager>();
-
         _deploymentAudioSource = GameObject.Find("Main Camera/SoundManager/DeploymentAudioSource").GetComponent<AudioSource>();
         _deploymentEnemyAudioSource = GameObject.Find("Main Camera/SoundManager/EnemyDeploymentAudioSource").GetComponent<AudioSource>();
 
         _startTarhetAudioSource = GameObject.Find("Main Camera/SoundManager/StartTargetAudioSource").GetComponent<AudioSource>();
         _startEnemyTarhetAudioSource = GameObject.Find("Main Camera/SoundManager/EnemyStartTargetAudioSource").GetComponent<AudioSource>();
 
-        _gameManager.PlayerDropCardEvent.AddListener(DeploymentSound);
-        _gameManager.EnemyDropCardEvent.AddListener(EnemyDeploymentSound);
+        GameManager.Instance.PlayerDropCardEvent.AddListener(DeploymentSound);
+        GameManager.Instance.EnemyDropCardEvent.AddListener(EnemyDeploymentSound);
 
-        _gameManager.OrderCard.AddListener(StartOrderSound);
-        _gameManager.EnemyDropCardEvent.AddListener(EnemyStartOrderSound);
+        GameManager.Instance.OrderCard.AddListener(StartOrderSound);
+        GameManager.Instance.EnemyDropCardEvent.AddListener(EnemyStartOrderSound);
     }
 
     private void DeploymentSound(CardInfoScript card)

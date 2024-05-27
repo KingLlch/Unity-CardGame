@@ -26,13 +26,6 @@ public class CardInfoScript : MonoBehaviour
 
     public Shadow ShadowCard;
 
-    private GameManager _gameManager;
-
-    private void Awake()
-    {
-        _gameManager = FindObjectOfType<GameManager>();
-    }
-
     public int ShowPoints(Card card)
     {
         return card.Points;
@@ -81,7 +74,7 @@ public class CardInfoScript : MonoBehaviour
 
     public void ShowDescription()
     {
-        if ((!IsHideCard) && (!_gameManager.IsDrag) && (!IsAnimationCard) && (!IsOrderCard) && (DescriptionObject != null))
+        if ((!IsHideCard) && (!GameManager.Instance.IsDrag) && (!IsAnimationCard) && (!IsOrderCard) && (DescriptionObject != null))
         {
             DescriptionObject.SetActive(true);
             DescriptionObject.transform.SetParent(transform.parent.parent);
@@ -90,8 +83,11 @@ public class CardInfoScript : MonoBehaviour
 
     public void HideDescription()
     {
-        DescriptionObject.SetActive(false);
-        DescriptionObject.transform.SetParent(transform);
+        if (DescriptionObject != null)
+        {
+            DescriptionObject.SetActive(false);
+            DescriptionObject.transform.SetParent(transform);
+        }
     }
 
     public void ShowPointsUI(Card card)
