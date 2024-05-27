@@ -310,6 +310,14 @@ public class GameManager : MonoBehaviour
                 }
             }
 
+            if (card.SelfCard.RangeBoost == -1)
+            {
+                foreach (CardInfoScript cardd in EnemyFieldCards)
+                {
+                    CardMechanics.Instance.ChangePoints(cardd, card, true);
+                }
+            }
+
             EnemyOrderCardEvent.Invoke(card);
         }
 
@@ -338,6 +346,15 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+
+            if (card.SelfCard.RangeDamage == -1)
+            {
+                foreach (CardInfoScript cardd in PlayerFieldCards)
+                {
+                    CardMechanics.Instance.ChangePoints(cardd, card, true);
+                }
+            }
+
 
             EnemyOrderCardEvent.Invoke(card);
         }
@@ -386,32 +403,60 @@ public class GameManager : MonoBehaviour
 
         if ((card.SelfCard.Boost != 0) && (PlayerFieldCards.Count != 1))
         {
-            foreach (CardInfoScript cardd in PlayerFieldCards)
+            if (card.SelfCard.RangeBoost != -1)
             {
-                cardd.transform.GetComponent<ChoseCard>().enabled = true;
-                cardd.IsOrderCard = true;
+                foreach (CardInfoScript cardd in PlayerFieldCards)
+                {
+                    cardd.transform.GetComponent<ChoseCard>().enabled = true;
+                    cardd.IsOrderCard = true;
+                }
+
+                card.transform.GetComponent<ChoseCard>().enabled = false;
+
+                _line.startColor = Color.white;
+                _line.endColor = Color.green;
+
+                StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
             }
 
-            card.transform.GetComponent<ChoseCard>().enabled = false;
+            else
+            {
+                foreach (CardInfoScript cardd in PlayerFieldCards)
+                {
+                    CardMechanics.Instance.ChangePoints(cardd, card, true);
+                }
 
-            _line.startColor = Color.white;
-            _line.endColor = Color.green;
+                PlayerOrderCard.Invoke(card);
+            }
 
-            StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
         }
 
         if ((card.SelfCard.Damage != 0) && (EnemyFieldCards.Count != 0))
         {
-            foreach (CardInfoScript cardd in EnemyFieldCards)
+            if (card.SelfCard.RangeDamage != -1)
             {
-                cardd.transform.GetComponent<ChoseCard>().enabled = true;
-                cardd.IsOrderCard = true;
+
+                foreach (CardInfoScript cardd in EnemyFieldCards)
+                {
+                    cardd.transform.GetComponent<ChoseCard>().enabled = true;
+                    cardd.IsOrderCard = true;
+                }
+
+                _line.startColor = Color.white;
+                _line.endColor = Color.red;
+
+                StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
+
             }
+            else
+            {
+                foreach (CardInfoScript cardd in EnemyFieldCards)
+                {
+                    CardMechanics.Instance.ChangePoints(cardd, card, true);
+                }
 
-            _line.startColor = Color.white;
-            _line.endColor = Color.red;
-
-            StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
+                PlayerOrderCard.Invoke(card);
+            }
         }
 
         if (((card.SelfCard.SelfBoost != 0) || (card.SelfCard.SelfDamage != 0)) && (!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField))
@@ -576,6 +621,14 @@ public class GameManager : MonoBehaviour
                     {
                         CardMechanics.Instance.ChangePoints(ChooseEnemyCard(true).ReturnLeftNearCard(card.SelfCard.RangeDamage)[i], card, true, false, false, i + 1);
                     }
+                }
+            }
+
+            if (card.SelfCard.RangeDamage == -1)
+            {
+                foreach (CardInfoScript cardd in EnemyFieldCards)
+                {
+                    CardMechanics.Instance.ChangePoints(cardd, card, true);
                 }
             }
         }

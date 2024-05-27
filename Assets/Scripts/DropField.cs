@@ -86,6 +86,8 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 {
                     GameManager.Instance.ThrowCard(card.GetComponent<CardInfoScript>(), true);
                     GameManager.Instance.IsHandCardPlaying = true;
+
+                    HideEmptyCard();
                     return;
                 }
 

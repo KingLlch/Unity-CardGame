@@ -114,11 +114,11 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             3, 1, 0));
 
-        CardManagerList.AllCards.Add(new Card("Lina", "Light Strike Array", "Damage enemy card by 2",
+        CardManagerList.AllCards.Add(new Card("Lina", "Light Strike Array", "Damage enemy card by 3",
              "Sprites/Cards/Lina2", "Sounds/Cards/StartOrder/LinaLightStrikeArray", Color.red,
-             8, 8,
+             6, 6,
              0, 0, 0,
-             2, 0, 0));
+             3, 0, 0));
 
         CardManagerList.AllCards.Add(new Card("Lina", "Fiery Soul", "At the end of the turn, deal 1 damage to a random enemy unit",
              "Sprites/Cards/Lina3", "Sounds/Cards/StartOrder/LinaFierySoul", Color.red,
@@ -127,11 +127,11 @@ public class CardManager : MonoBehaviour
              0, 0, 0,
              0, 0, false, false, true, 1, 0));
 
-        CardManagerList.AllCards.Add(new Card("Lina", "Laguna Blade", "Damage enemy card by 10",
+        CardManagerList.AllCards.Add(new Card("Lina", "Laguna Blade", "Damage enemy card by 11",
              "Sprites/Cards/Lina4", "Sounds/Cards/StartOrder/LinaLagunaBlade", Color.red,
              1, 1,
              0, 0, 0,
-             10, 0, 0));
+             11, 0, 0));
 
         CardManagerList.AllCards.Add(new Card("Luna", "Lucent Beam", "Damage enemy card by 2",
             "Sprites/Cards/Luna1", "Sounds/Cards/StartOrder/LunaLucentBeam", Color.blue,
@@ -151,10 +151,10 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             2, 2, 0));
 
-        CardManagerList.AllCards.Add(new Card("Templar Assasin", "Refraction", "Boost friendly card by 6",
+        CardManagerList.AllCards.Add(new Card("Templar Assasin", "Refraction", "Boost friendly card by 8",
              "Sprites/Cards/TemplarAssasin1", "Sounds/Cards/StartOrder/TemplarAssasinRefraction", Color.magenta,
              3, 3,
-             6, 0, 0,
+             8, 0, 0,
              0, 0, 0));
 
         CardManagerList.AllCards.Add(new Card("Axe", "Berserker's Call", "Boost enemy card by 3",
@@ -177,11 +177,11 @@ public class CardManager : MonoBehaviour
             7, 0, 0,
             0, 7, false, true));
 
-        CardManagerList.AllCards.Add(new Card("Windranger", "Powershot", "Damage enemy card by 3 and card near by 1",
+        CardManagerList.AllCards.Add(new Card("Windranger", "Powershot", "Damage enemy card by 5 and card near by 1",
             "Sprites/Cards/Windranger1", "Sounds/Cards/StartOrder/WindrangerPowershot", Color.green,
             4, 4,
             0, 0, 0,
-            3, 1, -2));
+            5, 1, -4));
 
         CardManagerList.AllCards.Add(new Card("Kunkka", "Tidebringer", "Damage enemy card by 2, and near by 4",
             "Sprites/Cards/Kunkka1", "Sounds/Cards/StartOrder/KunkkaTidebringer", Color.blue,
@@ -199,12 +199,12 @@ public class CardManager : MonoBehaviour
             "Sprites/Cards/Earthshaker2", "Sounds/Cards/StartOrder/EarthshakerEchoSlam", Color.yellow,
             4, 4,
             0, 0, 0,
-            1, 9, 0));
+            1, -1, 0));
 
         CardManagerList.AllCards.Add(new Card("Chen", "Hand Of God", "Boost all friendly card by 1",
             "Sprites/Cards/Chen1", "Sounds/Cards/StartOrder/ChenHandOfGod", Color.yellow,
             3, 3,
-            1, 9, 0,
+            1, -1, 0,
             0, 0, 0));
 
         CardManagerList.AllCards.Add(new Card("Chen", "Divine Fervor", "At the end of the turn, deal 1 boost to a random frienly unit",
@@ -247,7 +247,7 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             0, 4, true, false));
 
-        CardManagerList.AllCards.Add(new Card("ChaosKnight", "Phantasm", "Create 2 your copy near",
+        CardManagerList.AllCards.Add(new Card("ChaosKnight", "Phantasm", "Create 3 your copy near",
             "Sprites/Cards/ChaosKnight1", "Sounds/Cards/StartOrder/ChaosKnightPhantasm", Color.red,
             6, 6,
             0, 0, 0,
@@ -265,7 +265,7 @@ public class CardManager : MonoBehaviour
             false, 0, 0,
             true, -1, 1));
 
-        CardManagerList.AllCards.Add(new Card("Lycan", "Summon Wolves", "Create 2 Wolves(1) near",
+        CardManagerList.AllCards.Add(new Card("Lycan", "Summon Wolves", "Create 2 Wolves near",
             "Sprites/Cards/Lycan1", "Sounds/Cards/StartOrder/LycanSummonWolves", Color.black,
             11, 11,
             0, 0, 0,
