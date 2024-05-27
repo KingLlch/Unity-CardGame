@@ -2,30 +2,27 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    private AudioSource _deploymentAudioSource;
-    private AudioSource _deploymentEnemyAudioSource;
-    private AudioSource _startTarhetAudioSource;
-    private AudioSource _startEnemyTarhetAudioSource;
+    [SerializeField] private AudioSource _deploymentPlayerAudioSource;
+    [SerializeField] private AudioSource _deploymentEnemyAudioSource;
+    [SerializeField] private AudioSource _startPlayerTargetAudioSource;
+    [SerializeField] private AudioSource _startEnemyTargetAudioSource;
+    [SerializeField] private AudioSource _endTurnAudioSource;
 
     private void Awake()
     {
-        _deploymentAudioSource = GameObject.Find("Main Camera/SoundManager/DeploymentAudioSource").GetComponent<AudioSource>();
-        _deploymentEnemyAudioSource = GameObject.Find("Main Camera/SoundManager/EnemyDeploymentAudioSource").GetComponent<AudioSource>();
-
-        _startTarhetAudioSource = GameObject.Find("Main Camera/SoundManager/StartTargetAudioSource").GetComponent<AudioSource>();
-        _startEnemyTarhetAudioSource = GameObject.Find("Main Camera/SoundManager/EnemyStartTargetAudioSource").GetComponent<AudioSource>();
-
-        GameManager.Instance.PlayerDropCardEvent.AddListener(DeploymentSound);
+        GameManager.Instance.PlayerDropCardEvent.AddListener(PlayerDeploymentSound);
         GameManager.Instance.EnemyDropCardEvent.AddListener(EnemyDeploymentSound);
 
-        GameManager.Instance.OrderCard.AddListener(StartOrderSound);
-        GameManager.Instance.EnemyDropCardEvent.AddListener(EnemyStartOrderSound);
+        GameManager.Instance.PlayerOrderCard.AddListener(PlayerStartOrderSound);
+        GameManager.Instance.EnemyOrderCardEvent.AddListener(EnemyStartOrderSound);
+
+        CardMechanics.Instance.EndTurnCardEvent.AddListener(EndTurnSound);
     }
 
-    private void DeploymentSound(CardInfoScript card)
+    private void PlayerDeploymentSound(CardInfoScript card)
     {
-        _deploymentAudioSource.clip = Resources.Load<AudioClip>("Sounds/Cards/Deployment/" + card.SelfCard.Name + Random.Range(0, 6));
-        _deploymentAudioSource.Play();
+        _deploymentPlayerAudioSource.clip = Resources.Load<AudioClip>("Sounds/Cards/Deployment/" + card.SelfCard.Name + Random.Range(0, 6));
+        _deploymentPlayerAudioSource.Play();
     }
 
     private void EnemyDeploymentSound(CardInfoScript card)
@@ -34,16 +31,22 @@ public class SoundManager : MonoBehaviour
         _deploymentEnemyAudioSource.Play();
     }
 
-    private void StartOrderSound(CardInfoScript card)
+    private void PlayerStartOrderSound(CardInfoScript card)
     {
-        _startTarhetAudioSource.clip = card.SelfCard.StartOrderSound;
-        _startTarhetAudioSource.Play();
+        _startPlayerTargetAudioSource.clip = card.SelfCard.StartOrderSound;
+        _startPlayerTargetAudioSource.Play();
     }
 
     private void EnemyStartOrderSound(CardInfoScript card)
     {
-        _startEnemyTarhetAudioSource.clip = card.SelfCard.StartOrderSound;
-        _startEnemyTarhetAudioSource.Play();
+        _startEnemyTargetAudioSource.clip = card.SelfCard.StartOrderSound;
+        _startEnemyTargetAudioSource.Play();
+    }
+
+    private void EndTurnSound(CardInfoScript card)
+    {
+        _endTurnAudioSource.clip = card.SelfCard.StartOrderSound;
+        _endTurnAudioSource.Play();
     }
 
 }

@@ -85,6 +85,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 if (GameManager.Instance.PlayerFieldCards.Count >= GameManager.Instance.MaxNumberCardInField)
                 {
                     GameManager.Instance.ThrowCard(card.GetComponent<CardInfoScript>(), true);
+                    GameManager.Instance.IsHandCardPlaying = true;
                     return;
                 }
 

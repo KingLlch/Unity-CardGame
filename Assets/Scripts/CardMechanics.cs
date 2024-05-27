@@ -1,9 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CardMechanics : MonoBehaviour
 {
     private static CardMechanics _instance;
+
+    [HideInInspector] public UnityEvent<CardInfoScript> EndTurnCardEvent;
 
     public static CardMechanics Instance
     {
@@ -130,11 +133,13 @@ public class CardMechanics : MonoBehaviour
                     if ((card.SelfCard.EndTurnDamage != 0) && (GameManager.Instance.EnemyFieldCards.Count > 0))
                     {
                         ChangePoints(GameManager.Instance.EnemyFieldCards[Random.Range(0, GameManager.Instance.EnemyFieldCards.Count)], card, false, false, true);
+                        EndTurnCardEvent.Invoke(card);
                     }
 
                     if ((card.SelfCard.EndTurnBoost != 0) && (GameManager.Instance.PlayerFieldCards.Count > 0))
                     {
                         ChangePoints(GameManager.Instance.PlayerFieldCards[Random.Range(0, GameManager.Instance.PlayerFieldCards.Count)], card, false, false, true);
+                        EndTurnCardEvent.Invoke(card);
                     }
                 }
             }
@@ -150,11 +155,13 @@ public class CardMechanics : MonoBehaviour
                     if ((card.SelfCard.EndTurnDamage != 0) && (GameManager.Instance.PlayerFieldCards.Count > 0))
                     {
                         ChangePoints(GameManager.Instance.PlayerFieldCards[Random.Range(0, GameManager.Instance.PlayerFieldCards.Count)], card, false, false, true);
+                        EndTurnCardEvent.Invoke(card);
                     }
 
                     if ((card.SelfCard.EndTurnBoost != 0) && (GameManager.Instance.EnemyFieldCards.Count > 0))
                     {
                         ChangePoints(GameManager.Instance.EnemyFieldCards[Random.Range(0, GameManager.Instance.EnemyFieldCards.Count)], card, false, false, true);
+                        EndTurnCardEvent.Invoke(card);
                     }
                 }
             }

@@ -77,7 +77,7 @@ public class EffectsManager : MonoBehaviour
                 BoostParticle[i].Play();
                 BoostParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, -50), 0.2f);
 
-                BoostBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y,-50);
+                BoostBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, -50);
                 BoostBurstParticle[i].Play();
                 break;
             }
