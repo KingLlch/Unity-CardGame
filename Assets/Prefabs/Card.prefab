@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 3822636935777310630}
   - component: {fileID: -5743592158190691174}
   - component: {fileID: -1549182892061513566}
-  - component: {fileID: 5999836164066178820}
+  - component: {fileID: 1834163043103895549}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -212,7 +212,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 16.400024, y: 29.299988}
+  m_AnchoredPosition: {x: 18.5, y: 37.4}
   m_SizeDelta: {x: 100, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6358606340941417035
@@ -243,7 +243,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6f93bd7ae9e8ddf448bee9669ad277d3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e5874bea53640bc448eb3a5f355a1869, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -277,7 +277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28dc7af2a8d3c034791b437114c4d5fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameManager: {fileID: 0}
   IsDraggable: 0
   StartSiblingIndex: 0
   SiblingIndex: 0
@@ -314,7 +313,7 @@ MonoBehaviour:
   IsHideCard: 0
   IsAnimationCard: 0
   IsOrderCard: 0
-  ShadowCard: {fileID: 5999836164066178820}
+  ShadowCard: {fileID: 1834163043103895549}
 --- !u!114 &-5743592158190691174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,7 +374,7 @@ MonoBehaviour:
   IChoseCard:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5999836164066178820
+--- !u!114 &1834163043103895549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -388,7 +387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 10, y: -5}
+  m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 1
 --- !u!1 &2592180046027997527
 GameObject:
@@ -455,7 +454,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6f93bd7ae9e8ddf448bee9669ad277d3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e5874bea53640bc448eb3a5f355a1869, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

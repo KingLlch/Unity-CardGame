@@ -40,7 +40,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         GameManager.Instance.IsDrag = true;
 
         StartSiblingIndex = transform.GetSiblingIndex();
-        transform.SetParent(CurrentCardParentTransform.parent);
+        transform.SetParent(CurrentCardParentTransform.parent.parent);
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 

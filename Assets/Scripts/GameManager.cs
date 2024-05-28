@@ -599,7 +599,7 @@ public class GameManager : MonoBehaviour
             foreach (CardInfoScript cardd in EnemyFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = false;
-                cardd.ImageEdge1.color = Color.white;
+                card.ImageEdge1.color = Color.white;
                 cardd.IsOrderCard = false;
             }
 
@@ -641,7 +641,7 @@ public class GameManager : MonoBehaviour
         _line.SetPosition(0, UnityEngine.Vector3.zero);
         _line.SetPosition(1, UnityEngine.Vector3.zero);
 
-        card.ImageEdge1.color = card.SelfCard.ColorTheme;
+        card.ImageEdge1.color = Color.white;
         EndTurnButton.interactable = true;
 
         ChangeEnemyPoints();
@@ -658,7 +658,7 @@ public class GameManager : MonoBehaviour
         {
 
             _line.SetPosition(0, card.transform.position);
-            _line.SetPosition(1, _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _mainCamera.farClipPlane)));
+            _line.SetPosition(1, _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _mainCamera.farClipPlane/4)));
 
             yield return null;
         }
