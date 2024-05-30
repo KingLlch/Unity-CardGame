@@ -41,15 +41,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Noise: 12
-    - _Pixels: 10000
+    - _Noise: 50
+    - _Pixels: 200
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Size: 2
+    - _Size: 1
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
-    - _MousePosition: {r: 286.7533, g: 740.0371, b: 0, a: 0}
-    - _Speed_Offset: {r: 1000, g: 1000, b: 0, a: 0}
+    - _MousePosition: {r: 192.23303, g: 691.53955, b: 0, a: 0}
+    - _Speed_Offset: {r: 50000, g: 50000, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7669227582916943410
 MonoBehaviour:
