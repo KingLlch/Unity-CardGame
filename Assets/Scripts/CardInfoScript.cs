@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +12,8 @@ public class CardInfoScript : MonoBehaviour
     public GameObject CardBack;
 
     public Image Image;
-    public Image ImageEdge;
     public Image ImageEdge1;
+    public Image ShaderImage;
 
     public TextMeshProUGUI Point;
     public TextMeshProUGUI Name;
@@ -57,7 +58,11 @@ public class CardInfoScript : MonoBehaviour
         Name.colorGradient = new VertexGradient(card.ColorTheme, card.ColorTheme, Color.black, Color.black);
         SecondName.colorGradient = new VertexGradient(card.ColorTheme, card.ColorTheme, Color.black, Color.black);
         Description.colorGradient = new VertexGradient(card.ColorTheme, card.ColorTheme, Color.black, Color.black);
-        ImageEdge.color = card.ColorTheme;
+
+
+        Material material = new Material(ShaderImage.material);
+        ShaderImage.material = material;
+        material.SetColor("_ColorTheme", card.ColorTheme);
 
         ShadowCard.enabled = true;
 
