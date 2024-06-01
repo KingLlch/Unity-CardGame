@@ -10,7 +10,7 @@ public struct Card
     public int MaxPoints;
     public int Points;
 
-    public Sprite Image;
+    public Texture Image;
     public AudioClip StartOrderSound;
     public Color ColorTheme;
 
@@ -52,7 +52,7 @@ public struct Card
         MaxPoints = maxPoints;
         Points = points;
 
-        Image = Resources.Load<Sprite>(spritePath);
+        Image = Resources.Load<Texture>(spritePath);
         StartOrderSound = Resources.Load<AudioClip>(startOrderSoundPath);
         ColorTheme = color;
 

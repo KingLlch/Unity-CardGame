@@ -599,7 +599,7 @@ public class GameManager : MonoBehaviour
             foreach (CardInfoScript cardd in EnemyFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = false;
-                card.ImageEdge1.color = Color.white;
+                cardd.ImageEdge1.color = Color.white;
                 cardd.IsOrderCard = false;
             }
 

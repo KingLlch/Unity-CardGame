@@ -10,10 +10,12 @@ public class CardInfoScript : MonoBehaviour
 
     public GameObject DescriptionObject;
     public GameObject CardBack;
+    public GameObject PointObject;
+    public GameObject ShadowCard;
+    public GameObject ShadowPoint;
 
     public Image Image;
     public Image ImageEdge1;
-    public Image ShaderImage;
 
     public TextMeshProUGUI Point;
     public TextMeshProUGUI Name;
@@ -25,7 +27,6 @@ public class CardInfoScript : MonoBehaviour
     public bool IsAnimationCard;
     public bool IsOrderCard;
 
-    public Shadow ShadowCard;
 
     public int ShowPoints(Card card)
     {
@@ -46,10 +47,10 @@ public class CardInfoScript : MonoBehaviour
         SelfCard = card;
 
         CardBack.SetActive(false);
+        PointObject.SetActive(true);
+        ShadowCard.SetActive(true);
+        ShadowPoint.SetActive(true);
         IsHideCard = false;
-
-        Image.sprite = card.Image;
-        Image.preserveAspect = true;
         Point.text = card.Points.ToString();
         Name.text = card.Name.ToString();
         SecondName.text = card.SecondName.ToString();
@@ -59,21 +60,20 @@ public class CardInfoScript : MonoBehaviour
         SecondName.colorGradient = new VertexGradient(card.ColorTheme, card.ColorTheme, Color.black, Color.black);
         Description.colorGradient = new VertexGradient(card.ColorTheme, card.ColorTheme, Color.black, Color.black);
 
-
-        Material material = new Material(ShaderImage.material);
-        ShaderImage.material = material;
-        material.SetColor("_ColorTheme", card.ColorTheme);
-
-        ShadowCard.enabled = true;
-
+        Material imageMaterial = new Material(Image.material);
+        Image.material = imageMaterial;
+        imageMaterial.SetTexture("_Image", card.Image);
+        imageMaterial.SetColor("_Color", card.ColorTheme);
     }
 
     public void HideCardInfo(Card card)
     {
         SelfCard = card;
         CardBack.SetActive(true);
+        PointObject.SetActive(false);
+        ShadowCard.SetActive(false);
+        ShadowPoint.SetActive(false);
         IsHideCard = true;
-        ShadowCard.enabled = false;
     }
 
 

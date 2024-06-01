@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FonMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 8357e07cbf05b4842afc3edf3f27734c, type: 3}
+  m_Name: CardImageMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: 7d80326ccf75fb54081eb4d16010a8c1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,11 +23,11 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
+    - _Image:
+        m_Texture: {fileID: 2800000, guid: dcdaa90404b687643b14627a9ebc4f1b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Texture2DAsset_b61ec3b7f2ad4599a42508d81e4d83cd_Out_0_Texture2D:
+    - _Texture2DAsset_251e0e835e6e48c5878833a929a1b94d_Out_0_Texture2D:
         m_Texture: {fileID: 2800000, guid: b9cc21f97370b6943a65a3a1ecc207d3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -45,17 +45,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Noise: 20
-    - _Pixels: 40
+    - _Edge: 2
+    - _EdgeIntesivity: 4.5
+    - _NoiseScale: 40
+    - _Pixelization: 10000
+    - _PixelizationReflection: 10000
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Size: 6
+    - _ReflectionIntensivity: 16.05
+    - _Size: 1
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
-    - _MousePosition: {r: -898.7551, g: 634.85474, b: 0, a: 0}
-    - _Speed_Offset: {r: 10000, g: 10000, b: 0, a: 0}
+    - _Color: {r: 0.9934075, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &7669227582916943410
+--- !u!114 &3078790691950853901
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
