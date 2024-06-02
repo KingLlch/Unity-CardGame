@@ -8,14 +8,17 @@ public class CardInfoScript : MonoBehaviour
 {
     public Card SelfCard;
 
+    public GameObject CardComponents;
     public GameObject DescriptionObject;
     public GameObject CardBack;
     public GameObject PointObject;
     public GameObject ShadowCard;
     public GameObject ShadowPoint;
+    public GameObject DestroyGameObject;
 
     public Image Image;
     public Image ImageEdge1;
+    public Image DestroyImage;
 
     public TextMeshProUGUI Point;
     public TextMeshProUGUI Name;

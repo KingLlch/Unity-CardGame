@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -51,6 +52,9 @@ public class GameManager : MonoBehaviour
 
     private TextMeshProUGUI _playerPointsTMPro;
     private TextMeshProUGUI _enemyPointsTMPro;
+
+    [SerializeField] private TextMeshProUGUI _playerDeckTMPro;
+    [SerializeField] private TextMeshProUGUI _enemyDeckTMPro;
 
     private Camera _mainCamera;
     private UnityEngine.UI.Image[] _imageTurnTime = new UnityEngine.UI.Image[2];
@@ -153,6 +157,9 @@ public class GameManager : MonoBehaviour
         GiveHandCards(CurrentGame.EnemyDeck, _enemyHand);
         GiveHandCards(CurrentGame.PlayerDeck, _playerHand);
 
+        _playerDeckTMPro.text = CurrentGame.PlayerDeck.Count.ToString();
+        _enemyDeckTMPro.text = CurrentGame.EnemyDeck.Count.ToString();
+
         StartCoroutine(TurnFunk());
     }
 
@@ -233,6 +240,9 @@ public class GameManager : MonoBehaviour
         if (IsPlayerTurn && !IsHandCardPlaying && PlayerHandCards.Count != 0)
             ThrowCard(PlayerHandCards[Random.Range(0, PlayerHandCards.Count)], true);
 
+        _playerDeckTMPro.text = CurrentGame.PlayerDeck.Count.ToString();
+        _enemyDeckTMPro.text = CurrentGame.EnemyDeck.Count.ToString();
+
         CardMechanics.Instance.EndTurnActions();
 
         ChangeEnemyPoints();
@@ -312,9 +322,9 @@ public class GameManager : MonoBehaviour
 
             if (card.SelfCard.RangeBoost == -1)
             {
-                foreach (CardInfoScript cardd in EnemyFieldCards)
+                for (int i = EnemyFieldCards.Count - 1; i >= 0; i--)
                 {
-                    CardMechanics.Instance.ChangePoints(cardd, card, true);
+                    CardMechanics.Instance.ChangePoints(EnemyFieldCards[i], card, true);
                 }
             }
 
@@ -349,9 +359,9 @@ public class GameManager : MonoBehaviour
 
             if (card.SelfCard.RangeDamage == -1)
             {
-                foreach (CardInfoScript cardd in PlayerFieldCards)
+                for (int i = PlayerFieldCards.Count - 1; i >= 0; i--)
                 {
-                    CardMechanics.Instance.ChangePoints(cardd, card, true);
+                    CardMechanics.Instance.ChangePoints(PlayerFieldCards[i], card, true);
                 }
             }
 
@@ -421,9 +431,9 @@ public class GameManager : MonoBehaviour
 
             else
             {
-                foreach (CardInfoScript cardd in PlayerFieldCards)
+                for (int i = PlayerFieldCards.Count - 1; i >= 0; i--)
                 {
-                    CardMechanics.Instance.ChangePoints(cardd, card, true);
+                    CardMechanics.Instance.ChangePoints(PlayerFieldCards[i], card, true);
                 }
 
                 PlayerOrderCard.Invoke(card);
@@ -450,9 +460,9 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                foreach (CardInfoScript cardd in EnemyFieldCards)
+                for (int i = EnemyFieldCards.Count - 1; i >= 0; i--)
                 {
-                    CardMechanics.Instance.ChangePoints(cardd, card, true);
+                    CardMechanics.Instance.ChangePoints(EnemyFieldCards[i], card, true);
                 }
 
                 PlayerOrderCard.Invoke(card);

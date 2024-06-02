@@ -52,7 +52,7 @@ Material:
     - _Size: 6
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
-    - _MousePosition: {r: -898.7551, g: 634.85474, b: 0, a: 0}
+    - _MousePosition: {r: 201.65967, g: 686.3071, b: 0, a: 0}
     - _Speed_Offset: {r: 10000, g: 10000, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7669227582916943410

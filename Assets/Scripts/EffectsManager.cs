@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class EffectsManager : MonoBehaviour
@@ -18,12 +19,13 @@ public class EffectsManager : MonoBehaviour
         }
     }
 
-
     public ParticleSystem[] DamageParticle;
     public ParticleSystem[] DamageBurstParticle;
 
     public ParticleSystem[] BoostParticle;
     public ParticleSystem[] BoostBurstParticle;
+
+    private Coroutine DestroyCoroutin;
 
     private void Awake()
     {
@@ -125,5 +127,31 @@ public class EffectsManager : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void Destroy(CardInfoScript card)
+    {
+        card.PointObject.SetActive(false);
+        card.CardComponents.SetActive(false);
+        card.DestroyGameObject.SetActive(true);
+
+        Material DestroyMaterial = new Material(card.DestroyImage.material);
+        card.DestroyImage.material = DestroyMaterial;
+        DestroyMaterial.SetFloat("_Trashold",0);
+        DestroyCoroutin = StartCoroutine(DestroyCoroutine(card));
+    }
+
+    private IEnumerator DestroyCoroutine(CardInfoScript card)
+    {
+        float trashold = 0;
+
+        while (trashold <= 1)
+        {
+            trashold += 0.05f;
+            card.DestroyImage.material.SetFloat("_Trashold", trashold);
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        StopCoroutine(DestroyCoroutin);
     }
 }

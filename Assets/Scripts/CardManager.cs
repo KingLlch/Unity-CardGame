@@ -93,7 +93,7 @@ public class CardManager : MonoBehaviour
 
         CardManagerList.AllCards.Add(new Card("Debug", "Debug", "Debug",
             "Sprites/Cards/Lina1", "Sounds/Cards/StartOrder/LinaDragonSlave", Color.white,
-            100, 100,
+            1, 1,
             0, 0, 0,
             0, 0, 0));
 

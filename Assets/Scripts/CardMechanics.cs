@@ -111,14 +111,17 @@ public class CardMechanics : MonoBehaviour
         if (card.SelfCard.Points <= 0)
         {
             card.SelfCard.Points = 0;
+
             if (GameManager.Instance.PlayerFieldCards.Contains(card))
                 GameManager.Instance.PlayerFieldCards.Remove(card);
 
             else if (GameManager.Instance.EnemyFieldCards.Contains(card))
                 GameManager.Instance.EnemyFieldCards.Remove(card);
 
+            EffectsManager.Instance.Destroy(card);
+
             Destroy(card.DescriptionObject);
-            Destroy(card.gameObject, 0.5f);
+            Destroy(card.gameObject, 1f);
         }
     }
 
