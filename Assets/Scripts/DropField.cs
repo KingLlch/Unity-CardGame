@@ -40,6 +40,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             EmptyTableCard.SetParent(transform);
             EmptyTableCard.SetSiblingIndex(card.SiblingIndex);
+            EmptyTableCard.transform.position = new Vector3(EmptyTableCard.transform.position.x, EmptyTableCard.transform.position.y, -990);
             card.FutureCardParentTransform = transform;
         }
 

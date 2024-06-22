@@ -2,6 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -101,7 +102,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     public void PlayerMoveToField(Transform field, Transform emptyHandCard)
     {
         transform.GetComponent<CardInfoScript>().IsAnimationCard = true;
-        transform.position = emptyHandCard.transform.position;
+        transform.position = new Vector3(emptyHandCard.transform.position.x, emptyHandCard.transform.position.y,-990);
         transform.DOMove(field.GetComponent<DropField>().EmptyTableCard.position, 0.5f);
     }
 

@@ -668,7 +668,7 @@ public class GameManager : MonoBehaviour
         {
 
             _line.SetPosition(0, card.transform.position);
-            _line.SetPosition(1, _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _mainCamera.farClipPlane/4)));
+            _line.SetPosition(1, _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -1)));
 
             yield return null;
         }
