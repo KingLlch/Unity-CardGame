@@ -16,7 +16,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -29,6 +29,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_b61ec3b7f2ad4599a42508d81e4d83cd_Out_0_Texture2D:
         m_Texture: {fileID: 2800000, guid: b9cc21f97370b6943a65a3a1ecc207d3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_f1664a6dd4be451383ce4858f7d0e609_Out_0_Texture2D:
+        m_Texture: {fileID: 2800000, guid: f2abaab39f9f9904e8f3718f96ca99dd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -45,14 +49,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Noise: 20
-    - _Pixels: 40
+    - _Noise: 5.4
+    - _Pixels: 20
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Size: 6
+    - _Size: 8.4
+    - _Size_X: 20
+    - _Size_Y: 1
+    - _Speed: 0
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
-    - _MousePosition: {r: 418.25732, g: 1153.859, b: 0, a: 0}
+    - _Color: {r: 0.029592374, g: 0.21724935, b: 0.3301887, a: 1}
+    - _MousePosition: {r: -33, g: 412, b: 0, a: 0}
     - _Speed_Offset: {r: 10000, g: 10000, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7669227582916943410
