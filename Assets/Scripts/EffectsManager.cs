@@ -25,7 +25,10 @@ public class EffectsManager : MonoBehaviour
     public ParticleSystem[] BoostParticle;
     public ParticleSystem[] BoostBurstParticle;
 
-    private Coroutine DestroyCoroutin;
+    private Coroutine DestroyCoroutine;
+
+    public Material destroyMaterial;
+    public Material shieldMaterial;
 
     private void Awake()
     {
@@ -129,19 +132,19 @@ public class EffectsManager : MonoBehaviour
         }
     }
 
-    public void Destroy(CardInfoScript card)
+    public void StartDestroyCoroutine(CardInfoScript card)
     {
         card.PointObject.SetActive(false);
         card.CardComponents.SetActive(false);
         card.DestroyGameObject.SetActive(true);
 
-        Material DestroyMaterial = new Material(card.DestroyImage.material);
+        Material DestroyMaterial = new Material(destroyMaterial);
         card.DestroyImage.material = DestroyMaterial;
         DestroyMaterial.SetFloat("_Trashold",0);
-        DestroyCoroutin = StartCoroutine(DestroyCoroutine(card));
+        DestroyCoroutine = StartCoroutine(DestroyEffectsCoroutine(card));
     }
 
-    private IEnumerator DestroyCoroutine(CardInfoScript card)
+    private IEnumerator DestroyEffectsCoroutine(CardInfoScript card)
     {
         float trashold = 0;
 
@@ -152,6 +155,6 @@ public class EffectsManager : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
-        StopCoroutine(DestroyCoroutin);
+        StopCoroutine(DestroyCoroutine);
     }
 }

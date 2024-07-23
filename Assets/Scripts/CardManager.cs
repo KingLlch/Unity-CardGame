@@ -1,6 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct StatusEffects
+{
+    public bool SelfStatusEffects;
+
+    public bool IsShield;
+    public bool IsStun;
+}
+
 public struct Card
 {
     public string Name;
@@ -36,6 +44,9 @@ public struct Card
     public int SummonCardNumber;
     public int SummonCardCount;
 
+
+    public StatusEffects StatusEffects;
+
     public Card(string name, string secondName, string description,
         string spritePath, string startOrderSoundPath, Color color,
         int maxPoints, int points,
@@ -44,7 +55,8 @@ public struct Card
         int selfBoost = 0,
         int selfDamage = 0,
         bool addictionWithSelfField = false, bool addictionWithEnemyField = false, bool endTurnAction = false, int endTurnDamage = 0, int endTurnBoost = 0,
-        bool summon = false, int summonCardNumber = 0, int summonCardCount = 0)
+        bool summon = false, int summonCardNumber = 0, int summonCardCount = 0,
+        bool selfStatusEffects = true, bool shield = false, bool stun = false)
     {
         Name = name;
         SecondName = secondName;
@@ -77,6 +89,11 @@ public struct Card
         Summon = summon;
         SummonCardNumber = summonCardNumber;
         SummonCardCount = summonCardCount;
+
+        StatusEffects = new StatusEffects();
+        StatusEffects.SelfStatusEffects = selfStatusEffects;
+        StatusEffects.IsShield = shield;
+        StatusEffects.IsStun = stun;
     }
 }
 
@@ -93,7 +110,7 @@ public class CardManager : MonoBehaviour
 
         CardManagerList.AllCards.Add(new Card("Debug", "Debug", "Debug",
             "Sprites/Cards/Lina1", "Sounds/Cards/StartOrder/LinaDragonSlave", Color.white,
-            1, 1,
+            10, 10,
             0, 0, 0,
             0, 0, 0));
 
@@ -104,6 +121,8 @@ public class CardManager : MonoBehaviour
             0, 0, 0, = BOOST and RANGEBOOST and CHANGEBOOST
             3 ,0, 0, = DAMAGE and RANGEDAMAGE and CHANGEDAMAGE
             4, 0, false, true, = SELFBOOST, SELFDAMAGE and ADDICTIONS with SELFFIELD, ENEMTFIELD
+            false, false, false
+
 
         ));
          */
@@ -151,11 +170,13 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             2, 2, 0));
 
-        CardManagerList.AllCards.Add(new Card("Templar Assasin", "Refraction", "Boost friendly card by 8",
+        CardManagerList.AllCards.Add(new Card("Templar Assasin", "Refraction", "Boost friendly card by 8. Shield.",
              "Sprites/Cards/TemplarAssasin1", "Sounds/Cards/StartOrder/TemplarAssasinRefraction", Color.magenta,
              3, 3,
              8, 0, 0,
-             0, 0, 0));
+             0, 0, 0,
+             0, 0, false, false, false, 0, 0, false, 0, 0,
+             false, true));
 
         CardManagerList.AllCards.Add(new Card("Axe", "Berserker's Call", "Boost enemy card by 3",
              "Sprites/Cards/Axe1", "Sounds/Cards/StartOrder/AxeBerserker'sCall", Color.red,

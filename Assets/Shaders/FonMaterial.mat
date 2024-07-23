@@ -59,7 +59,7 @@ Material:
     - _Speed: 0
     m_Colors:
     - _Color: {r: 0.029592374, g: 0.21724935, b: 0.3301887, a: 1}
-    - _MousePosition: {r: -33, g: 412, b: 0, a: 0}
+    - _MousePosition: {r: -11, g: 409, b: 0, a: 0}
     - _Speed_Offset: {r: 10000, g: 10000, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7669227582916943410

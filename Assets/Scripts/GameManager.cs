@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -291,6 +290,7 @@ public class GameManager : MonoBehaviour
         EnemyHandCards.Remove(card);
         EnemyFieldCards.Add(card);
         ChangeEnemyPoints();
+        card.CheckStatusEffects();
 
         EnemyDropCardEvent.Invoke(card);
 
@@ -369,8 +369,8 @@ public class GameManager : MonoBehaviour
             EnemyOrderCardEvent.Invoke(card);
         }
 
-        if (((!card.SelfCard.AddictionWithSelfField && !card.SelfCard.AddictionWithEnemyField) ||
-           ((card.SelfCard.AddictionWithSelfField && (EnemyFieldCards.Count != 1)) ||
+        if ((card.SelfCard.SelfBoost != 0 || card.SelfCard.SelfDamage != 0) && ((!card.SelfCard.AddictionWithSelfField || !card.SelfCard.AddictionWithEnemyField) ||
+           (card.SelfCard.AddictionWithSelfField && (EnemyFieldCards.Count != 1) ||
            (card.SelfCard.AddictionWithEnemyField && (PlayerFieldCards.Count != 0)))))
         {
             CardMechanics.Instance.ChangePoints(card, card, false, true);
@@ -408,6 +408,7 @@ public class GameManager : MonoBehaviour
         PlayerHandCards.Remove(card);
         PlayerFieldCards.Add(card);
         ChangePlayerPoints();
+        card.CheckStatusEffects();
 
         PlayerDropCardEvent.Invoke(card);
 

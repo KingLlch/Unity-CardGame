@@ -42,7 +42,7 @@ public class CardMechanics : MonoBehaviour
             }
             if (startCard.SelfCard.Damage != 0)
             {
-                targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage - distanceNearCard * startCard.SelfCard.ChangeDamage, startCard.SelfCard);
+               targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage - distanceNearCard * startCard.SelfCard.ChangeDamage, startCard.SelfCard);
 
                 if (startCard.SelfCard.Damage > 0) EffectsManager.Instance.Damage(startCard.transform, targetCard.transform);
                 else EffectsManager.Instance.Boost(startCard.transform, targetCard.transform);
@@ -84,6 +84,7 @@ public class CardMechanics : MonoBehaviour
         CheckColorPointsCard(targetCard);
         CheckColorPointsCard(startCard);
 
+        targetCard.CheckStatusEffects();
         IsDestroyCard(targetCard);
     }
 
@@ -118,7 +119,7 @@ public class CardMechanics : MonoBehaviour
             else if (GameManager.Instance.EnemyFieldCards.Contains(card))
                 GameManager.Instance.EnemyFieldCards.Remove(card);
 
-            EffectsManager.Instance.Destroy(card);
+            EffectsManager.Instance.StartDestroyCoroutine(card);
 
             Destroy(card.DescriptionObject);
             Destroy(card.gameObject, 1f);

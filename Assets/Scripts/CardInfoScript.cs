@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +19,8 @@ public class CardInfoScript : MonoBehaviour
     public Image ImageEdge1;
     public Image DestroyImage;
 
+    public Image CardStatusEffectImage;
+
     public TextMeshProUGUI Point;
     public TextMeshProUGUI Name;
     public TextMeshProUGUI SecondName;
@@ -30,19 +31,28 @@ public class CardInfoScript : MonoBehaviour
     public bool IsAnimationCard;
     public bool IsOrderCard;
 
+    public GameObject StatusEffectPrefab;
+
+    private GameObject StatusEffectShield;
 
     public int ShowPoints(Card card)
     {
         return card.Points;
     }
 
-    public void ChangePoints(ref Card card, int value, Card startCard)
+    public void ChangePoints(ref Card targetCard, int value, Card startCard)
     {
-        card.Points += value;
+        if ((targetCard.StatusEffects.IsShield) && (value < 0))
+        {
+            value = 0;
+            targetCard.StatusEffects.IsShield = false;
+        }
 
-        Debug.Log(startCard.Name + " изменила силу " + card.Name + " в размере " + value + "\n" + (card.Points - value) + " => " + card.Points);
+        targetCard.Points += value;
 
-        ShowPointsUI(card);
+        Debug.Log(startCard.Name + " изменила силу " + targetCard.Name + " в размере " + value + "\n" + (targetCard.Points - value) + " => " + targetCard.Points);
+
+        ShowPointsUI(targetCard);
     }
 
     public void ShowCardInfo(Card card)
@@ -137,5 +147,22 @@ public class CardInfoScript : MonoBehaviour
 
         if (LeftNearCard.Count != 0) return LeftNearCard;
         else return null;
+    }
+
+    public void CheckStatusEffects()       
+    {
+        if (this.SelfCard.StatusEffects.IsShield && StatusEffectShield == null)
+        {
+            CardStatusEffectImage.material = new Material(EffectsManager.Instance.shieldMaterial);
+            StatusEffectShield = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
+            StatusEffectPrefab.GetComponent<StatusEffect>().Initialize(StatusEffectsType.shield);
+        }
+
+        else if (!this.SelfCard.StatusEffects.IsShield && StatusEffectShield != null)
+        {
+            CardStatusEffectImage.material = null;
+            Destroy(StatusEffectShield);
+            StatusEffectShield = null;
+        }
     }
 }
