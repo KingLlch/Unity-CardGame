@@ -34,6 +34,8 @@ public class CardInfoScript : MonoBehaviour
     public GameObject StatusEffectPrefab;
 
     private GameObject StatusEffectShield;
+    private GameObject StatusEffectIllusion;
+    private GameObject StatusEffectStunned;
 
     public int ShowPoints(Card card)
     {
@@ -42,6 +44,11 @@ public class CardInfoScript : MonoBehaviour
 
     public void ChangePoints(ref Card targetCard, int value, Card startCard)
     {
+        if ((targetCard.StatusEffects.IsIllusion) && (value < 0))
+        {
+            value += value;
+        }
+
         if ((targetCard.StatusEffects.IsShield) && (value < 0))
         {
             value = 0;
@@ -155,7 +162,7 @@ public class CardInfoScript : MonoBehaviour
         {
             CardStatusEffectImage.material = new Material(EffectsManager.Instance.shieldMaterial);
             StatusEffectShield = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
-            StatusEffectPrefab.GetComponent<StatusEffect>().Initialize(StatusEffectsType.shield);
+            StatusEffectShield.GetComponent<StatusEffect>().Initialize(StatusEffectsType.shield);
         }
 
         else if (!this.SelfCard.StatusEffects.IsShield && StatusEffectShield != null)
@@ -163,6 +170,25 @@ public class CardInfoScript : MonoBehaviour
             CardStatusEffectImage.material = null;
             Destroy(StatusEffectShield);
             StatusEffectShield = null;
+        }
+
+        if (this.SelfCard.StatusEffects.IsIllusion && StatusEffectIllusion == null)
+        {
+            CardStatusEffectImage.material = new Material(EffectsManager.Instance.illusionMaterial);
+            StatusEffectIllusion = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
+            StatusEffectIllusion.GetComponent<StatusEffect>().Initialize(StatusEffectsType.illusion);
+        }
+
+        if (this.SelfCard.StatusEffects.IsStunned && StatusEffectStunned == null)
+        {
+            StatusEffectStunned = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
+            StatusEffectStunned.GetComponent<StatusEffect>().Initialize(StatusEffectsType.stun);
+        }
+
+        else if (!this.SelfCard.StatusEffects.IsStunned && StatusEffectStunned != null)
+        {
+            Destroy(StatusEffectStunned);
+            StatusEffectStunned = null;
         }
     }
 }

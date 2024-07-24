@@ -2,9 +2,8 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
-public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     private Camera _mainCamera;
     private Vector3 _offset;
@@ -27,9 +26,9 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         _mainCanvas = GameObject.Find("UI/MainCanvas");
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    public void OnBeginDrag(PointerEventData pointer)
     {
-        _offset = transform.position - _mainCamera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, _mainCamera.farClipPlane));
+        _offset = transform.position - _mainCamera.ScreenToWorldPoint(new Vector3(pointer.position.x, pointer.position.y, 0));
 
         CurrentCardParentTransform = transform.parent;
         FutureCardParentTransform = transform.parent;
@@ -45,15 +44,15 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
-    public void OnDrag(PointerEventData eventData)
+    public void OnDrag(PointerEventData pointer)
     {
         if (!IsDraggable) return;
 
-        transform.position = (_mainCamera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, _mainCamera.farClipPlane)) + _offset);
+        transform.position = (_mainCamera.ScreenToWorldPoint(new Vector3(pointer.position.x, pointer.position.y, 0)) + _offset);
         ChangePosition();
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public void OnEndDrag(PointerEventData pointer)
     {
         if (!IsDraggable) return;
 
@@ -63,7 +62,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
         GetComponent<CanvasGroup>().blocksRaycasts = true;
 
-        if (!eventData.pointerCurrentRaycast.gameObject.GetComponent<DropField>())
+        if (!pointer.pointerCurrentRaycast.gameObject.GetComponent<DropField>())
         {
             transform.SetParent(CurrentCardParentTransform);
             transform.SetSiblingIndex(StartSiblingIndex);
@@ -99,11 +98,11 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         else transform.DOMove(field.position, 0.5f);
     }
 
-    public void PlayerMoveToField(Transform field, Transform emptyHandCard)
+    public void PlayerMoveToField(DropField field, Transform emptyHandCard)
     {
         transform.GetComponent<CardInfoScript>().IsAnimationCard = true;
-        transform.position = new Vector3(emptyHandCard.transform.position.x, emptyHandCard.transform.position.y,-990);
-        transform.DOMove(field.GetComponent<DropField>().EmptyTableCard.position, 0.5f);
+        transform.position = new Vector3(emptyHandCard.transform.position.x, emptyHandCard.transform.position.y, 9);
+        transform.DOMove(field.EmptyTableCard.position, 0.5f);
     }
 
     public void MoveTopHierarchy()
@@ -116,5 +115,14 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         transform.SetParent(CurrentCardParentTransform);
         transform.SetSiblingIndex(SiblingIndex);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            CardView.Instance.CardViewObject.SetActive(true);
+            CardView.Instance.ShowCard(transform.GetComponent<CardInfoScript>());
+        }
     }
 }

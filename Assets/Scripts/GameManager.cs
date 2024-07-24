@@ -397,13 +397,14 @@ public class GameManager : MonoBehaviour
     {
         IsHandCardPlaying = true;
 
-        card.GetComponent<CardMove>().MoveTopHierarchy();
-        card.GetComponent<CardMove>().PlayerMoveToField(_playerField, _playerHand.GetComponent<DropField>().EmptyHandCard);
+        CardMove cardMove = card.GetComponent<CardMove>();
+        cardMove.MoveTopHierarchy();
+        cardMove.PlayerMoveToField(_playerField.GetComponent<DropField>(), _playerHand.GetComponent<DropField>().EmptyHandCard);
 
         yield return new WaitForSeconds(0.6f);
 
         card.IsAnimationCard = false;
-        card.GetComponent<CardMove>().MoveBackHierarchy();
+        cardMove.MoveBackHierarchy();
 
         PlayerHandCards.Remove(card);
         PlayerFieldCards.Add(card);
@@ -553,12 +554,11 @@ public class GameManager : MonoBehaviour
         _choosenCard = null;
         StartChoseCard = card;
         card.ImageEdge1.color = Color.green;
-        //card.transform.position += new UnityEngine.Vector3(0, 0, 0);
         EndTurnButton.interactable = false;
 
         yield return StartCoroutine(WaitForChoseCard(card));
 
-        if (isBoost) //ñhoose self card
+        if (isBoost)
         {
             if ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1)) ||
             (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0)))
@@ -597,7 +597,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (isDamage) //ñhoose enemy card
+        if (isDamage)
         {
             if ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1)) ||
             (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0)))
@@ -606,6 +606,11 @@ public class GameManager : MonoBehaviour
             }
 
             CardMechanics.Instance.ChangePoints(ChooseEnemyCard(true), card, true);
+            if (card.SelfCard.StatusEffects.IsStun)
+            {
+                ChooseEnemyCard(true).SelfCard.StatusEffects.IsStunned = true;
+                ChooseEnemyCard(true).CheckStatusEffects();
+            }
 
             foreach (CardInfoScript cardd in EnemyFieldCards)
             {
@@ -623,6 +628,12 @@ public class GameManager : MonoBehaviour
                     for (int i = 0; i < ChooseEnemyCard(true).ReturnRightNearCard(card.SelfCard.RangeDamage).Count; i++)
                     {
                         CardMechanics.Instance.ChangePoints(ChooseEnemyCard(true).ReturnRightNearCard(card.SelfCard.RangeDamage)[i], card, true, false, false, i + 1);
+                        
+                        if (card.SelfCard.StatusEffects.IsStun)
+                        {
+                            ChooseEnemyCard(true).ReturnRightNearCard(card.SelfCard.RangeDamage)[i].SelfCard.StatusEffects.IsStunned = true;
+                            ChooseEnemyCard(true).ReturnRightNearCard(card.SelfCard.RangeDamage)[i].CheckStatusEffects();
+                        }
                     }
                 }
 
@@ -631,6 +642,12 @@ public class GameManager : MonoBehaviour
                     for (int i = 0; i < ChooseEnemyCard(true).ReturnLeftNearCard(card.SelfCard.RangeDamage).Count; i++)
                     {
                         CardMechanics.Instance.ChangePoints(ChooseEnemyCard(true).ReturnLeftNearCard(card.SelfCard.RangeDamage)[i], card, true, false, false, i + 1);
+
+                        if (card.SelfCard.StatusEffects.IsStun)
+                        {
+                            ChooseEnemyCard(true).ReturnLeftNearCard(card.SelfCard.RangeDamage)[i].SelfCard.StatusEffects.IsStunned = true;
+                            ChooseEnemyCard(true).ReturnLeftNearCard(card.SelfCard.RangeDamage)[i].CheckStatusEffects();
+                        }
                     }
                 }
             }

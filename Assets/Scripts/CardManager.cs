@@ -3,10 +3,12 @@ using UnityEngine;
 
 public struct StatusEffects
 {
-    public bool SelfStatusEffects;
-
     public bool IsShield;
+    public bool IsIllusion;
+    public bool IsInvisibility;
     public bool IsStun;
+
+    public bool IsStunned;
 }
 
 public struct Card
@@ -56,7 +58,7 @@ public struct Card
         int selfDamage = 0,
         bool addictionWithSelfField = false, bool addictionWithEnemyField = false, bool endTurnAction = false, int endTurnDamage = 0, int endTurnBoost = 0,
         bool summon = false, int summonCardNumber = 0, int summonCardCount = 0,
-        bool selfStatusEffects = true, bool shield = false, bool stun = false)
+        bool shield = false, bool stun = false)
     {
         Name = name;
         SecondName = secondName;
@@ -91,7 +93,6 @@ public struct Card
         SummonCardCount = summonCardCount;
 
         StatusEffects = new StatusEffects();
-        StatusEffects.SelfStatusEffects = selfStatusEffects;
         StatusEffects.IsShield = shield;
         StatusEffects.IsStun = stun;
     }
@@ -137,7 +138,8 @@ public class CardManager : MonoBehaviour
              "Sprites/Cards/Lina2", "Sounds/Cards/StartOrder/LinaLightStrikeArray", Color.red,
              6, 6,
              0, 0, 0,
-             3, 0, 0));
+             3, 0, 0,
+             0,0,false,false,false,0,0,false,0,0,false,true));
 
         CardManagerList.AllCards.Add(new Card("Lina", "Fiery Soul", "At the end of the turn, deal 1 damage to a random enemy unit",
              "Sprites/Cards/Lina3", "Sounds/Cards/StartOrder/LinaFierySoul", Color.red,
@@ -156,7 +158,8 @@ public class CardManager : MonoBehaviour
             "Sprites/Cards/Luna1", "Sounds/Cards/StartOrder/LunaLucentBeam", Color.blue,
             7, 7,
             0, 0, 0,
-            2, 0, 0));
+            2, 0, 0,
+            0, 0, false, false, false, 0, 0, false, 0, 0, false, true));
 
         CardManagerList.AllCards.Add(new Card("Luna", "Moon Glaives", "Damage enemy card by 3 and near to 2 and 1",
             "Sprites/Cards/Luna2", "Sounds/Cards/StartOrder/LunaMoonGlaives", Color.blue,
@@ -176,7 +179,7 @@ public class CardManager : MonoBehaviour
              8, 0, 0,
              0, 0, 0,
              0, 0, false, false, false, 0, 0, false, 0, 0,
-             false, true));
+             true));
 
         CardManagerList.AllCards.Add(new Card("Axe", "Berserker's Call", "Boost enemy card by 3",
              "Sprites/Cards/Axe1", "Sounds/Cards/StartOrder/AxeBerserker'sCall", Color.red,
@@ -214,7 +217,8 @@ public class CardManager : MonoBehaviour
             "Sprites/Cards/Earthshaker1", "Sounds/Cards/StartOrder/EarthshakerFissure", Color.yellow,
             6, 6,
             0, 0, 0,
-            3, 1, 0));
+            3, 1, 0,
+            0, 0, false, false, false, 0, 0, false, 0, 0, false, true));
 
         CardManagerList.AllCards.Add(new Card("Earthshaker", "Echo Slam", "Damage all enemy card by 1",
             "Sprites/Cards/Earthshaker2", "Sounds/Cards/StartOrder/EarthshakerEchoSlam", Color.yellow,
@@ -284,7 +288,8 @@ public class CardManager : MonoBehaviour
             2, 0, 0,
             0, 0, false, true,
             false, 0, 0,
-            true, -1, 1));
+            true, -1, 1,
+            false, true));
 
         CardManagerList.AllCards.Add(new Card("Lycan", "Summon Wolves", "Create 2 Wolves near",
             "Sprites/Cards/Lycan1", "Sounds/Cards/StartOrder/LycanSummonWolves", Color.black,

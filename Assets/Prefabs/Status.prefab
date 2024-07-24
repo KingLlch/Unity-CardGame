@@ -33,8 +33,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: ebe852cfb57833e46abbc78d660953cd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -88,4 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd724358b33826f49887f39492a74444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldImage: {fileID: 21300000, guid: 19d5ae4f6d181ca4d9990273b58034d7, type: 3}
+  shieldImage: {fileID: 21300000, guid: ebe852cfb57833e46abbc78d660953cd, type: 3}
+  illusionImage: {fileID: 21300000, guid: f0d01c7bc1ecf2a47b38bc7ad7fdf71b, type: 3}
+  invisibilityImage: {fileID: 21300000, guid: 71fdea47b8eb6b940994f1d87725acf3, type: 3}
+  stunImage: {fileID: 21300000, guid: 7cd624fc0661e9a4cb95ed5ccca2228e, type: 3}

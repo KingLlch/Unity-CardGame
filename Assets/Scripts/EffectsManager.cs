@@ -29,6 +29,7 @@ public class EffectsManager : MonoBehaviour
 
     public Material destroyMaterial;
     public Material shieldMaterial;
+    public Material illusionMaterial;
 
     private void Awake()
     {
@@ -44,11 +45,11 @@ public class EffectsManager : MonoBehaviour
         {
             if (!BoostParticle[i].isPlaying)
             {
-                BoostParticle[i].transform.position = new Vector3(start.position.x, start.position.y, -50);
+                BoostParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
                 BoostParticle[i].Play();
-                BoostParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, -50), 0.2f);
+                BoostParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
 
-                BoostBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, -50);
+                BoostBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
                 BoostBurstParticle[i].Play();
                 break;
             }
@@ -61,11 +62,11 @@ public class EffectsManager : MonoBehaviour
         {
             if (!DamageParticle[i].isPlaying)
             {
-                DamageParticle[i].transform.position = new Vector3(start.position.x, start.position.y, -50);
+                DamageParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
                 DamageParticle[i].Play();
-                DamageParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, -50), 0.2f);
+                DamageParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
 
-                DamageBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, -50);
+                DamageBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
                 DamageBurstParticle[i].Play();
                 break;
             }
@@ -78,11 +79,11 @@ public class EffectsManager : MonoBehaviour
         {
             if (!BoostParticle[i].isPlaying)
             {
-                BoostParticle[i].transform.position = new Vector3(start.position.x, start.position.y, -50);
+                BoostParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
                 BoostParticle[i].Play();
-                BoostParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, -50), 0.2f);
+                BoostParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
 
-                BoostBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, -50);
+                BoostBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
                 BoostBurstParticle[i].Play();
                 break;
             }
@@ -95,7 +96,7 @@ public class EffectsManager : MonoBehaviour
         {
             if (!BoostParticle[i].isPlaying)
             {
-                BoostBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, -50);
+                BoostBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
                 BoostBurstParticle[i].Play();
                 break;
             }
@@ -108,11 +109,11 @@ public class EffectsManager : MonoBehaviour
         {
             if (DamageParticle[i].isPlaying == false)
             {
-                DamageParticle[i].transform.position = new Vector3(start.position.x, start.position.y, -50);
+                DamageParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
                 DamageParticle[i].Play();
-                DamageParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, -50), 0.2f);
+                DamageParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
 
-                DamageBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, -50);
+                DamageBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
                 DamageBurstParticle[i].Play();
                 break;
             }
@@ -125,7 +126,7 @@ public class EffectsManager : MonoBehaviour
         {
             if (!DamageParticle[i].isPlaying)
             {
-                DamageBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, -50);
+                DamageBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
                 DamageBurstParticle[i].Play();
                 break;
             }

@@ -26,11 +26,11 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         EmptyTableCard.transform.SetSiblingIndex(card.SiblingIndex);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void OnPointerEnter(PointerEventData pointer)
     {
-        if (eventData.pointerDrag == null) return;
+        if (pointer.pointerDrag == null) return;
 
-        card = eventData.pointerDrag.GetComponent<CardMove>();
+        card = pointer.pointerDrag.GetComponent<CardMove>();
         if (!card.IsDraggable) return;
 
         card.ChangeCardPosition.AddListener(ChangeCardPosition);
@@ -40,22 +40,23 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             EmptyTableCard.SetParent(transform);
             EmptyTableCard.SetSiblingIndex(card.SiblingIndex);
-            EmptyTableCard.transform.position = new Vector3(EmptyTableCard.transform.position.x, EmptyTableCard.transform.position.y, -990);
+            EmptyTableCard.transform.position = new Vector3(EmptyTableCard.transform.position.x, EmptyTableCard.transform.position.y, 9);
             card.FutureCardParentTransform = transform;
         }
 
         if (TypeField == TypeField.SELF_HAND)
         {
             EmptyHandCard.SetParent(transform);
+            EmptyHandCard.transform.position = new Vector3(EmptyHandCard.transform.position.x, EmptyHandCard.transform.position.y, 0);
             _isChangeEmptyCardPositionInHand = true;
         }
 
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void OnPointerExit(PointerEventData pointer)
     {
-        if (eventData.pointerDrag == null) return;
-        card = eventData.pointerDrag.GetComponent<CardMove>();
+        if (pointer.pointerDrag == null) return;
+        card = pointer.pointerDrag.GetComponent<CardMove>();
 
         if ((TypeField == TypeField.SELF_HAND) && (card.IsDraggable))
         {
@@ -68,14 +69,13 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             card.FutureCardParentTransform = card.CurrentCardParentTransform;
 
-            EmptyTableCard.SetParent(null);
-            EmptyTableCard.transform.position = new Vector2(2000, 0);
+            EmptyTableCard.SetParent(transform.parent);
         }
     }
 
-    public void OnDrop(PointerEventData eventData)
+    public void OnDrop(PointerEventData pointer)
     {
-        if (eventData.pointerDrag == null) return;
+        if (pointer.pointerDrag == null) return;
 
         if (!card.IsDraggable) return;
 
@@ -96,6 +96,9 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
                 card.transform.SetParent(transform);
                 card.transform.SetSiblingIndex(card.SiblingIndex);
+
+                HideEmptyCard();
+
                 DropCard.Invoke(card.GetComponent<CardInfoScript>());
             }
 
@@ -115,10 +118,8 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void HideEmptyCard()
     {
-        EmptyHandCard.SetParent(null);
-        EmptyTableCard.SetParent(null);
-        EmptyHandCard.transform.position = new Vector2(2000, 0);
-        EmptyTableCard.transform.position = new Vector2(2000, 0);
+        EmptyHandCard.SetParent(transform.parent);
+        EmptyTableCard.SetParent(transform.parent);
     }
 }
 
@@ -128,5 +129,4 @@ public enum TypeField
     SELF_TABLE,
     ENEMY_HAND,
     ENEMY_TABLE
-
 }

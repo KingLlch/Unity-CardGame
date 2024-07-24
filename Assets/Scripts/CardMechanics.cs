@@ -132,7 +132,7 @@ public class CardMechanics : MonoBehaviour
         {
             foreach (CardInfoScript card in GameManager.Instance.PlayerFieldCards)
             {
-                if (card.SelfCard.EndTurnAction == true)
+                if (card.SelfCard.EndTurnAction == true && !card.SelfCard.StatusEffects.IsStunned)
                 {
                     if ((card.SelfCard.EndTurnDamage != 0) && (GameManager.Instance.EnemyFieldCards.Count > 0))
                     {
@@ -146,15 +146,20 @@ public class CardMechanics : MonoBehaviour
                         EndTurnCardEvent.Invoke(card);
                     }
                 }
-            }
 
+                if (card.SelfCard.StatusEffects.IsStunned)
+                {
+                    card.SelfCard.StatusEffects.IsStunned = false;
+                    card.CheckStatusEffects();
+                }
+            }
         }
 
         else
         {
             foreach (CardInfoScript card in GameManager.Instance.EnemyFieldCards)
             {
-                if (card.SelfCard.EndTurnAction == true)
+                if (card.SelfCard.EndTurnAction == true && !card.SelfCard.StatusEffects.IsStunned)
                 {
                     if ((card.SelfCard.EndTurnDamage != 0) && (GameManager.Instance.PlayerFieldCards.Count > 0))
                     {
@@ -167,6 +172,12 @@ public class CardMechanics : MonoBehaviour
                         ChangePoints(GameManager.Instance.EnemyFieldCards[Random.Range(0, GameManager.Instance.EnemyFieldCards.Count)], card, false, false, true);
                         EndTurnCardEvent.Invoke(card);
                     }
+                }
+
+                if (card.SelfCard.StatusEffects.IsStunned)
+                {
+                    card.SelfCard.StatusEffects.IsStunned = false;
+                    card.CheckStatusEffects();
                 }
             }
         }
@@ -185,6 +196,7 @@ public class CardMechanics : MonoBehaviour
                     return;
 
                 summonCard = Instantiate(GameManager.Instance.CardPref, card.transform.parent, false);
+                CardInfoScript summonCardInfo = summonCard.GetComponent<CardInfoScript>();
 
                 card.CheckSiblingIndex();
                 if ((i == 0) && (i % 2 == 0))
@@ -192,9 +204,11 @@ public class CardMechanics : MonoBehaviour
                 else
                     summonCard.transform.SetSiblingIndex(card.SiblingIndex + 1);
 
-                if (player) GameManager.Instance.PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
-                else GameManager.Instance.EnemyFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
-                summonCard.GetComponent<CardInfoScript>().ShowCardInfo(card.SelfCard);
+                if (player) GameManager.Instance.PlayerFieldCards.Add(summonCardInfo);
+                else GameManager.Instance.EnemyFieldCards.Add(summonCardInfo);
+                summonCardInfo.ShowCardInfo(card.SelfCard);
+                summonCardInfo.SelfCard.StatusEffects.IsIllusion = true;
+                summonCardInfo.CheckStatusEffects();
                 summonCard.GetComponent<ChoseCard>().enabled = false;
 
             }
@@ -209,6 +223,7 @@ public class CardMechanics : MonoBehaviour
                     return;
 
                 summonCard = Instantiate(GameManager.Instance.CardPref, card.transform.parent, false);
+                CardInfoScript summonCardInfo = summonCard.GetComponent<CardInfoScript>();
 
                 card.CheckSiblingIndex();
                 if ((i == 0) && (i % 2 == 0))
@@ -216,9 +231,9 @@ public class CardMechanics : MonoBehaviour
                 else
                     summonCard.transform.SetSiblingIndex(card.SiblingIndex + 1);
 
-                if (player) GameManager.Instance.PlayerFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
-                else GameManager.Instance.EnemyFieldCards.Add(summonCard.GetComponent<CardInfoScript>());
-                summonCard.GetComponent<CardInfoScript>().ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.SummonCardNumber]);
+                if (player) GameManager.Instance.PlayerFieldCards.Add(summonCardInfo);
+                else GameManager.Instance.EnemyFieldCards.Add(summonCardInfo);
+                summonCardInfo.ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.SummonCardNumber]);
                 summonCard.GetComponent<ChoseCard>().enabled = false;
             }
         }
