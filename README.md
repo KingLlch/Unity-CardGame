@@ -13,6 +13,7 @@ Card Game about Dota2.
 Игра была создана для закрепления знаний о Коллекциях, работы со звуками, встроенными интерфейсами, структурами, ключевыми словами.
 ![CardGameGif](https://github.com/KingLlch/CardGame/assets/76882612/7ab189ee-30b3-4f21-8844-c828f90d736f)
 
-https://github.com/KingLlch/Unity-CardGame/assets/76882612/9c41257b-8d8b-4f2d-a165-16852294895e
+https://github.com/user-attachments/assets/506086de-a484-4269-babb-bfe6f4adf5ed
+
 
 
