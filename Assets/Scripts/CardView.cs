@@ -23,7 +23,10 @@ public class CardView : MonoBehaviour, IPointerClickHandler
     public GameObject CardViewObject;
     public Image CardViewImage;
     public TextMeshProUGUI CardViewName;
+    public TextMeshProUGUI CardViewSecondName;
     public TextMeshProUGUI CardViewDescription;
+
+    public GameObject[] StatusEffects;
 
     private void Awake()
     {
@@ -43,7 +46,26 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         imageMaterial.SetColor("_Color", card.SelfCard.ColorTheme);
 
         CardViewName.text = card.Name.text;
+        CardViewSecondName.text = card.SecondName.text;
         CardViewDescription.text = card.Description.text;
+
+        CardViewName.colorGradient = new VertexGradient(card.SelfCard.ColorTheme, card.SelfCard.ColorTheme, Color.black, Color.black);
+        CardViewSecondName.colorGradient = new VertexGradient(card.SelfCard.ColorTheme, card.SelfCard.ColorTheme, Color.black, Color.black);
+        CardViewDescription.colorGradient = new VertexGradient(card.SelfCard.ColorTheme, card.SelfCard.ColorTheme, Color.black, Color.black);
+
+
+        if (card.SelfCard.StatusEffects.IsShield)
+            StatusEffects[0].SetActive(true);
+        else
+            StatusEffects[0].SetActive(false);
+        if (card.SelfCard.StatusEffects.IsIllusion)
+            StatusEffects[1].SetActive(true);
+        else
+            StatusEffects[1].SetActive(false);
+        if (card.SelfCard.StatusEffects.IsStun)
+            StatusEffects[2].SetActive(true);
+        else
+            StatusEffects[2].SetActive(false);
     }
 
     public void OnPointerClick(PointerEventData eventData)
