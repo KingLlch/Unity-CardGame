@@ -3,24 +3,22 @@ using UnityEngine.UI;
 
 public class StatusEffect : MonoBehaviour
 {
-    [SerializeField] private Sprite shieldImage;
-    [SerializeField] private Sprite illusionImage;
-    [SerializeField] private Sprite invisibilityImage;
-    [SerializeField] private Sprite stunImage;
-
     public void Initialize(StatusEffectsType type)
     {
         if (type == StatusEffectsType.shield)
-        transform.GetComponent<Image>().sprite = shieldImage;
+        transform.GetComponent<Image>().sprite = CardView.Instance.shieldImage;
 
         if (type == StatusEffectsType.illusion)
-            transform.GetComponent<Image>().sprite = illusionImage;
+            transform.GetComponent<Image>().sprite = CardView.Instance.illusionImage;
 
         if (type == StatusEffectsType.invisibility)
-            transform.GetComponent<Image>().sprite = invisibilityImage;
+            transform.GetComponent<Image>().sprite = CardView.Instance.invisibilityImage;
 
         if (type == StatusEffectsType.stun)
-            transform.GetComponent<Image>().sprite = stunImage;
+            transform.GetComponent<Image>().sprite = CardView.Instance.stunImage;
+
+        if (type == StatusEffectsType.invulnerability)
+            transform.GetComponent<Image>().sprite = CardView.Instance.invulnerabilityImage;
     }
 }
 
@@ -29,6 +27,7 @@ public enum StatusEffectsType
     shield,
     illusion,
     invisibility,
-    stun
+    stun,
+    invulnerability
 }
 

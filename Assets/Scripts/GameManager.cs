@@ -20,6 +20,8 @@ public class Game
         for (int i = 0; i < GameManager.Instance.ValueDeckCards; i++)
         {
             DeckList.Add(CardManagerList.AllCards[Random.Range(1, CardManagerList.AllCards.Count)]);
+
+            //DeckList.Add(CardManagerList.AllCards[26]);
         }
         return DeckList;
     }
@@ -74,9 +76,11 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public List<CardInfoScript> PlayerHandCards = new List<CardInfoScript>();
     [HideInInspector] public List<CardInfoScript> PlayerFieldCards = new List<CardInfoScript>();
+    [HideInInspector] public List<CardInfoScript> PlayerFieldInvulnerabilityCards = new List<CardInfoScript>();
 
     [HideInInspector] public List<CardInfoScript> EnemyHandCards = new List<CardInfoScript>();
     [HideInInspector] public List<CardInfoScript> EnemyFieldCards = new List<CardInfoScript>();
+    [HideInInspector] public List<CardInfoScript> EnemyFieldInvulnerabilityCards = new List<CardInfoScript>();
 
     [HideInInspector] public bool IsChoosing;
     [HideInInspector] public bool IsHandCardPlaying;
@@ -272,11 +276,20 @@ public class GameManager : MonoBehaviour
             yield break;
         }
 
-        enemyHandCards[enemyPlayedCard].GetComponent<CardMove>().EnemyMoveToField(_enemyField.transform);
+        if (!enemyHandCards[enemyPlayedCard].SelfCard.StatusEffects.IsInvisibility)
+            enemyHandCards[enemyPlayedCard].GetComponent<CardMove>().EnemyMoveToField(_enemyField.transform);
+
+        else
+            enemyHandCards[enemyPlayedCard].GetComponent<CardMove>().EnemyMoveToField(_playerField.transform);
+
         yield return new WaitForSeconds(0.6f);
 
         enemyHandCards[enemyPlayedCard].ShowCardInfo(enemyHandCards[enemyPlayedCard].SelfCard);
-        enemyHandCards[enemyPlayedCard].transform.SetParent(_enemyField);
+
+        if (!enemyHandCards[enemyPlayedCard].SelfCard.StatusEffects.IsInvisibility)
+            enemyHandCards[enemyPlayedCard].transform.SetParent(_enemyField);
+        else
+            enemyHandCards[enemyPlayedCard].transform.SetParent(_playerField);
 
         EnemyDropCard(enemyHandCards[enemyPlayedCard]);
 
@@ -288,13 +301,39 @@ public class GameManager : MonoBehaviour
         CardInfoScript botChoosedCard;
 
         EnemyHandCards.Remove(card);
-        EnemyFieldCards.Add(card);
-        ChangeEnemyPoints();
+
+        if (!card.SelfCard.StatusEffects.IsInvisibility)
+        {
+            EnemyFieldCards.Add(card);
+            ChangeEnemyPoints();
+            if (card.SelfCard.StatusEffects.IsInvulnerability)
+                EnemyFieldInvulnerabilityCards.Add(card);
+        }
+
+        if (card.SelfCard.StatusEffects.IsInvisibility)
+        {
+
+            PlayerFieldCards.Add(card);
+            ChangePlayerPoints();
+            if (card.SelfCard.StatusEffects.IsInvulnerability)
+                PlayerFieldInvulnerabilityCards.Add(card);
+        }
+
         card.CheckStatusEffects();
 
         EnemyDropCardEvent.Invoke(card);
 
-        if ((card.SelfCard.Boost != 0) && (EnemyFieldCards.Count != 1))
+        if (card.SelfCard.RangeBoost == -1)
+        {
+            for (int i = EnemyFieldCards.Count - 1; i >= 0; i--)
+            {
+                CardMechanics.Instance.ChangePoints(EnemyFieldCards[i], card, true);
+            }
+            EnemyOrderCardEvent.Invoke(card);
+        }
+
+
+        else if ((card.SelfCard.Boost != 0) && (EnemyFieldCards.Count != 1) && (EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count != 0))
         {
             botChoosedCard = ChooseOurCard(false);
             CardMechanics.Instance.ChangePoints(botChoosedCard, card, true);
@@ -320,18 +359,20 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if (card.SelfCard.RangeBoost == -1)
+            EnemyOrderCardEvent.Invoke(card);
+        }
+
+        if (card.SelfCard.RangeDamage == -1)
+        {
+            for (int i = PlayerFieldCards.Count - 1; i >= 0; i--)
             {
-                for (int i = EnemyFieldCards.Count - 1; i >= 0; i--)
-                {
-                    CardMechanics.Instance.ChangePoints(EnemyFieldCards[i], card, true);
-                }
+                CardMechanics.Instance.ChangePoints(PlayerFieldCards[i], card, true);
             }
 
             EnemyOrderCardEvent.Invoke(card);
         }
 
-        if ((card.SelfCard.Damage != 0) && (PlayerFieldCards.Count != 0))
+        else if ((card.SelfCard.Damage != 0) && (PlayerFieldCards.Count != 0) && (PlayerFieldCards.Count - PlayerFieldInvulnerabilityCards.Count != 0))
         {
             botChoosedCard = ChooseEnemyCard(false);
             CardMechanics.Instance.ChangePoints(botChoosedCard, card, true);
@@ -356,15 +397,6 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-
-            if (card.SelfCard.RangeDamage == -1)
-            {
-                for (int i = PlayerFieldCards.Count - 1; i >= 0; i--)
-                {
-                    CardMechanics.Instance.ChangePoints(PlayerFieldCards[i], card, true);
-                }
-            }
-
 
             EnemyOrderCardEvent.Invoke(card);
         }
@@ -399,7 +431,12 @@ public class GameManager : MonoBehaviour
 
         CardMove cardMove = card.GetComponent<CardMove>();
         cardMove.MoveTopHierarchy();
-        cardMove.PlayerMoveToField(_playerField.GetComponent<DropField>(), _playerHand.GetComponent<DropField>().EmptyHandCard);
+
+        if (!card.SelfCard.StatusEffects.IsInvisibility)
+            cardMove.PlayerMoveToField(_playerField.GetComponent<DropField>(), _playerHand.GetComponent<DropField>().EmptyHandCard);
+
+        if (card.SelfCard.StatusEffects.IsInvisibility)
+            cardMove.PlayerMoveToField(_enemyField.GetComponent<DropField>(), _playerHand.GetComponent<DropField>().EmptyHandCard);
 
         yield return new WaitForSeconds(0.6f);
 
@@ -407,20 +444,48 @@ public class GameManager : MonoBehaviour
         cardMove.MoveBackHierarchy();
 
         PlayerHandCards.Remove(card);
-        PlayerFieldCards.Add(card);
-        ChangePlayerPoints();
+
+        if (!card.SelfCard.StatusEffects.IsInvisibility)
+        {
+            PlayerFieldCards.Add(card);
+            ChangePlayerPoints();
+            if (card.SelfCard.StatusEffects.IsInvulnerability)
+                PlayerFieldInvulnerabilityCards.Add(card);
+        }
+
+        if (card.SelfCard.StatusEffects.IsInvisibility)
+        {
+
+            EnemyFieldCards.Add(card);
+            ChangeEnemyPoints();
+            if (card.SelfCard.StatusEffects.IsInvulnerability)
+                EnemyFieldInvulnerabilityCards.Add(card);
+        }
         card.CheckStatusEffects();
 
         PlayerDropCardEvent.Invoke(card);
 
-        if ((card.SelfCard.Boost != 0) && (PlayerFieldCards.Count != 1))
+        if (card.SelfCard.RangeBoost == -1)
+        {
+            for (int i = PlayerFieldCards.Count - 1; i >= 0; i--)
+            {
+                CardMechanics.Instance.ChangePoints(PlayerFieldCards[i], card, true);
+            }
+
+            PlayerOrderCard.Invoke(card);
+        }
+
+        else if ((card.SelfCard.Boost != 0) && PlayerFieldCards.Count != 1 && (PlayerFieldCards.Count - PlayerFieldInvulnerabilityCards.Count != 1))
         {
             if (card.SelfCard.RangeBoost != -1)
             {
                 foreach (CardInfoScript cardd in PlayerFieldCards)
                 {
-                    cardd.transform.GetComponent<ChoseCard>().enabled = true;
-                    cardd.IsOrderCard = true;
+                    if (!cardd.SelfCard.StatusEffects.IsInvulnerability)
+                    {
+                        cardd.transform.GetComponent<ChoseCard>().enabled = true;
+                        cardd.IsOrderCard = true;
+                    }
                 }
 
                 card.transform.GetComponent<ChoseCard>().enabled = false;
@@ -430,28 +495,30 @@ public class GameManager : MonoBehaviour
 
                 StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
             }
-
-            else
-            {
-                for (int i = PlayerFieldCards.Count - 1; i >= 0; i--)
-                {
-                    CardMechanics.Instance.ChangePoints(PlayerFieldCards[i], card, true);
-                }
-
-                PlayerOrderCard.Invoke(card);
-            }
-
         }
 
-        if ((card.SelfCard.Damage != 0) && (EnemyFieldCards.Count != 0))
+        if (card.SelfCard.RangeDamage == -1)
+        {
+            for (int i = EnemyFieldCards.Count - 1; i >= 0; i--)
+            {
+                CardMechanics.Instance.ChangePoints(EnemyFieldCards[i], card, true);
+            }
+
+            PlayerOrderCard.Invoke(card);
+        }
+
+        else if ((card.SelfCard.Damage != 0) && (EnemyFieldCards.Count != 0) && (EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count != 0))
         {
             if (card.SelfCard.RangeDamage != -1)
             {
 
                 foreach (CardInfoScript cardd in EnemyFieldCards)
                 {
-                    cardd.transform.GetComponent<ChoseCard>().enabled = true;
-                    cardd.IsOrderCard = true;
+                    if (!cardd.SelfCard.StatusEffects.IsInvulnerability)
+                    {
+                        cardd.transform.GetComponent<ChoseCard>().enabled = true;
+                        cardd.IsOrderCard = true;
+                    }
                 }
 
                 _line.startColor = Color.white;
@@ -459,15 +526,6 @@ public class GameManager : MonoBehaviour
 
                 StartCoroutine(ChoseCardCoroutine(card, card.SelfCard.Boost != 0, card.SelfCard.Damage != 0));
 
-            }
-            else
-            {
-                for (int i = EnemyFieldCards.Count - 1; i >= 0; i--)
-                {
-                    CardMechanics.Instance.ChangePoints(EnemyFieldCards[i], card, true);
-                }
-
-                PlayerOrderCard.Invoke(card);
             }
         }
 
@@ -560,8 +618,9 @@ public class GameManager : MonoBehaviour
 
         if (isBoost)
         {
-            if ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1)) ||
-            (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0)))
+            if ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1 && PlayerFieldCards.Count - PlayerFieldInvulnerabilityCards.Count != 1)) ||
+            (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0) &&
+            (EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count != 0)))
             {
                 CardMechanics.Instance.ChangePoints(card, card, false, true);
             }
@@ -599,8 +658,9 @@ public class GameManager : MonoBehaviour
 
         if (isDamage)
         {
-            if ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1)) ||
-            (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0)))
+            if ((card.SelfCard.AddictionWithSelfField && (PlayerFieldCards.Count != 1 && PlayerFieldCards.Count - PlayerFieldInvulnerabilityCards.Count != 1)) ||
+            (card.SelfCard.AddictionWithEnemyField && (EnemyFieldCards.Count != 0)) &&
+            (EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count != 0))
             {
                 CardMechanics.Instance.ChangePoints(card, card, false, true);
             }
@@ -628,7 +688,7 @@ public class GameManager : MonoBehaviour
                     for (int i = 0; i < ChooseEnemyCard(true).ReturnRightNearCard(card.SelfCard.RangeDamage).Count; i++)
                     {
                         CardMechanics.Instance.ChangePoints(ChooseEnemyCard(true).ReturnRightNearCard(card.SelfCard.RangeDamage)[i], card, true, false, false, i + 1);
-                        
+
                         if (card.SelfCard.StatusEffects.IsStun)
                         {
                             ChooseEnemyCard(true).ReturnRightNearCard(card.SelfCard.RangeDamage)[i].SelfCard.StatusEffects.IsStunned = true;
@@ -661,7 +721,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (card.SelfCard.Summon && card.SelfCard.AddictionWithEnemyField && EnemyFieldCards.Count > 0)
+        if (card.SelfCard.Summon && card.SelfCard.AddictionWithEnemyField && EnemyFieldCards.Count > 0 && EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count != 0)
         {
             CardMechanics.Instance.SpawnCard(card, true);
         }
@@ -752,6 +812,9 @@ public class GameManager : MonoBehaviour
             Destroy(PlayerFieldCards[i].gameObject);
             PlayerFieldCards.Remove(PlayerFieldCards[i]);
         }
+
+        PlayerFieldInvulnerabilityCards.Clear();
+        EnemyFieldInvulnerabilityCards.Clear();
 
         CurrentGame = new Game();
 

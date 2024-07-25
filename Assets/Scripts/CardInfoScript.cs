@@ -36,6 +36,8 @@ public class CardInfoScript : MonoBehaviour
     private GameObject StatusEffectShield;
     private GameObject StatusEffectIllusion;
     private GameObject StatusEffectStunned;
+    private GameObject StatusEffectInvisibility;
+    private GameObject StatusEffectInvulnerability;
 
     public int ShowPoints(Card card)
     {
@@ -189,6 +191,20 @@ public class CardInfoScript : MonoBehaviour
         {
             Destroy(StatusEffectStunned);
             StatusEffectStunned = null;
+        }
+
+        if (this.SelfCard.StatusEffects.IsInvulnerability && StatusEffectInvulnerability == null)
+        {
+            CardStatusEffectImage.material = new Material(EffectsManager.Instance.invulnerabilityMaterial);
+            StatusEffectInvulnerability = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
+            StatusEffectInvulnerability.GetComponent<StatusEffect>().Initialize(StatusEffectsType.invulnerability);
+        }
+
+        if (this.SelfCard.StatusEffects.IsInvisibility && StatusEffectInvisibility == null)
+        {
+            CardStatusEffectImage.material = new Material(EffectsManager.Instance.invisibilityMaterial);
+            StatusEffectInvisibility = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
+            StatusEffectInvisibility.GetComponent<StatusEffect>().Initialize(StatusEffectsType.invisibility);
         }
     }
 }

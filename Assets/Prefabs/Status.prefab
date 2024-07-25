@@ -92,3 +92,4 @@ MonoBehaviour:
   illusionImage: {fileID: 21300000, guid: f0d01c7bc1ecf2a47b38bc7ad7fdf71b, type: 3}
   invisibilityImage: {fileID: 21300000, guid: 71fdea47b8eb6b940994f1d87725acf3, type: 3}
   stunImage: {fileID: 21300000, guid: 7cd624fc0661e9a4cb95ed5ccca2228e, type: 3}
+  invulnerabilityImage: {fileID: 21300000, guid: 29eb322ed93b13a4fa589b8422d61168, type: 3}

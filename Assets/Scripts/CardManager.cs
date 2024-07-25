@@ -7,6 +7,7 @@ public struct StatusEffects
     public bool IsIllusion;
     public bool IsInvisibility;
     public bool IsStun;
+    public bool IsInvulnerability;
 
     public bool IsStunned;
 }
@@ -58,7 +59,7 @@ public struct Card
         int selfDamage = 0,
         bool addictionWithSelfField = false, bool addictionWithEnemyField = false, bool endTurnAction = false, int endTurnDamage = 0, int endTurnBoost = 0,
         bool summon = false, int summonCardNumber = 0, int summonCardCount = 0,
-        bool shield = false, bool stun = false)
+        bool shield = false, bool stun = false, bool invisibility = false, bool invulnerability = false)
     {
         Name = name;
         SecondName = secondName;
@@ -95,6 +96,8 @@ public struct Card
         StatusEffects = new StatusEffects();
         StatusEffects.IsShield = shield;
         StatusEffects.IsStun = stun;
+        StatusEffects.IsInvisibility = invisibility;
+        StatusEffects.IsInvulnerability = invulnerability;
     }
 }
 
@@ -272,7 +275,7 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             0, 4, true, false));
 
-        CardManagerList.AllCards.Add(new Card("ChaosKnight", "Phantasm", "Create 3 your illusion copy near.",
+        CardManagerList.AllCards.Add(new Card("Chaos Knight", "Phantasm", "Create 3 your illusion copy near.",
             "Sprites/Cards/ChaosKnight1", "Sounds/Cards/StartOrder/ChaosKnightPhantasm", Color.red,
             6, 6,
             0, 0, 0,
@@ -281,7 +284,7 @@ public class CardManager : MonoBehaviour
             false, 0, 0,
             true, -1, 3));
 
-        CardManagerList.AllCards.Add(new Card("ChaosKnight", "Chaos Bolt", "Damage enemy card by 2, stun his and create 1 your illusion near.",
+        CardManagerList.AllCards.Add(new Card("Chaos Knight", "Chaos Bolt", "Damage enemy card by 2, stun his and create 1 your illusion near.",
             "Sprites/Cards/ChaosKnight2", "Sounds/Cards/StartOrder/ChaosKnightChaosBolt", Color.red,
             6, 6,
             0, 0, 0,
@@ -299,6 +302,77 @@ public class CardManager : MonoBehaviour
             0, 0, false, false,
             false, 0, 0,
             true, 0, 2));
+
+        //CardManagerList.AllCards.Add(new Card("Riki", "Tricks of the Trade", "Damage 3 enemy card by 4. Invisibility.",
+        //    "Sprites/Cards/Riki1", "Sounds/Cards/StartOrder/RikiTricksOfTheTrade", Color.magenta,
+        //    1, 1,
+        //    0, 0, 0,
+        //    4, 2, 0,
+        //    0, 0, false, false,
+        //    false, 0, 0,
+        //    false, 0, 0,
+        //    false, false, true));
+
+        CardManagerList.AllCards.Add(new Card("Juggernaut", "Omnislash", "Damage 5 enemy card by 2. Invulnerability.",
+            "Sprites/Cards/Juggernaut1", "Sounds/Cards/StartOrder/JuggernautOmnislash", Color.green,
+            5, 5,
+            0, 0, 0,
+            2, 2, 0,
+            0, 0, false, false,
+            false, 0, 0,
+            false, 0, 0,
+            false, false, false, true));
+
+        CardManagerList.AllCards.Add(new Card("Templar Assasin", "Meld", "Damage enemy card by 5. Shield.",
+            "Sprites/Cards/TemplarAssasin2", "Sounds/Cards/StartOrder/TemplarAssasinMeld", Color.magenta,
+            7, 7,
+            0, 0, 0,
+            5, 0, 0,
+            0, 0, false, false,
+            false, 0, 0,
+            false, 0, 0,
+            true));
+
+        CardManagerList.AllCards.Add(new Card("Abbadon", "Aphotic Shield", "Give friendly card shield. Shield.",
+        "Sprites/Cards/Abbadon2", "Sounds/Cards/StartOrder/AbbadonAphoticShield", Color.gray,
+            4, 4,
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, false, false,
+            false, 0, 0,
+            false, 0, 0,
+            true));
+
+        CardManagerList.AllCards.Add(new Card("Windranger", "Windrun", "Invulnerability.",
+            "Sprites/Cards/Windranger2", "Sounds/Cards/StartOrder/WindrangerWindrun", Color.green,
+            9, 9,
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, false, false,
+            false, 0, 0,
+            false, 0, 0,
+            false, false, false, true));
+
+        CardManagerList.AllCards.Add(new Card("Naga Siren", "Mirror Image", "Create 2 your illusion copy near.",
+            "Sprites/Cards/NagaSiren1", "Sounds/Cards/StartOrder/NagaSirenMirrorImage", Color.cyan,
+            7, 7,
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, false, false,
+            false, 0, 0,
+            true, -1, 2));
+
+        CardManagerList.AllCards.Add(new Card("Naga Siren", "Song of the Siren", "Stun all enemy card. Invulnerability.",
+            "Sprites/Cards/NagaSiren2", "Sounds/Cards/StartOrder/NagaSirenSongOfTheSiren", Color.cyan,
+            2, 2,
+            0, 0, 0,
+            0, -1, 0,
+            0, 0, false, false,
+            false, 0, 0,
+            false, 0, 0,
+            false, true, false, true));
+
+
 
         //SUMMONS
 

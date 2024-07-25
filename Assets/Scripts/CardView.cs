@@ -28,6 +28,12 @@ public class CardView : MonoBehaviour, IPointerClickHandler
 
     public GameObject[] StatusEffects;
 
+    public Sprite shieldImage;
+    public Sprite illusionImage;
+    public Sprite invisibilityImage;
+    public Sprite stunImage;
+    public Sprite invulnerabilityImage;
+
     private void Awake()
     {
         if (_instance == null)
@@ -58,14 +64,26 @@ public class CardView : MonoBehaviour, IPointerClickHandler
             StatusEffects[0].SetActive(true);
         else
             StatusEffects[0].SetActive(false);
+
         if (card.SelfCard.StatusEffects.IsIllusion)
             StatusEffects[1].SetActive(true);
         else
             StatusEffects[1].SetActive(false);
+
         if (card.SelfCard.StatusEffects.IsStun)
             StatusEffects[2].SetActive(true);
         else
             StatusEffects[2].SetActive(false);
+
+        if (card.SelfCard.StatusEffects.IsInvisibility)
+            StatusEffects[3].SetActive(true);
+        else
+            StatusEffects[3].SetActive(false);
+
+        if (card.SelfCard.StatusEffects.IsInvulnerability)
+            StatusEffects[4].SetActive(true);
+        else
+            StatusEffects[4].SetActive(false);
     }
 
     public void OnPointerClick(PointerEventData eventData)

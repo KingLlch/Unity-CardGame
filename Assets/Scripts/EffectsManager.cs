@@ -30,6 +30,8 @@ public class EffectsManager : MonoBehaviour
     public Material destroyMaterial;
     public Material shieldMaterial;
     public Material illusionMaterial;
+    public Material invisibilityMaterial;
+    public Material invulnerabilityMaterial;
 
     private void Awake()
     {

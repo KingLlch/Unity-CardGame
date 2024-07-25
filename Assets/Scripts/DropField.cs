@@ -13,6 +13,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     [HideInInspector] public UnityEvent<CardInfoScript> DropCard;
 
     private CardMove card;
+    private CardInfoScript cardInfo;
 
     private void Awake()
     {
@@ -31,12 +32,13 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         if (pointer.pointerDrag == null) return;
 
         card = pointer.pointerDrag.GetComponent<CardMove>();
+        cardInfo = card.GetComponent<CardInfoScript>();
         if (!card.IsDraggable) return;
 
         card.ChangeCardPosition.AddListener(ChangeCardPosition);
         card.HideEmptyCard.AddListener(HideEmptyCard);
 
-        if (TypeField == TypeField.SELF_TABLE)
+        if (TypeField == TypeField.SELF_TABLE && !cardInfo.SelfCard.StatusEffects.IsInvisibility)
         {
             EmptyTableCard.SetParent(transform);
             EmptyTableCard.SetSiblingIndex(card.SiblingIndex);
@@ -49,6 +51,14 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             EmptyHandCard.SetParent(transform);
             EmptyHandCard.transform.position = new Vector3(EmptyHandCard.transform.position.x, EmptyHandCard.transform.position.y, 0);
             _isChangeEmptyCardPositionInHand = true;
+        }
+
+        if (TypeField == TypeField.ENEMY_TABLE && cardInfo.SelfCard.StatusEffects.IsInvisibility)
+        {
+            EmptyTableCard.SetParent(transform);
+            EmptyTableCard.SetSiblingIndex(card.SiblingIndex);
+            EmptyTableCard.transform.position = new Vector3(EmptyTableCard.transform.position.x, EmptyTableCard.transform.position.y, 9);
+            card.FutureCardParentTransform = transform;
         }
 
     }
@@ -65,7 +75,14 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             EmptyHandCard.transform.SetSiblingIndex(card.StartSiblingIndex);
         }
 
-        if (TypeField == TypeField.SELF_TABLE)
+        if (TypeField == TypeField.SELF_TABLE && !cardInfo.SelfCard.StatusEffects.IsInvisibility)
+        {
+            card.FutureCardParentTransform = card.CurrentCardParentTransform;
+
+            EmptyTableCard.SetParent(transform.parent);
+        }
+
+        if (TypeField == TypeField.ENEMY_TABLE && cardInfo.SelfCard.StatusEffects.IsInvisibility)
         {
             card.FutureCardParentTransform = card.CurrentCardParentTransform;
 
@@ -79,13 +96,36 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         if (!card.IsDraggable) return;
 
-        if ((TypeField == TypeField.SELF_TABLE) || (TypeField == TypeField.SELF_HAND))
+        if ((TypeField == TypeField.SELF_TABLE && !cardInfo.SelfCard.StatusEffects.IsInvisibility) || 
+            (TypeField == TypeField.SELF_HAND) || 
+            (TypeField == TypeField.ENEMY_TABLE && cardInfo.SelfCard.StatusEffects.IsInvisibility))
         {
-            if (TypeField == TypeField.SELF_TABLE)
+            if (TypeField == TypeField.SELF_TABLE && !cardInfo.SelfCard.StatusEffects.IsInvisibility)
             {
                 if (GameManager.Instance.PlayerFieldCards.Count >= GameManager.Instance.MaxNumberCardInField)
                 {
-                    GameManager.Instance.ThrowCard(card.GetComponent<CardInfoScript>(), true);
+                    GameManager.Instance.ThrowCard(cardInfo, true);
+                    GameManager.Instance.IsHandCardPlaying = true;
+
+                    HideEmptyCard();
+                    return;
+                }
+
+                card.CurrentCardParentTransform = transform;
+
+                card.transform.SetParent(transform);
+                card.transform.SetSiblingIndex(card.SiblingIndex);
+
+                HideEmptyCard();
+
+                DropCard.Invoke(card.GetComponent<CardInfoScript>());
+            }
+
+            else if (TypeField == TypeField.ENEMY_TABLE && cardInfo.SelfCard.StatusEffects.IsInvisibility)
+            {
+                if (GameManager.Instance.EnemyFieldCards.Count >= GameManager.Instance.MaxNumberCardInField)
+                {
+                    GameManager.Instance.ThrowCard(cardInfo, true);
                     GameManager.Instance.IsHandCardPlaying = true;
 
                     HideEmptyCard();

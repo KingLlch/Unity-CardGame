@@ -119,6 +119,12 @@ public class CardMechanics : MonoBehaviour
             else if (GameManager.Instance.EnemyFieldCards.Contains(card))
                 GameManager.Instance.EnemyFieldCards.Remove(card);
 
+            if (GameManager.Instance.PlayerFieldInvulnerabilityCards.Contains(card))
+                GameManager.Instance.PlayerFieldInvulnerabilityCards.Remove(card);
+
+            else if (GameManager.Instance.EnemyFieldInvulnerabilityCards.Contains(card))
+                    GameManager.Instance.EnemyFieldInvulnerabilityCards.Remove(card);
+
             EffectsManager.Instance.StartDestroyCoroutine(card);
 
             Destroy(card.DescriptionObject);
