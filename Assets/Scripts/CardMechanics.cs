@@ -140,16 +140,20 @@ public class CardMechanics : MonoBehaviour
             {
                 if (card.SelfCard.EndTurnAction == true && !card.SelfCard.StatusEffects.IsStunned)
                 {
-                    if ((card.SelfCard.EndTurnDamage != 0) && (GameManager.Instance.EnemyFieldCards.Count > 0))
+                    for (int i = 0; i < card.SelfCard.EndTurnActionQuantity; i++)
                     {
-                        ChangePoints(GameManager.Instance.EnemyFieldCards[Random.Range(0, GameManager.Instance.EnemyFieldCards.Count)], card, false, false, true);
-                        EndTurnCardEvent.Invoke(card);
-                    }
 
-                    if ((card.SelfCard.EndTurnBoost != 0) && (GameManager.Instance.PlayerFieldCards.Count > 0))
-                    {
-                        ChangePoints(GameManager.Instance.PlayerFieldCards[Random.Range(0, GameManager.Instance.PlayerFieldCards.Count)], card, false, false, true);
-                        EndTurnCardEvent.Invoke(card);
+                        if ((card.SelfCard.EndTurnDamage != 0) && (GameManager.Instance.EnemyFieldCards.Count > 0))
+                        {
+                            ChangePoints(GameManager.Instance.EnemyFieldCards[Random.Range(0, GameManager.Instance.EnemyFieldCards.Count)], card, false, false, true);
+                            EndTurnCardEvent.Invoke(card);
+                        }
+
+                        if ((card.SelfCard.EndTurnBoost != 0) && (GameManager.Instance.PlayerFieldCards.Count > 0))
+                        {
+                            ChangePoints(GameManager.Instance.PlayerFieldCards[Random.Range(0, GameManager.Instance.PlayerFieldCards.Count)], card, false, false, true);
+                            EndTurnCardEvent.Invoke(card);
+                        }
                     }
                 }
 
@@ -167,16 +171,20 @@ public class CardMechanics : MonoBehaviour
             {
                 if (card.SelfCard.EndTurnAction == true && !card.SelfCard.StatusEffects.IsStunned)
                 {
-                    if ((card.SelfCard.EndTurnDamage != 0) && (GameManager.Instance.PlayerFieldCards.Count > 0))
+                    for (int i = 0; i < card.SelfCard.EndTurnActionQuantity; i++)
                     {
-                        ChangePoints(GameManager.Instance.PlayerFieldCards[Random.Range(0, GameManager.Instance.PlayerFieldCards.Count)], card, false, false, true);
-                        EndTurnCardEvent.Invoke(card);
-                    }
 
-                    if ((card.SelfCard.EndTurnBoost != 0) && (GameManager.Instance.EnemyFieldCards.Count > 0))
-                    {
-                        ChangePoints(GameManager.Instance.EnemyFieldCards[Random.Range(0, GameManager.Instance.EnemyFieldCards.Count)], card, false, false, true);
-                        EndTurnCardEvent.Invoke(card);
+                        if ((card.SelfCard.EndTurnDamage != 0) && (GameManager.Instance.PlayerFieldCards.Count > 0))
+                        {
+                            ChangePoints(GameManager.Instance.PlayerFieldCards[Random.Range(0, GameManager.Instance.PlayerFieldCards.Count)], card, false, false, true);
+                            EndTurnCardEvent.Invoke(card);
+                        }
+
+                        if ((card.SelfCard.EndTurnBoost != 0) && (GameManager.Instance.EnemyFieldCards.Count > 0))
+                        {
+                            ChangePoints(GameManager.Instance.EnemyFieldCards[Random.Range(0, GameManager.Instance.EnemyFieldCards.Count)], card, false, false, true);
+                            EndTurnCardEvent.Invoke(card);
+                        }
                     }
                 }
 

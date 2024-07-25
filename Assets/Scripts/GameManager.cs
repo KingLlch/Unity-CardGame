@@ -367,6 +367,9 @@ public class GameManager : MonoBehaviour
             for (int i = PlayerFieldCards.Count - 1; i >= 0; i--)
             {
                 CardMechanics.Instance.ChangePoints(PlayerFieldCards[i], card, true);
+
+                if (card.SelfCard.StatusEffects.IsStun)
+                    PlayerFieldCards[i].SelfCard.StatusEffects.IsStunned = true;
             }
 
             EnemyOrderCardEvent.Invoke(card);
@@ -502,6 +505,9 @@ public class GameManager : MonoBehaviour
             for (int i = EnemyFieldCards.Count - 1; i >= 0; i--)
             {
                 CardMechanics.Instance.ChangePoints(EnemyFieldCards[i], card, true);
+
+                if (card.SelfCard.StatusEffects.IsStun)
+                    EnemyFieldCards[i].SelfCard.StatusEffects.IsStunned = true;
             }
 
             PlayerOrderCard.Invoke(card);

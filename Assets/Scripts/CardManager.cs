@@ -40,6 +40,7 @@ public struct Card
     public bool AddictionWithEnemyField;
 
     public bool EndTurnAction;
+    public int EndTurnActionQuantity;
     public int EndTurnDamage;
     public int EndTurnBoost;
 
@@ -57,7 +58,7 @@ public struct Card
         int damage = 0, int rangeDamage = 0, int changeDamage = 0,
         int selfBoost = 0,
         int selfDamage = 0,
-        bool addictionWithSelfField = false, bool addictionWithEnemyField = false, bool endTurnAction = false, int endTurnDamage = 0, int endTurnBoost = 0,
+        bool addictionWithSelfField = false, bool addictionWithEnemyField = false, bool endTurnAction = false, int endTurnQuantity = 0, int endTurnDamage = 0, int endTurnBoost = 0,
         bool summon = false, int summonCardNumber = 0, int summonCardCount = 0,
         bool shield = false, bool stun = false, bool invisibility = false, bool invulnerability = false)
     {
@@ -86,6 +87,7 @@ public struct Card
         AddictionWithEnemyField = addictionWithEnemyField;
 
         EndTurnAction = endTurnAction;
+        EndTurnActionQuantity = endTurnQuantity;
         EndTurnDamage = endTurnDamage;
         EndTurnBoost = endTurnBoost;
 
@@ -142,14 +144,14 @@ public class CardManager : MonoBehaviour
              6, 6,
              0, 0, 0,
              3, 0, 0,
-             0,0,false,false,false,0,0,false,0,0,false,true));
+             0,0,false,false,false,0,0,0,false,0,0,false,true));
 
-        CardManagerList.AllCards.Add(new Card("Lina", "Fiery Soul", "At the end of the turn, deal 1 damage to a random enemy unit.",
+        CardManagerList.AllCards.Add(new Card("Lina", "Fiery Soul", "At the end of the turn, deal 1 damage to a random enemy unit 3 times.",
              "Sprites/Cards/Lina3", "Sounds/Cards/StartOrder/LinaFierySoul", Color.red,
-             6, 6,
+             2, 2,
              0, 0, 0,
              0, 0, 0,
-             0, 0, false, false, true, 1, 0));
+             0, 0, false, false, true, 3, 1));
 
         CardManagerList.AllCards.Add(new Card("Lina", "Laguna Blade", "Damage enemy card by 11.",
              "Sprites/Cards/Lina4", "Sounds/Cards/StartOrder/LinaLagunaBlade", Color.red,
@@ -162,13 +164,14 @@ public class CardManager : MonoBehaviour
             7, 7,
             0, 0, 0,
             2, 0, 0,
-            0, 0, false, false, false, 0, 0, false, 0, 0, false, true));
+            0, 0, false, false, false, 0, 0, 0, false, 0, 0, false, true));
 
-        CardManagerList.AllCards.Add(new Card("Luna", "Moon Glaives", "Damage enemy card by 3 and near to 2 and 1.",
+        CardManagerList.AllCards.Add(new Card("Luna", "Moon Glaives", "At the end of the turn, deal 1 damage to a random enemy unit 2 times.",
             "Sprites/Cards/Luna2", "Sounds/Cards/StartOrder/LunaMoonGlaives", Color.blue,
-            5, 5,
-            0, 0, 0,
-            3, 2, -1));
+             6, 6,
+             0, 0, 0,
+             0, 0, 0,
+             0, 0, false, false, true, 2, 1));
 
         CardManagerList.AllCards.Add(new Card("Luna", "Eclipse", "Damage 5 enemy card by 2.",
             "Sprites/Cards/Luna3", "Sounds/Cards/StartOrder/LunaEclipse", Color.blue,
@@ -181,7 +184,7 @@ public class CardManager : MonoBehaviour
              3, 3,
              8, 0, 0,
              0, 0, 0,
-             0, 0, false, false, false, 0, 0, false, 0, 0,
+             0, 0, false, false, false, 0, 0, 0, false, 0, 0,
              true));
 
         CardManagerList.AllCards.Add(new Card("Axe", "Berserker's Call", "Boost enemy card by 3.",
@@ -199,7 +202,7 @@ public class CardManager : MonoBehaviour
 
         CardManagerList.AllCards.Add(new Card("Huskar", "Life Break", "Damage self and enemy card by 7.",
             "Sprites/Cards/Huskar1", "Sounds/Cards/StartOrder/HuskarLifeBreak", Color.yellow,
-            18, 18,
+            17, 18,
             0, 0, 0,
             7, 0, 0,
             0, 7, false, true));
@@ -221,7 +224,7 @@ public class CardManager : MonoBehaviour
             6, 6,
             0, 0, 0,
             3, 1, 0,
-            0, 0, false, false, false, 0, 0, false, 0, 0, false, true));
+            0, 0, false, false, false, 0, 0, 0, false, 0, 0, false, true));
 
         CardManagerList.AllCards.Add(new Card("Earthshaker", "Echo Slam", "Damage all enemy card by 1.",
             "Sprites/Cards/Earthshaker2", "Sounds/Cards/StartOrder/EarthshakerEchoSlam", Color.yellow,
@@ -241,7 +244,7 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             0, 0, 0,
             0, 0, false, false,
-            true, 0, 1));
+            true, 1, 0, 1));
 
         CardManagerList.AllCards.Add(new Card("Sniper", "Assasinate", "Damage enemy card by 7.",
             "Sprites/Cards/Sniper1", "Sounds/Cards/StartOrder/SniperAssasinate", Color.yellow,
@@ -282,7 +285,7 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             0, 0, false, false,
             false, 0, 0,
-            true, -1, 3));
+            0, true, -1, 3));
 
         CardManagerList.AllCards.Add(new Card("Chaos Knight", "Chaos Bolt", "Damage enemy card by 2, stun his and create 1 your illusion near.",
             "Sprites/Cards/ChaosKnight2", "Sounds/Cards/StartOrder/ChaosKnightChaosBolt", Color.red,
@@ -291,7 +294,7 @@ public class CardManager : MonoBehaviour
             2, 0, 0,
             0, 0, false, true,
             false, 0, 0,
-            true, -1, 1,
+            0, true, -1, 1,
             false, true));
 
         CardManagerList.AllCards.Add(new Card("Lycan", "Summon Wolves", "Create 2 Wolves near.",
@@ -301,7 +304,7 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             0, 0, false, false,
             false, 0, 0,
-            true, 0, 2));
+            0, true, 0, 2));
 
         //CardManagerList.AllCards.Add(new Card("Riki", "Tricks of the Trade", "Damage 3 enemy card by 4. Invisibility.",
         //    "Sprites/Cards/Riki1", "Sounds/Cards/StartOrder/RikiTricksOfTheTrade", Color.magenta,
@@ -320,7 +323,7 @@ public class CardManager : MonoBehaviour
             2, 2, 0,
             0, 0, false, false,
             false, 0, 0,
-            false, 0, 0,
+            0, false, 0, 0,
             false, false, false, true));
 
         CardManagerList.AllCards.Add(new Card("Templar Assasin", "Meld", "Damage enemy card by 5. Shield.",
@@ -330,17 +333,17 @@ public class CardManager : MonoBehaviour
             5, 0, 0,
             0, 0, false, false,
             false, 0, 0,
-            false, 0, 0,
+            0, false, 0, 0,
             true));
 
-        CardManagerList.AllCards.Add(new Card("Abbadon", "Aphotic Shield", "Give friendly card shield. Shield.",
-        "Sprites/Cards/Abbadon2", "Sounds/Cards/StartOrder/AbbadonAphoticShield", Color.gray,
-            4, 4,
+        CardManagerList.AllCards.Add(new Card("Abaddon", "Aphotic Shield", "Give friendly card shield. Shield.",
+        "Sprites/Cards/Abaddon2", "Sounds/Cards/StartOrder/AbaddonAphoticShield", Color.gray,
+            6, 6,
             0, 0, 0,
             0, 0, 0,
             0, 0, false, false,
             false, 0, 0,
-            false, 0, 0,
+            0, false, 0, 0,
             true));
 
         CardManagerList.AllCards.Add(new Card("Windranger", "Windrun", "Invulnerability.",
@@ -350,7 +353,7 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             0, 0, false, false,
             false, 0, 0,
-            false, 0, 0,
+            0, false, 0, 0,
             false, false, false, true));
 
         CardManagerList.AllCards.Add(new Card("Naga Siren", "Mirror Image", "Create 2 your illusion copy near.",
@@ -360,7 +363,7 @@ public class CardManager : MonoBehaviour
             0, 0, 0,
             0, 0, false, false,
             false, 0, 0,
-            true, -1, 2));
+            0, true, -1, 2));
 
         CardManagerList.AllCards.Add(new Card("Naga Siren", "Song of the Siren", "Stun all enemy card. Invulnerability.",
             "Sprites/Cards/NagaSiren2", "Sounds/Cards/StartOrder/NagaSirenSongOfTheSiren", Color.cyan,
@@ -369,7 +372,7 @@ public class CardManager : MonoBehaviour
             0, -1, 0,
             0, 0, false, false,
             false, 0, 0,
-            false, 0, 0,
+            0, false, 0, 0,
             false, true, false, true));
 
 
