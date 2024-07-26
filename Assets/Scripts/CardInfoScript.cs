@@ -51,10 +51,10 @@ public class CardInfoScript : MonoBehaviour
             value += value;
         }
 
-        if ((targetCard.StatusEffects.IsShield) && (value < 0))
+        if ((targetCard.StatusEffects.IsShielded) && (value < 0))
         {
             value = 0;
-            targetCard.StatusEffects.IsShield = false;
+            targetCard.StatusEffects.IsShielded = false;
         }
 
         targetCard.Points += value;
@@ -160,14 +160,14 @@ public class CardInfoScript : MonoBehaviour
 
     public void CheckStatusEffects()       
     {
-        if (this.SelfCard.StatusEffects.IsShield && StatusEffectShield == null)
+        if (this.SelfCard.StatusEffects.IsShielded && StatusEffectShield == null)
         {
             CardStatusEffectImage.material = new Material(EffectsManager.Instance.shieldMaterial);
             StatusEffectShield = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
             StatusEffectShield.GetComponent<StatusEffect>().Initialize(StatusEffectsType.shield);
         }
 
-        else if (!this.SelfCard.StatusEffects.IsShield && StatusEffectShield != null)
+        else if (!this.SelfCard.StatusEffects.IsShielded && StatusEffectShield != null)
         {
             CardStatusEffectImage.material = null;
             Destroy(StatusEffectShield);

@@ -21,7 +21,7 @@ public class Game
         {
             DeckList.Add(CardManagerList.AllCards[Random.Range(1, CardManagerList.AllCards.Count)]);
 
-            //DeckList.Add(CardManagerList.AllCards[26]);
+            DeckList.Add(CardManagerList.AllCards[29]);
         }
         return DeckList;
     }
@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour
         _enemyPointsTMPro = GameObject.Find("UI/MainCanvas/RightUI/Points/EnemyAllPointsImage/EnemyAllPoints").GetComponent<TextMeshProUGUI>();
 
         _playerField.GetComponent<DropField>().DropCard.AddListener(PlayerDropCartStartCoroutine);
+        _enemyField.GetComponent<DropField>().DropCard.AddListener(PlayerDropCartStartCoroutine);
 
         _imageTurnTime[0] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime").GetComponent<UnityEngine.UI.Image>();
         _imageTurnTime[1] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime1").GetComponent<UnityEngine.UI.Image>();
@@ -439,7 +440,7 @@ public class GameManager : MonoBehaviour
             cardMove.PlayerMoveToField(_playerField.GetComponent<DropField>(), _playerHand.GetComponent<DropField>().EmptyHandCard);
 
         if (card.SelfCard.StatusEffects.IsInvisibility)
-            cardMove.PlayerMoveToField(_enemyField.GetComponent<DropField>(), _playerHand.GetComponent<DropField>().EmptyHandCard);
+            cardMove.PlayerMoveToField(_enemyField.GetComponent<DropField>(), _playerHand.GetComponent<DropField>().EmptyHandCard, true);
 
         yield return new WaitForSeconds(0.6f);
 
@@ -458,7 +459,6 @@ public class GameManager : MonoBehaviour
 
         if (card.SelfCard.StatusEffects.IsInvisibility)
         {
-
             EnemyFieldCards.Add(card);
             ChangeEnemyPoints();
             if (card.SelfCard.StatusEffects.IsInvulnerability)
@@ -489,6 +489,11 @@ public class GameManager : MonoBehaviour
                         cardd.transform.GetComponent<ChoseCard>().enabled = true;
                         cardd.IsOrderCard = true;
                     }
+
+                    else
+                    {
+                        cardd.IsOrderCard = true;
+                    }
                 }
 
                 card.transform.GetComponent<ChoseCard>().enabled = false;
@@ -508,6 +513,7 @@ public class GameManager : MonoBehaviour
 
                 if (card.SelfCard.StatusEffects.IsStun)
                     EnemyFieldCards[i].SelfCard.StatusEffects.IsStunned = true;
+                    EnemyFieldCards[i].CheckStatusEffects();
             }
 
             PlayerOrderCard.Invoke(card);
@@ -523,6 +529,11 @@ public class GameManager : MonoBehaviour
                     if (!cardd.SelfCard.StatusEffects.IsInvulnerability)
                     {
                         cardd.transform.GetComponent<ChoseCard>().enabled = true;
+                        cardd.IsOrderCard = true;
+                    }
+
+                    else
+                    {
                         cardd.IsOrderCard = true;
                     }
                 }
@@ -630,6 +641,9 @@ public class GameManager : MonoBehaviour
             {
                 CardMechanics.Instance.ChangePoints(card, card, false, true);
             }
+
+            if (card.SelfCard.StatusEffects.IsShield)
+                ChooseOurCard(true).SelfCard.StatusEffects.IsShielded = true;
 
             CardMechanics.Instance.ChangePoints(ChooseOurCard(true), card, true);
 

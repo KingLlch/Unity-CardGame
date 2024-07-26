@@ -7,6 +7,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public TypeField TypeField;
     public Transform EmptyTableCard;
     public Transform EmptyHandCard;
+    public Transform EmptyEnemyTableCard;
 
     private bool _isChangeEmptyCardPositionInHand;
 
@@ -23,8 +24,14 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private void ChangeCardPosition()
     {
-        if (_isChangeEmptyCardPositionInHand) EmptyHandCard.transform.SetSiblingIndex(card.SiblingIndex);
+        if (_isChangeEmptyCardPositionInHand) 
+            EmptyHandCard.transform.SetSiblingIndex(card.SiblingIndex);
         EmptyTableCard.transform.SetSiblingIndex(card.SiblingIndex);
+
+        if (cardInfo.SelfCard.StatusEffects.IsInvisibility)
+        {
+            EmptyEnemyTableCard.transform.SetSiblingIndex(card.SiblingIndex);
+        }
     }
 
     public void OnPointerEnter(PointerEventData pointer)
@@ -55,9 +62,9 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         if (TypeField == TypeField.ENEMY_TABLE && cardInfo.SelfCard.StatusEffects.IsInvisibility)
         {
-            EmptyTableCard.SetParent(transform);
-            EmptyTableCard.SetSiblingIndex(card.SiblingIndex);
-            EmptyTableCard.transform.position = new Vector3(EmptyTableCard.transform.position.x, EmptyTableCard.transform.position.y, 9);
+            EmptyEnemyTableCard.SetParent(transform);
+            EmptyEnemyTableCard.SetSiblingIndex(card.SiblingIndex);
+            EmptyEnemyTableCard.transform.position = new Vector3(EmptyEnemyTableCard.transform.position.x, EmptyEnemyTableCard.transform.position.y, 9);
             card.FutureCardParentTransform = transform;
         }
 
@@ -86,7 +93,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             card.FutureCardParentTransform = card.CurrentCardParentTransform;
 
-            EmptyTableCard.SetParent(transform.parent);
+            EmptyEnemyTableCard.SetParent(transform.parent);
         }
     }
 
@@ -160,6 +167,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         EmptyHandCard.SetParent(transform.parent);
         EmptyTableCard.SetParent(transform.parent);
+        EmptyEnemyTableCard.SetParent(transform.parent);
     }
 }
 

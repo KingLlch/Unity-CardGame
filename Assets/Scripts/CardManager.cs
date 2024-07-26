@@ -9,6 +9,7 @@ public struct StatusEffects
     public bool IsStun;
     public bool IsInvulnerability;
 
+    public bool IsShielded;
     public bool IsStunned;
 }
 
@@ -60,7 +61,7 @@ public struct Card
         int selfDamage = 0,
         bool addictionWithSelfField = false, bool addictionWithEnemyField = false, bool endTurnAction = false, int endTurnQuantity = 0, int endTurnDamage = 0, int endTurnBoost = 0,
         bool summon = false, int summonCardNumber = 0, int summonCardCount = 0,
-        bool shield = false, bool stun = false, bool invisibility = false, bool invulnerability = false)
+        bool shield = false, bool stun = false, bool invisibility = false, bool invulnerability = false, bool isShielded = false)
     {
         Name = name;
         SecondName = secondName;
@@ -100,6 +101,7 @@ public struct Card
         StatusEffects.IsStun = stun;
         StatusEffects.IsInvisibility = invisibility;
         StatusEffects.IsInvulnerability = invulnerability;
+        StatusEffects.IsShielded = isShielded;
     }
 }
 
@@ -185,7 +187,7 @@ public class CardManager : MonoBehaviour
              8, 0, 0,
              0, 0, 0,
              0, 0, false, false, false, 0, 0, 0, false, 0, 0,
-             true));
+             false, false, false, false, true));
 
         CardManagerList.AllCards.Add(new Card("Axe", "Berserker's Call", "Boost enemy card by 3.",
              "Sprites/Cards/Axe1", "Sounds/Cards/StartOrder/AxeBerserker'sCall", Color.red,
@@ -306,15 +308,15 @@ public class CardManager : MonoBehaviour
             false, 0, 0,
             0, true, 0, 2));
 
-        //CardManagerList.AllCards.Add(new Card("Riki", "Tricks of the Trade", "Damage 3 enemy card by 4. Invisibility.",
-        //    "Sprites/Cards/Riki1", "Sounds/Cards/StartOrder/RikiTricksOfTheTrade", Color.magenta,
-        //    1, 1,
-        //    0, 0, 0,
-        //    4, 2, 0,
-        //    0, 0, false, false,
-        //    false, 0, 0,
-        //    false, 0, 0,
-        //    false, false, true));
+        CardManagerList.AllCards.Add(new Card("Riki", "Tricks of the Trade", "Damage 3 enemy card by 4. Invisibility.",
+            "Sprites/Cards/Riki1", "Sounds/Cards/StartOrder/RikiTricksOfTheTrade", Color.magenta,
+            1, 1,
+            0, 0, 0,
+            4, 1, 0,
+            0, 0, false, false,
+            false, 0, 0, 0,
+            false, 0, 0,
+            false, false, true, true));
 
         CardManagerList.AllCards.Add(new Card("Juggernaut", "Omnislash", "Damage 5 enemy card by 2. Invulnerability.",
             "Sprites/Cards/Juggernaut1", "Sounds/Cards/StartOrder/JuggernautOmnislash", Color.green,
@@ -334,17 +336,17 @@ public class CardManager : MonoBehaviour
             0, 0, false, false,
             false, 0, 0,
             0, false, 0, 0,
-            true));
+            false, false, false, false, true));
 
-        CardManagerList.AllCards.Add(new Card("Abaddon", "Aphotic Shield", "Give friendly card shield. Shield.",
+        CardManagerList.AllCards.Add(new Card("Abaddon", "Aphotic Shield", "Boost friendly card by 1 and give it shield. Shield.",
         "Sprites/Cards/Abaddon2", "Sounds/Cards/StartOrder/AbaddonAphoticShield", Color.gray,
             6, 6,
-            0, 0, 0,
+            1, 0, 0,
             0, 0, 0,
             0, 0, false, false,
             false, 0, 0,
             0, false, 0, 0,
-            true));
+            true, false, false, false, true));
 
         CardManagerList.AllCards.Add(new Card("Windranger", "Windrun", "Invulnerability.",
             "Sprites/Cards/Windranger2", "Sounds/Cards/StartOrder/WindrangerWindrun", Color.green,

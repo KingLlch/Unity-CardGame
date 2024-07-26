@@ -60,7 +60,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         CardViewDescription.colorGradient = new VertexGradient(card.SelfCard.ColorTheme, card.SelfCard.ColorTheme, Color.black, Color.black);
 
 
-        if (card.SelfCard.StatusEffects.IsShield)
+        if (card.SelfCard.StatusEffects.IsShielded)
             StatusEffects[0].SetActive(true);
         else
             StatusEffects[0].SetActive(false);

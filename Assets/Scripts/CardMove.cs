@@ -98,11 +98,15 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         else transform.DOMove(field.position, 0.5f);
     }
 
-    public void PlayerMoveToField(DropField field, Transform emptyHandCard)
+    public void PlayerMoveToField(DropField field, Transform emptyHandCard, bool isInvisibility = false)
     {
         transform.GetComponent<CardInfoScript>().IsAnimationCard = true;
         transform.position = new Vector3(emptyHandCard.transform.position.x, emptyHandCard.transform.position.y, 9);
-        transform.DOMove(field.EmptyTableCard.position, 0.5f);
+
+        if (!isInvisibility)
+            transform.DOMove(field.EmptyTableCard.position, 0.5f);
+        else
+            transform.DOMove(field.EmptyEnemyTableCard.position, 0.5f);
     }
 
     public void MoveTopHierarchy()
