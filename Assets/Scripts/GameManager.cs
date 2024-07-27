@@ -739,8 +739,8 @@ public class GameManager : MonoBehaviour
 
         while (_choosenCard == null)
         {
-            UIManager.Instance.ChangeLinePosition(0, card.transform.position);
-            UIManager.Instance.ChangeLinePosition(1, _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -1)));
+            UIManager.Instance.ChangeLinePosition(0, new Vector3(card.transform.position.x, card.transform.position.y, 1));
+            UIManager.Instance.ChangeLinePosition(1, _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1)));
 
             yield return null;
         }
