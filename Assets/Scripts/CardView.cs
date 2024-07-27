@@ -59,7 +59,6 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         CardViewSecondName.colorGradient = new VertexGradient(card.SelfCard.ColorTheme, card.SelfCard.ColorTheme, Color.black, Color.black);
         CardViewDescription.colorGradient = new VertexGradient(card.SelfCard.ColorTheme, card.SelfCard.ColorTheme, Color.black, Color.black);
 
-
         if (card.SelfCard.StatusEffects.IsShielded)
             StatusEffects[0].SetActive(true);
         else
@@ -84,6 +83,11 @@ public class CardView : MonoBehaviour, IPointerClickHandler
             StatusEffects[4].SetActive(true);
         else
             StatusEffects[4].SetActive(false);
+    }
+
+    private void CheckStatusEffectGameObject(bool isActive)
+    {
+
     }
 
     public void OnPointerClick(PointerEventData eventData)

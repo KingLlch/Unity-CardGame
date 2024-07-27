@@ -41,96 +41,57 @@ public class EffectsManager : MonoBehaviour
         }
     }
 
-    public void EndTurnBoost(Transform start, Transform end)
+    public void ParticleEffects(Transform start, Transform end, bool isBoost, bool isSelf = false)
     {
-        for (int i = 0; i < 9; i++)
+        if (isBoost)
         {
-            if (!BoostParticle[i].isPlaying)
+            for (int i = 0; i < 9; i++)
             {
-                BoostParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
-                BoostParticle[i].Play();
-                BoostParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
+                if (!BoostParticle[i].isPlaying)
+                {
+                    if (!isSelf)
+                    {
+                        BoostParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
+                        BoostParticle[i].Play();
+                        BoostParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
 
-                BoostBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
-                BoostBurstParticle[i].Play();
-                break;
+                        BoostBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
+                        BoostBurstParticle[i].Play();
+                        break;
+                    }
+                    else
+                    {
+                        BoostBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
+                        BoostBurstParticle[i].Play();
+                        break;
+                    }
+                }
             }
         }
-    }
 
-    public void EndTurnDamage(Transform start, Transform end)
-    {
-        for (int i = 0; i < 9; i++)
+        if (!isBoost)
         {
-            if (!DamageParticle[i].isPlaying)
+            for (int i = 0; i < 9; i++)
             {
-                DamageParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
-                DamageParticle[i].Play();
-                DamageParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
+                if (!DamageParticle[i].isPlaying)
+                {
+                    if (!isSelf)
+                    {
+                        DamageParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
+                        DamageParticle[i].Play();
+                        DamageParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
 
-                DamageBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
-                DamageBurstParticle[i].Play();
-                break;
-            }
-        }
-    }
-
-    public void Boost(Transform start, Transform end)
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            if (!BoostParticle[i].isPlaying)
-            {
-                BoostParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
-                BoostParticle[i].Play();
-                BoostParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
-
-                BoostBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
-                BoostBurstParticle[i].Play();
-                break;
-            }
-        }
-    }
-
-    public void SelfBoost(Transform start)
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            if (!BoostParticle[i].isPlaying)
-            {
-                BoostBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
-                BoostBurstParticle[i].Play();
-                break;
-            }
-        }
-    }
-
-    public void Damage(Transform start, Transform end)
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            if (DamageParticle[i].isPlaying == false)
-            {
-                DamageParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
-                DamageParticle[i].Play();
-                DamageParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
-
-                DamageBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
-                DamageBurstParticle[i].Play();
-                break;
-            }
-        }
-    }
-
-    public void SelfDamage(Transform start)
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            if (!DamageParticle[i].isPlaying)
-            {
-                DamageBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
-                DamageBurstParticle[i].Play();
-                break;
+                        DamageBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
+                        DamageBurstParticle[i].Play();
+                        break;
+                    }
+                    else
+                    {
+                        DamageBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
+                        DamageBurstParticle[i].Play();
+                        break;
+                    }
+                }
             }
         }
     }
@@ -143,7 +104,7 @@ public class EffectsManager : MonoBehaviour
 
         Material DestroyMaterial = new Material(destroyMaterial);
         card.DestroyImage.material = DestroyMaterial;
-        DestroyMaterial.SetFloat("_Trashold",0);
+        DestroyMaterial.SetFloat("_Trashold", 0);
         DestroyCoroutine = StartCoroutine(DestroyEffectsCoroutine(card));
     }
 

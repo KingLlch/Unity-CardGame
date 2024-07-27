@@ -6,7 +6,7 @@ public class StatusEffect : MonoBehaviour
     public void Initialize(StatusEffectsType type)
     {
         if (type == StatusEffectsType.shield)
-        transform.GetComponent<Image>().sprite = CardView.Instance.shieldImage;
+            transform.GetComponent<Image>().sprite = CardView.Instance.shieldImage;
 
         if (type == StatusEffectsType.illusion)
             transform.GetComponent<Image>().sprite = CardView.Instance.illusionImage;
@@ -24,10 +24,10 @@ public class StatusEffect : MonoBehaviour
 
 public enum StatusEffectsType
 {
-    shield,
-    illusion,
-    invisibility,
-    stun,
-    invulnerability
+    shield = 0,
+    illusion = 1,
+    invisibility = 2,
+    stun = 3,
+    invulnerability = 4
 }
 

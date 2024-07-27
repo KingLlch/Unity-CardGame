@@ -37,15 +37,15 @@ public class CardMechanics : MonoBehaviour
             {
                 targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.Boost + distanceNearCard * startCard.SelfCard.ChangeBoost, startCard.SelfCard);
 
-                if (startCard.SelfCard.Boost > 0) EffectsManager.Instance.Boost(startCard.transform, targetCard.transform);
-                else EffectsManager.Instance.Damage(startCard.transform, targetCard.transform);
+                if (startCard.SelfCard.Boost > 0) EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, true);
+                else EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, false);
             }
             if (startCard.SelfCard.Damage != 0)
             {
-               targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage - distanceNearCard * startCard.SelfCard.ChangeDamage, startCard.SelfCard);
+                targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage - distanceNearCard * startCard.SelfCard.ChangeDamage, startCard.SelfCard);
 
-                if (startCard.SelfCard.Damage > 0) EffectsManager.Instance.Damage(startCard.transform, targetCard.transform);
-                else EffectsManager.Instance.Boost(startCard.transform, targetCard.transform);
+                if (startCard.SelfCard.Damage > 0) EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, false);
+                else EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, true);
             }
         }
 
@@ -54,12 +54,12 @@ public class CardMechanics : MonoBehaviour
             if (startCard.SelfCard.SelfBoost != 0)
             {
                 targetCard.ChangePoints(ref startCard.SelfCard, startCard.SelfCard.SelfBoost, startCard.SelfCard);
-                EffectsManager.Instance.SelfBoost(startCard.transform);
+                EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, true, true);
             }
             if (startCard.SelfCard.SelfDamage != 0)
             {
                 targetCard.ChangePoints(ref startCard.SelfCard, -startCard.SelfCard.SelfDamage, startCard.SelfCard);
-                EffectsManager.Instance.SelfDamage(startCard.transform);
+                EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, false, true);
             }
         }
 
@@ -69,15 +69,15 @@ public class CardMechanics : MonoBehaviour
             {
                 targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.EndTurnBoost, startCard.SelfCard);
 
-                if (startCard.SelfCard.EndTurnBoost > 0) EffectsManager.Instance.EndTurnBoost(startCard.transform, targetCard.transform);
-                else EffectsManager.Instance.EndTurnDamage(startCard.transform, targetCard.transform);
+                if (startCard.SelfCard.EndTurnBoost > 0) EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, true);
+                else EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, false);
             }
             if (startCard.SelfCard.EndTurnDamage != 0)
             {
                 targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.EndTurnDamage, startCard.SelfCard);
 
-                if (startCard.SelfCard.EndTurnDamage > 0) EffectsManager.Instance.EndTurnDamage(startCard.transform, targetCard.transform);
-                else EffectsManager.Instance.EndTurnBoost(startCard.transform, targetCard.transform);
+                if (startCard.SelfCard.EndTurnDamage > 0) EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, false);
+                else EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, true);
             }
         }
 
@@ -85,7 +85,9 @@ public class CardMechanics : MonoBehaviour
         CheckColorPointsCard(startCard);
 
         targetCard.CheckStatusEffects();
+
         IsDestroyCard(targetCard);
+        IsDestroyCard(startCard);
     }
 
     public void CheckColorPointsCard(CardInfoScript card)
@@ -123,7 +125,7 @@ public class CardMechanics : MonoBehaviour
                 GameManager.Instance.PlayerFieldInvulnerabilityCards.Remove(card);
 
             else if (GameManager.Instance.EnemyFieldInvulnerabilityCards.Contains(card))
-                    GameManager.Instance.EnemyFieldInvulnerabilityCards.Remove(card);
+                GameManager.Instance.EnemyFieldInvulnerabilityCards.Remove(card);
 
             EffectsManager.Instance.StartDestroyCoroutine(card);
 

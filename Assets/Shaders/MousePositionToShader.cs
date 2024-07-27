@@ -6,6 +6,6 @@ public class MousePositionToShader : MonoBehaviour
 
     void FixedUpdate()
     {
-        _fonMaterial.SetVector("_MousePosition", new Vector2(Input.mousePosition.x - Screen.width/2, Input.mousePosition.y - Screen.height / 2));
+        _fonMaterial.SetVector("_MousePosition", new Vector2(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y - Screen.height / 2));
     }
 }

@@ -98,7 +98,6 @@ public class CardInfoScript : MonoBehaviour
         IsHideCard = true;
     }
 
-
     public void ShowDescription()
     {
         if ((!IsHideCard) && (!GameManager.Instance.IsDrag) && (!IsAnimationCard) && (!IsOrderCard) && (DescriptionObject != null))
@@ -126,6 +125,7 @@ public class CardInfoScript : MonoBehaviour
     {
         SiblingIndex = transform.GetSiblingIndex();
     }
+
     public List<CardInfoScript> ReturnRightNearCard(int range = 1)
     {
         List<CardInfoScript> RightNearCard = new List<CardInfoScript>();
@@ -158,7 +158,7 @@ public class CardInfoScript : MonoBehaviour
         else return null;
     }
 
-    public void CheckStatusEffects()       
+    public void CheckStatusEffects()
     {
         if (this.SelfCard.StatusEffects.IsShielded && StatusEffectShield == null)
         {

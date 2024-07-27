@@ -146,7 +146,7 @@ public class CardManager : MonoBehaviour
              6, 6,
              0, 0, 0,
              3, 0, 0,
-             0,0,false,false,false,0,0,0,false,0,0,false,true));
+             0, 0, false, false, false, 0, 0, 0, false, 0, 0, false, true));
 
         CardManagerList.AllCards.Add(new Card("Lina", "Fiery Soul", "At the end of the turn, deal 1 damage to a random enemy unit 3 times.",
              "Sprites/Cards/Lina3", "Sounds/Cards/StartOrder/LinaFierySoul", Color.red,

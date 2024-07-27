@@ -24,7 +24,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private void ChangeCardPosition()
     {
-        if (_isChangeEmptyCardPositionInHand) 
+        if (_isChangeEmptyCardPositionInHand)
             EmptyHandCard.transform.SetSiblingIndex(card.SiblingIndex);
         EmptyTableCard.transform.SetSiblingIndex(card.SiblingIndex);
 
@@ -103,8 +103,8 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         if (!card.IsDraggable) return;
 
-        if ((TypeField == TypeField.SELF_TABLE && !cardInfo.SelfCard.StatusEffects.IsInvisibility) || 
-            (TypeField == TypeField.SELF_HAND) || 
+        if ((TypeField == TypeField.SELF_TABLE && !cardInfo.SelfCard.StatusEffects.IsInvisibility) ||
+            (TypeField == TypeField.SELF_HAND) ||
             (TypeField == TypeField.ENEMY_TABLE && cardInfo.SelfCard.StatusEffects.IsInvisibility))
         {
             if (TypeField == TypeField.SELF_TABLE && !cardInfo.SelfCard.StatusEffects.IsInvisibility)
