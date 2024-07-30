@@ -87,4 +87,22 @@ public class UIManager : MonoBehaviour
     {
         _line.SetPosition(point, position);
     }
+
+    public void CheckColorPointsCard(CardInfoScript card)
+    {
+        if (card.SelfCard.Points == card.SelfCard.MaxPoints)
+        {
+            card.Point.colorGradient = new VertexGradient(Color.white, Color.white, Color.white, Color.white);
+        }
+
+        else if (card.SelfCard.Points < card.SelfCard.MaxPoints)
+        {
+            card.Point.colorGradient = new VertexGradient(Color.red, Color.red, Color.white, Color.white);
+        }
+
+        else
+        {
+            card.Point.colorGradient = new VertexGradient(Color.green, Color.green, Color.white, Color.white);
+        }
+    }
 }

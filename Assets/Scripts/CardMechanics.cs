@@ -81,32 +81,13 @@ public class CardMechanics : MonoBehaviour
             }
         }
 
-        CheckColorPointsCard(targetCard);
-        CheckColorPointsCard(startCard);
+        UIManager.Instance.CheckColorPointsCard(targetCard);
+        UIManager.Instance.CheckColorPointsCard(startCard);
 
-        targetCard.CheckStatusEffects();
+        CheckStatusEffects(targetCard);
 
         IsDestroyCard(targetCard);
         IsDestroyCard(startCard);
-    }
-
-    public void CheckColorPointsCard(CardInfoScript card)
-    {
-
-        if (card.SelfCard.Points == card.SelfCard.MaxPoints)
-        {
-            card.Point.colorGradient = new VertexGradient(Color.white, Color.white, Color.white, Color.white);
-        }
-
-        else if (card.SelfCard.Points < card.SelfCard.MaxPoints)
-        {
-            card.Point.colorGradient = new VertexGradient(Color.red, Color.red, Color.white, Color.white);
-        }
-
-        else
-        {
-            card.Point.colorGradient = new VertexGradient(Color.green, Color.green, Color.white, Color.white);
-        }
     }
 
     public void IsDestroyCard(CardInfoScript card)
@@ -162,7 +143,7 @@ public class CardMechanics : MonoBehaviour
                 if (card.SelfCard.StatusEffects.IsStunned)
                 {
                     card.SelfCard.StatusEffects.IsStunned = false;
-                    card.CheckStatusEffects();
+                    CheckStatusEffects(card);
                 }
             }
         }
@@ -193,7 +174,7 @@ public class CardMechanics : MonoBehaviour
                 if (card.SelfCard.StatusEffects.IsStunned)
                 {
                     card.SelfCard.StatusEffects.IsStunned = false;
-                    card.CheckStatusEffects();
+                    CheckStatusEffects(card);
                 }
             }
         }
@@ -224,7 +205,7 @@ public class CardMechanics : MonoBehaviour
                 else GameManager.Instance.EnemyFieldCards.Add(summonCardInfo);
                 summonCardInfo.ShowCardInfo(card.SelfCard);
                 summonCardInfo.SelfCard.StatusEffects.IsIllusion = true;
-                summonCardInfo.CheckStatusEffects();
+                CheckStatusEffects(summonCardInfo);
                 summonCard.GetComponent<ChoseCard>().enabled = false;
 
             }
@@ -252,6 +233,56 @@ public class CardMechanics : MonoBehaviour
                 summonCardInfo.ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.SummonCardNumber]);
                 summonCard.GetComponent<ChoseCard>().enabled = false;
             }
+        }
+    }
+
+    public void CheckStatusEffects(CardInfoScript card)
+    {
+        if (card.SelfCard.StatusEffects.IsShielded && card.StatusEffectShield == null)
+        {
+            card.CardStatusEffectImage.material = new Material(EffectsManager.Instance.shieldMaterial);
+            card.StatusEffectShield = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
+            card.StatusEffectShield.GetComponent<StatusEffect>().Initialize(StatusEffectsType.shield);
+        }
+
+        else if (card.SelfCard.StatusEffects.IsShielded && card.StatusEffectShield != null)
+        {
+            card.CardStatusEffectImage.material = null;
+            Destroy(card.StatusEffectShield);
+            card.StatusEffectShield = null;
+        }
+
+        if (card.SelfCard.StatusEffects.IsIllusion && card.StatusEffectIllusion == null)
+        {
+            card.CardStatusEffectImage.material = new Material(EffectsManager.Instance.illusionMaterial);
+            card.StatusEffectIllusion = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
+            card.StatusEffectIllusion.GetComponent<StatusEffect>().Initialize(StatusEffectsType.illusion);
+        }
+
+        if (card.SelfCard.StatusEffects.IsStunned && card.StatusEffectStunned == null)
+        {
+            card.StatusEffectStunned = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
+            card.StatusEffectStunned.GetComponent<StatusEffect>().Initialize(StatusEffectsType.stun);
+        }
+
+        else if (card.SelfCard.StatusEffects.IsStunned && card.StatusEffectStunned != null)
+        {
+            Destroy(card.StatusEffectStunned);
+            card.StatusEffectStunned = null;
+        }
+
+        if (card.SelfCard.StatusEffects.IsInvulnerability && card.StatusEffectInvulnerability == null)
+        {
+            card.CardStatusEffectImage.material = new Material(EffectsManager.Instance.invulnerabilityMaterial);
+            card.StatusEffectInvulnerability = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
+            card.StatusEffectInvulnerability.GetComponent<StatusEffect>().Initialize(StatusEffectsType.invulnerability);
+        }
+
+        if (card.SelfCard.StatusEffects.IsInvisibility && card.StatusEffectInvisibility == null)
+        {
+            card.CardStatusEffectImage.material = new Material(EffectsManager.Instance.invisibilityMaterial);
+            card.StatusEffectInvisibility = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
+            card.StatusEffectInvisibility.GetComponent<StatusEffect>().Initialize(StatusEffectsType.invisibility);
         }
     }
 

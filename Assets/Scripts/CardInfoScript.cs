@@ -33,11 +33,11 @@ public class CardInfoScript : MonoBehaviour
 
     public GameObject StatusEffectPrefab;
 
-    private GameObject StatusEffectShield;
-    private GameObject StatusEffectIllusion;
-    private GameObject StatusEffectStunned;
-    private GameObject StatusEffectInvisibility;
-    private GameObject StatusEffectInvulnerability;
+    public GameObject StatusEffectShield;
+    public GameObject StatusEffectIllusion;
+    public GameObject StatusEffectStunned;
+    public GameObject StatusEffectInvisibility;
+    public GameObject StatusEffectInvulnerability;
 
     public int ShowPoints(Card card)
     {
@@ -126,85 +126,28 @@ public class CardInfoScript : MonoBehaviour
         SiblingIndex = transform.GetSiblingIndex();
     }
 
-    public List<CardInfoScript> ReturnRightNearCard(int range = 1)
+    public List<CardInfoScript> ReturnNearCard(int range = 1, bool IsRight = true)
     {
         List<CardInfoScript> RightNearCard = new List<CardInfoScript>();
-
-        for (int i = 1; i <= range; i++)
-        {
-            if (SiblingIndex + i < transform.parent.childCount)
-            {
-                RightNearCard.Add(transform.parent.GetChild(SiblingIndex + i).GetComponent<CardInfoScript>());
-            }
-        }
-
-        if (RightNearCard.Count != 0) return RightNearCard;
-        else return null;
-    }
-
-    public List<CardInfoScript> ReturnLeftNearCard(int range = 1)
-    {
         List<CardInfoScript> LeftNearCard = new List<CardInfoScript>();
 
         for (int i = 1; i <= range; i++)
         {
-            if (SiblingIndex - i >= 0)
+            if ((IsRight) && (SiblingIndex + i < transform.parent.childCount))
+            {
+                RightNearCard.Add(transform.parent.GetChild(SiblingIndex + i).GetComponent<CardInfoScript>());
+            }
+
+            else if ((!IsRight) && (SiblingIndex - i >= 0))
             {
                 LeftNearCard.Add(transform.parent.GetChild(SiblingIndex - i).GetComponent<CardInfoScript>());
             }
         }
 
-        if (LeftNearCard.Count != 0) return LeftNearCard;
+        if ((IsRight) && (RightNearCard.Count != 0)) 
+            return RightNearCard;
+        else if ((!IsRight)&&(LeftNearCard.Count != 0))
+            return LeftNearCard;
         else return null;
-    }
-
-    public void CheckStatusEffects()
-    {
-        if (this.SelfCard.StatusEffects.IsShielded && StatusEffectShield == null)
-        {
-            CardStatusEffectImage.material = new Material(EffectsManager.Instance.shieldMaterial);
-            StatusEffectShield = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
-            StatusEffectShield.GetComponent<StatusEffect>().Initialize(StatusEffectsType.shield);
-        }
-
-        else if (!this.SelfCard.StatusEffects.IsShielded && StatusEffectShield != null)
-        {
-            CardStatusEffectImage.material = null;
-            Destroy(StatusEffectShield);
-            StatusEffectShield = null;
-        }
-
-        if (this.SelfCard.StatusEffects.IsIllusion && StatusEffectIllusion == null)
-        {
-            CardStatusEffectImage.material = new Material(EffectsManager.Instance.illusionMaterial);
-            StatusEffectIllusion = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
-            StatusEffectIllusion.GetComponent<StatusEffect>().Initialize(StatusEffectsType.illusion);
-        }
-
-        if (this.SelfCard.StatusEffects.IsStunned && StatusEffectStunned == null)
-        {
-            StatusEffectStunned = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
-            StatusEffectStunned.GetComponent<StatusEffect>().Initialize(StatusEffectsType.stun);
-        }
-
-        else if (!this.SelfCard.StatusEffects.IsStunned && StatusEffectStunned != null)
-        {
-            Destroy(StatusEffectStunned);
-            StatusEffectStunned = null;
-        }
-
-        if (this.SelfCard.StatusEffects.IsInvulnerability && StatusEffectInvulnerability == null)
-        {
-            CardStatusEffectImage.material = new Material(EffectsManager.Instance.invulnerabilityMaterial);
-            StatusEffectInvulnerability = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
-            StatusEffectInvulnerability.GetComponent<StatusEffect>().Initialize(StatusEffectsType.invulnerability);
-        }
-
-        if (this.SelfCard.StatusEffects.IsInvisibility && StatusEffectInvisibility == null)
-        {
-            CardStatusEffectImage.material = new Material(EffectsManager.Instance.invisibilityMaterial);
-            StatusEffectInvisibility = Instantiate(StatusEffectPrefab, CardStatusEffectImage.gameObject.transform);
-            StatusEffectInvisibility.GetComponent<StatusEffect>().Initialize(StatusEffectsType.invisibility);
-        }
     }
 }
