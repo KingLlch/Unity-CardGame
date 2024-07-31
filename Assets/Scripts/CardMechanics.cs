@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -236,6 +237,31 @@ public class CardMechanics : MonoBehaviour
         }
     }
 
+    public List<CardInfoScript> ReturnNearCard(CardInfoScript card, int range, bool IsRight)
+    {
+        List<CardInfoScript> RightNearCard = new List<CardInfoScript>();
+        List<CardInfoScript> LeftNearCard = new List<CardInfoScript>();
+
+        for (int i = 1; i <= range; i++)
+        {
+            if ((IsRight) && (card.SiblingIndex + i < card.transform.parent.childCount))
+            {
+                RightNearCard.Add(card.transform.parent.GetChild(card.SiblingIndex + i).GetComponent<CardInfoScript>());
+            }
+
+            else if ((!IsRight) && (card.SiblingIndex - i >= 0))
+            {
+                LeftNearCard.Add(card.transform.parent.GetChild(card.SiblingIndex - i).GetComponent<CardInfoScript>());
+            }
+        }
+
+        if ((IsRight) && (RightNearCard.Count != 0))
+            return RightNearCard;
+        else if ((!IsRight) && (LeftNearCard.Count != 0))
+            return LeftNearCard;
+        else return null;
+    }
+
     public void CheckStatusEffects(CardInfoScript card)
     {
         if (card.SelfCard.StatusEffects.IsShielded && card.StatusEffectShield == null)
@@ -285,5 +311,4 @@ public class CardMechanics : MonoBehaviour
             card.StatusEffectInvisibility.GetComponent<StatusEffect>().Initialize(StatusEffectsType.invisibility);
         }
     }
-
 }

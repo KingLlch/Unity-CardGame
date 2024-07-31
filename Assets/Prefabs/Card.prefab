@@ -534,6 +534,11 @@ MonoBehaviour:
   IsAnimationCard: 0
   IsOrderCard: 0
   StatusEffectPrefab: {fileID: 8556755026959437187, guid: 76489fc4ffef70a47bd64206c59416f7, type: 3}
+  StatusEffectShield: {fileID: 0}
+  StatusEffectIllusion: {fileID: 0}
+  StatusEffectStunned: {fileID: 0}
+  StatusEffectInvisibility: {fileID: 0}
+  StatusEffectInvulnerability: {fileID: 0}
 --- !u!114 &-5743592158190691174
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -26,6 +26,11 @@ public class CardView : MonoBehaviour, IPointerClickHandler
     public TextMeshProUGUI CardViewSecondName;
     public TextMeshProUGUI CardViewDescription;
 
+    public GameObject CardViewPointsGameObject;
+    public GameObject CardViewMaxPointsGameObject;
+    public TextMeshProUGUI CardViewPoints;
+    public TextMeshProUGUI CardViewMaxPoints;
+
     public GameObject[] StatusEffects;
 
     public Sprite shieldImage;
@@ -59,6 +64,22 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         CardViewSecondName.colorGradient = new VertexGradient(card.SelfCard.ColorTheme, card.SelfCard.ColorTheme, Color.black, Color.black);
         CardViewDescription.colorGradient = new VertexGradient(card.SelfCard.ColorTheme, card.SelfCard.ColorTheme, Color.black, Color.black);
 
+        ShowPoints(false);
+        CardViewPoints.text = card.SelfCard.Points.ToString();
+        if (card.SelfCard.Points < card.SelfCard.MaxPoints)
+            CardViewPoints.colorGradient = new VertexGradient(Color.red, Color.red, Color.white, Color.white);
+        else if (card.SelfCard.Points > card.SelfCard.MaxPoints)
+            CardViewPoints.colorGradient = new VertexGradient(Color.green, Color.green, Color.white, Color.white);
+        else
+            CardViewPoints.colorGradient = new VertexGradient(Color.white, Color.white, Color.white, Color.white);
+
+        CardViewMaxPoints.text = card.SelfCard.MaxPoints.ToString();
+
+        CheckStatusEffectGameObject(card);
+    }
+
+    private void CheckStatusEffectGameObject(CardInfoScript card)
+    {
         if (card.SelfCard.StatusEffects.IsShielded)
             StatusEffects[0].SetActive(true);
         else
@@ -85,9 +106,18 @@ public class CardView : MonoBehaviour, IPointerClickHandler
             StatusEffects[4].SetActive(false);
     }
 
-    private void CheckStatusEffectGameObject(bool isActive)
+    public void ShowPoints(bool IsMaxPoints)
     {
-
+        if (IsMaxPoints)
+        {
+            CardViewPointsGameObject.SetActive(false);
+            CardViewMaxPointsGameObject.SetActive(true);
+        }
+        else
+        {
+            CardViewMaxPointsGameObject.SetActive(false);
+            CardViewPointsGameObject.SetActive(true);
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)

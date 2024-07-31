@@ -312,19 +312,19 @@ public class GameManager : MonoBehaviour
             {
                 botChoosedCard.CheckSiblingIndex();
 
-                if (botChoosedCard.ReturnNearCard(card.SelfCard.RangeBoost) != null)
+                if (CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, true) != null)
                 {
-                    for (int i = 0; i < botChoosedCard.ReturnNearCard(card.SelfCard.RangeBoost).Count; i++)
+                    for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, true).Count; i++)
                     {
-                        CardMechanics.Instance.ChangePoints(botChoosedCard.ReturnNearCard(card.SelfCard.RangeBoost)[i], card, true, false, false, i + 1);
+                        CardMechanics.Instance.ChangePoints(CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, true)[i], card, true, false, false, i + 1);
                     }
                 }
 
-                if (botChoosedCard.ReturnNearCard(card.SelfCard.RangeBoost, false) != null)
+                if (CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, false) != null)
                 {
-                    for (int i = 0; i < botChoosedCard.ReturnNearCard(card.SelfCard.RangeBoost, false).Count; i++)
+                    for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, false).Count; i++)
                     {
-                        CardMechanics.Instance.ChangePoints(botChoosedCard.ReturnNearCard(card.SelfCard.RangeBoost, false)[i], card, true, false, false, i + 1);
+                        CardMechanics.Instance.ChangePoints(CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, false)[i], card, true, false, false, i + 1);
                     }
                 }
             }
@@ -354,19 +354,19 @@ public class GameManager : MonoBehaviour
             {
                 botChoosedCard.CheckSiblingIndex();
 
-                if (botChoosedCard.ReturnNearCard(card.SelfCard.RangeDamage) != null)
+                if (CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, true) != null)
                 {
-                    for (int i = 0; i < botChoosedCard.ReturnNearCard(card.SelfCard.RangeDamage).Count; i++)
+                    for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, true).Count; i++)
                     {
-                        CardMechanics.Instance.ChangePoints(botChoosedCard.ReturnNearCard(card.SelfCard.RangeDamage)[i], card, true, false, false, i + 1);
+                        CardMechanics.Instance.ChangePoints(CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, true)[i], card, true, false, false, i + 1);
                     }
                 }
 
-                if (botChoosedCard.ReturnNearCard(card.SelfCard.RangeDamage, false) != null)
+                if (CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, false) != null)
                 {
-                    for (int i = 0; i < botChoosedCard.ReturnNearCard(card.SelfCard.RangeDamage, false).Count; i++)
+                    for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, false).Count; i++)
                     {
-                        CardMechanics.Instance.ChangePoints(botChoosedCard.ReturnNearCard(card.SelfCard.RangeDamage, false)[i], card, true, false, false, i + 1);
+                        CardMechanics.Instance.ChangePoints(CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.RangeBoost, false)[i], card, true, false, false, i + 1);
                     }
                 }
             }
@@ -629,19 +629,19 @@ public class GameManager : MonoBehaviour
             {
                 ChooseCard(true).CheckSiblingIndex();
 
-                if (ChooseCard(true).ReturnNearCard(card.SelfCard.RangeBoost) != null)
+                if (CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeBoost, true) != null)
                 {
-                    for (int i = 0; i < ChooseCard(true).ReturnNearCard(card.SelfCard.RangeBoost).Count; i++)
+                    for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeBoost, true).Count; i++)
                     {
-                        CardMechanics.Instance.ChangePoints(ChooseCard(true).ReturnNearCard(card.SelfCard.RangeBoost)[i], card, true, false, false, i + 1);
+                        CardMechanics.Instance.ChangePoints(CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeBoost, true)[i], card, true, false, false, i + 1);
                     }
                 }
 
-                if (ChooseCard(true).ReturnNearCard(card.SelfCard.RangeBoost, false) != null)
+                if (CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeBoost, false) != null)
                 {
-                    for (int i = 0; i < ChooseCard(true).ReturnNearCard(card.SelfCard.RangeBoost, false).Count; i++)
+                    for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeBoost, false).Count; i++)
                     {
-                        CardMechanics.Instance.ChangePoints(ChooseCard(true).ReturnNearCard(card.SelfCard.RangeBoost, false)[i], card, true, false, false, i + 1);
+                        CardMechanics.Instance.ChangePoints(CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeBoost, false)[i], card, true, false, false, i + 1);
                     }
                 }
             }
@@ -674,30 +674,30 @@ public class GameManager : MonoBehaviour
             {
                 ChooseCard(true, false).CheckSiblingIndex();
 
-                if (ChooseCard(true, false).ReturnNearCard(card.SelfCard.RangeDamage) != null)
+                if (CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeDamage, true) != null)
                 {
-                    for (int i = 0; i < ChooseCard(true, false).ReturnNearCard(card.SelfCard.RangeDamage).Count; i++)
+                    for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeDamage, true).Count; i++)
                     {
-                        CardMechanics.Instance.ChangePoints(ChooseCard(true, false).ReturnNearCard(card.SelfCard.RangeDamage)[i], card, true, false, false, i + 1);
+                        CardMechanics.Instance.ChangePoints(CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeDamage, true)[i], card, true, false, false, i + 1);
 
                         if (card.SelfCard.StatusEffects.IsStun)
                         {
-                            ChooseCard(true, false).ReturnNearCard(card.SelfCard.RangeDamage)[i].SelfCard.StatusEffects.IsStunned = true;
-                            CardMechanics.Instance.CheckStatusEffects(ChooseCard(true, false).ReturnNearCard(card.SelfCard.RangeDamage)[i]);
+                            CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeDamage, true)[i].SelfCard.StatusEffects.IsStunned = true;
+                            CardMechanics.Instance.CheckStatusEffects(CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeDamage, true)[i]);
                         }
                     }
                 }
 
-                if (ChooseCard(true, false).ReturnNearCard(card.SelfCard.RangeDamage, false) != null)
+                if (CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeDamage, false) != null)
                 {
-                    for (int i = 0; i < ChooseCard(true, false).ReturnNearCard(card.SelfCard.RangeDamage, false).Count; i++)
+                    for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeDamage, false).Count; i++)
                     {
-                        CardMechanics.Instance.ChangePoints(ChooseCard(true, false).ReturnNearCard(card.SelfCard.RangeDamage, false)[i], card, true, false, false, i + 1);
+                        CardMechanics.Instance.ChangePoints(CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeDamage, false)[i], card, true, false, false, i + 1);
 
                         if (card.SelfCard.StatusEffects.IsStun)
                         {
-                            ChooseCard(true, false).ReturnNearCard(card.SelfCard.RangeDamage, false)[i].SelfCard.StatusEffects.IsStunned = true;
-                            CardMechanics.Instance.CheckStatusEffects(ChooseCard(true, false).ReturnNearCard(card.SelfCard.RangeDamage, false)[i]);
+                            CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeDamage, false)[i].SelfCard.StatusEffects.IsStunned = true;
+                            CardMechanics.Instance.CheckStatusEffects(CardMechanics.Instance.ReturnNearCard(ChooseCard(true), card.SelfCard.RangeDamage, false)[i]);
                         }
                     }
                 }

@@ -125,29 +125,4 @@ public class CardInfoScript : MonoBehaviour
     {
         SiblingIndex = transform.GetSiblingIndex();
     }
-
-    public List<CardInfoScript> ReturnNearCard(int range = 1, bool IsRight = true)
-    {
-        List<CardInfoScript> RightNearCard = new List<CardInfoScript>();
-        List<CardInfoScript> LeftNearCard = new List<CardInfoScript>();
-
-        for (int i = 1; i <= range; i++)
-        {
-            if ((IsRight) && (SiblingIndex + i < transform.parent.childCount))
-            {
-                RightNearCard.Add(transform.parent.GetChild(SiblingIndex + i).GetComponent<CardInfoScript>());
-            }
-
-            else if ((!IsRight) && (SiblingIndex - i >= 0))
-            {
-                LeftNearCard.Add(transform.parent.GetChild(SiblingIndex - i).GetComponent<CardInfoScript>());
-            }
-        }
-
-        if ((IsRight) && (RightNearCard.Count != 0)) 
-            return RightNearCard;
-        else if ((!IsRight)&&(LeftNearCard.Count != 0))
-            return LeftNearCard;
-        else return null;
-    }
 }
