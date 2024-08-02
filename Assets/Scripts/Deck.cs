@@ -56,6 +56,16 @@ public class Deck : MonoBehaviour, IPointerClickHandler
         ShuffleVisualDeck();
     }
 
+    public void DeleteDeck()
+    {
+        for (int i = DeckList.Count - 1; i >= 0; i--)
+        {
+            GameObject card = DeckList[i];
+            Destroy(card);
+            DeckList.Remove(card);
+        }
+    }
+
     public void DeleteFirstCardFromDeck()
     {
         GameObject differenceCard = DeckList[0];

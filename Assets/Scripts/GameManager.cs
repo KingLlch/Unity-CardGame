@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour
 
         //DebugGame();
         Deck.Instance.CreateDeck(CurrentGame.PlayerDeck);
+
         GiveHandCards(CurrentGame.EnemyDeck, _enemyHand);
         GiveHandCards(CurrentGame.PlayerDeck, _playerHand);
 
@@ -222,7 +223,7 @@ public class GameManager : MonoBehaviour
     {
         if ((PlayerHandCards.Count == 0) && (EnemyHandCards.Count == 0))
         {
-            EndGame();
+            UIManager.Instance.EndGame(_playerPoints, _enemyPoints);
         }
 
         if (IsPlayerTurn && !IsHandCardPlaying && PlayerHandCards.Count != 0)
@@ -797,33 +798,11 @@ public class GameManager : MonoBehaviour
         _choosenCard = card;
     }
 
-    private void EndGame()
-    {
-        StopAllCoroutines();
-        UIManager.Instance.EndGamePanel.SetActive(true);
-
-        if (_playerPoints < _enemyPoints)
-        {
-            UIManager.Instance.EndGamePanelLose.SetActive(true);
-        }
-
-        else if (_playerPoints > _enemyPoints)
-        {
-            UIManager.Instance.EndGamePanelWin.SetActive(true);
-        }
-
-        else
-        {
-            UIManager.Instance.EndGamePanelDraw.SetActive(true);
-        }
-    }
-
     public void NewGame()
     {
         UIManager.Instance.EndGamePanel.SetActive(false);
-        UIManager.Instance.EndGamePanelWin.SetActive(false);
-        UIManager.Instance.EndGamePanelLose.SetActive(false);
-        UIManager.Instance.EndGamePanelDraw.SetActive(false);
+
+        StopAllCoroutines();
 
         _turn = 0;
         _playerPoints = 0;
@@ -857,6 +836,9 @@ public class GameManager : MonoBehaviour
         EnemyFieldInvulnerabilityCards.Clear();
 
         CurrentGame = new Game();
+
+        Deck.Instance.DeleteDeck();
+        Deck.Instance.CreateDeck(CurrentGame.PlayerDeck);
 
         GiveHandCards(CurrentGame.EnemyDeck, _enemyHand);
         GiveHandCards(CurrentGame.PlayerDeck, _playerHand);

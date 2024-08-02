@@ -30,9 +30,9 @@ public class UIManager : MonoBehaviour
     private Button _endTurnButton;
 
     public GameObject EndGamePanel;
-    public GameObject EndGamePanelWin;
-    public GameObject EndGamePanelLose;
-    public GameObject EndGamePanelDraw;
+    public TextMeshProUGUI EndGameText;
+
+    public bool IsPause;
 
     private void Awake()
     {
@@ -105,5 +105,38 @@ public class UIManager : MonoBehaviour
         {
             card.Point.colorGradient = new VertexGradient(Color.green, Color.green, Color.white, Color.white);
         }
+    }
+
+    public void EndGame(int playerPoints, int enemyPoint)
+    {
+        StopAllCoroutines();
+        EndGamePanel.SetActive(true);
+
+        if (playerPoints < enemyPoint)
+        {
+            EndGameText.text = "You Lose";
+        }
+
+        else if (playerPoints > enemyPoint)
+        {
+            EndGameText.text = "You Win";
+        }
+
+        else
+        {
+            EndGameText.text = "Draw";
+        }
+    }
+
+    public void Pause()
+    {
+        IsPause = true;
+        EndGamePanel.SetActive(true);
+        EndGameText.text = "Pause";
+    }
+    public void UnPause()
+    {
+        IsPause = false;
+        EndGamePanel.SetActive(false);
     }
 }
