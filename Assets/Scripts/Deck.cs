@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class Deck : MonoBehaviour
+public class Deck : MonoBehaviour, IPointerClickHandler
 {
     private static Deck _instance;
 
@@ -33,12 +35,8 @@ public class Deck : MonoBehaviour
 
     public void ShowDeck()
     {
+        transform.GetComponent<Image>().raycastTarget = true;
         DeckClosePanel.SetActive(true);
-    }
-
-    public void HideDeck()
-    {
-        DeckClosePanel.SetActive(false);
     }
 
     public void CreateDeck(List<Card> deck)
@@ -50,8 +48,12 @@ public class Deck : MonoBehaviour
             DeckList.Add(cardGameObject);
 
             cardGameObject.GetComponent<ChoseCard>().enabled = false;
+            cardGameObject.GetComponent<CardMove>().enabled = false;
+
             cardGameObject.GetComponent<CardInfoScript>().ShowCardInfo(card);
         }
+
+        ShuffleVisualDeck();
     }
 
     public void DeleteFirstCardFromDeck()
@@ -59,5 +61,19 @@ public class Deck : MonoBehaviour
         GameObject differenceCard = DeckList[0];
         Destroy(differenceCard);
         DeckList.Remove(differenceCard);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        transform.GetComponent<Image>().raycastTarget = false;
+        DeckClosePanel.SetActive(false);
+    }
+
+    public void ShuffleVisualDeck()
+    {
+        foreach (GameObject card in DeckList)
+        {
+            card.transform.SetSiblingIndex(Random.Range(0, DeckList.Count));
+        }
     }
 }

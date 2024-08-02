@@ -271,7 +271,7 @@ public class CardMechanics : MonoBehaviour
             card.StatusEffectShield.GetComponent<StatusEffect>().Initialize(StatusEffectsType.shield);
         }
 
-        else if (card.SelfCard.StatusEffects.IsShielded && card.StatusEffectShield != null)
+        else if (!card.SelfCard.StatusEffects.IsShielded && card.StatusEffectShield != null)
         {
             card.CardStatusEffectImage.material = null;
             Destroy(card.StatusEffectShield);
@@ -291,7 +291,7 @@ public class CardMechanics : MonoBehaviour
             card.StatusEffectStunned.GetComponent<StatusEffect>().Initialize(StatusEffectsType.stun);
         }
 
-        else if (card.SelfCard.StatusEffects.IsStunned && card.StatusEffectStunned != null)
+        else if (!card.SelfCard.StatusEffects.IsStunned && card.StatusEffectStunned != null)
         {
             Destroy(card.StatusEffectStunned);
             card.StatusEffectStunned = null;

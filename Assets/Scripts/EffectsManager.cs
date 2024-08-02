@@ -33,12 +33,31 @@ public class EffectsManager : MonoBehaviour
     public Material invisibilityMaterial;
     public Material invulnerabilityMaterial;
 
+    public GameObject CardBack;
+    public Transform PlayerDeck;
+    public Transform EnemyDeck;
+
     private void Awake()
     {
         if (_instance == null)
         {
             _instance = this;
         }
+    }
+
+    public void DrawCardEffect(Transform Hand, bool isPlayer)
+    {
+        CardBack.SetActive(true);
+        if (isPlayer)
+            CardBack.transform.position = PlayerDeck.transform.position;
+        else 
+            CardBack.transform.position = EnemyDeck.transform.position;
+        CardBack.transform.DOMove(Hand.position, 0.3f);
+    }
+
+    public void HideDrawCardEffect()
+    {
+        CardBack.SetActive(false);
     }
 
     public void ParticleEffects(Transform start, Transform end, bool isBoost, bool isSelf = false)

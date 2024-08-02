@@ -20,6 +20,7 @@ public class Game
         for (int i = 0; i < GameManager.Instance.ValueDeckCards; i++)
         {
             DeckList.Add(CardManagerList.AllCards[Random.Range(1, CardManagerList.AllCards.Count)]);
+            //DeckList.Add(CardManagerList.AllCards[30]);
         }
         return DeckList;
     }
@@ -272,12 +273,12 @@ public class GameManager : MonoBehaviour
         else
             enemyHandCards[enemyPlayedCard].transform.SetParent(_playerField);
 
-        EnemyDropCard(enemyHandCards[enemyPlayedCard]);
+        yield return StartCoroutine(EnemyDropCard(enemyHandCards[enemyPlayedCard]));
 
         ChangeTurn();
     }
 
-    private void EnemyDropCard(CardInfoScript card)
+    private IEnumerator EnemyDropCard(CardInfoScript card)
     {
         CardInfoScript botChoosedCard;
 
@@ -404,6 +405,11 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < card.SelfCard.DrawCardCount; i++)
             {
+                EffectsManager.Instance.DrawCardEffect(_enemyHand, false);
+                UIManager.Instance.ChangeEndTurnButtonInteractable(false);
+                yield return new WaitForSeconds(0.3f);
+                UIManager.Instance.ChangeEndTurnButtonInteractable(true);
+                EffectsManager.Instance.HideDrawCardEffect();
                 GiveCardtoHand(CurrentGame.EnemyDeck, _enemyHand);
             }
         }
@@ -561,6 +567,13 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < card.SelfCard.DrawCardCount; i++)
             {
+                EffectsManager.Instance.DrawCardEffect(_playerHand, true);
+              
+
+                yield return new WaitForSeconds(0.3f);
+
+
+                EffectsManager.Instance.HideDrawCardEffect();
                 GiveCardtoHand(CurrentGame.PlayerDeck, _playerHand);
             }
         }
