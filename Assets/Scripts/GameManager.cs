@@ -5,7 +5,8 @@ using UnityEngine.Events;
 
 public class Game
 {
-    public List<Card> EnemyDeck, PlayerDeck;
+    public List<Card> EnemyDeck;
+    public List<Card> PlayerDeck;
 
     public Game()
     {
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
     private int _enemyPoints;
 
     public bool IsDrag;
+    public bool IsChooseCard;
     public GameObject CardPref;
 
     public CardInfoScript StartChoseCard;
@@ -66,6 +68,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public List<CardInfoScript> EnemyHandCards = new List<CardInfoScript>();
     [HideInInspector] public List<CardInfoScript> EnemyFieldCards = new List<CardInfoScript>();
     [HideInInspector] public List<CardInfoScript> EnemyFieldInvulnerabilityCards = new List<CardInfoScript>();
+
+    [HideInInspector] public List<CardInfoScript> CardsCanChoose = new List<CardInfoScript>();
 
     [HideInInspector] public bool IsChoosing;
     [HideInInspector] public bool IsHandCardPlaying;
@@ -133,10 +137,9 @@ public class GameManager : MonoBehaviour
         CurrentGame = new Game();
 
         //DebugGame();
+        Deck.Instance.CreateDeck(CurrentGame.PlayerDeck);
         GiveHandCards(CurrentGame.EnemyDeck, _enemyHand);
         GiveHandCards(CurrentGame.PlayerDeck, _playerHand);
-
-        UIManager.Instance.ChangeDeckCount(CurrentGame);
 
         StartCoroutine(TurnFunk());
     }
@@ -170,9 +173,13 @@ public class GameManager : MonoBehaviour
         {
             cardHand.GetComponent<CardInfoScript>().ShowCardInfo(card);
             PlayerHandCards.Add(cardHand.GetComponent<CardInfoScript>());
+
+            Deck.Instance.DeleteFirstCardFromDeck();
         }
 
         deck.RemoveAt(0);
+
+        UIManager.Instance.ChangeDeckCount(CurrentGame);
     }
 
     private IEnumerator TurnFunk()
@@ -195,6 +202,11 @@ public class GameManager : MonoBehaviour
                 }
             }
 
+            if (IsChooseCard == true)
+            {
+                _choosenCard = CardsCanChoose[Random.Range(0, CardsCanChoose.Count)];
+                yield return null;
+            }
 
             ChangeTurn();
         }
@@ -215,7 +227,6 @@ public class GameManager : MonoBehaviour
         if (IsPlayerTurn && !IsHandCardPlaying && PlayerHandCards.Count != 0)
             ThrowCard(PlayerHandCards[Random.Range(0, PlayerHandCards.Count)], true);
 
-        UIManager.Instance.ChangeDeckCount(CurrentGame);
         CardMechanics.Instance.EndTurnActions();
 
         ChangeEnemyPoints();
@@ -389,6 +400,14 @@ public class GameManager : MonoBehaviour
             ChangeEnemyPoints();
         }
 
+        if (card.SelfCard.DrawCardCount != 0)
+        {
+            for (int i = 0; i < card.SelfCard.DrawCardCount; i++)
+            {
+                GiveCardtoHand(CurrentGame.EnemyDeck, _enemyHand);
+            }
+        }
+
         ChangeEnemyPoints();
         ChangePlayerPoints();
     }
@@ -457,6 +476,7 @@ public class GameManager : MonoBehaviour
                     {
                         cardd.transform.GetComponent<ChoseCard>().enabled = true;
                         cardd.IsOrderCard = true;
+                        CardsCanChoose.Add(cardd);
                     }
 
                     else
@@ -466,6 +486,7 @@ public class GameManager : MonoBehaviour
                 }
 
                 card.transform.GetComponent<ChoseCard>().enabled = false;
+                CardsCanChoose.Remove(card);
 
 
                 UIManager.Instance.ChangeLineColor(Color.white, Color.green);
@@ -499,6 +520,8 @@ public class GameManager : MonoBehaviour
                     {
                         cardd.transform.GetComponent<ChoseCard>().enabled = true;
                         cardd.IsOrderCard = true;
+                        CardsCanChoose.Add(cardd);
+
                     }
 
                     else
@@ -506,6 +529,9 @@ public class GameManager : MonoBehaviour
                         cardd.IsOrderCard = true;
                     }
                 }
+
+                card.transform.GetComponent<ChoseCard>().enabled = false;
+                CardsCanChoose.Remove(card);
 
                 UIManager.Instance.ChangeLineColor(Color.white, Color.red);
 
@@ -529,6 +555,14 @@ public class GameManager : MonoBehaviour
             PlayerOrderCard.Invoke(card);
             CardMechanics.Instance.SpawnCard(card, true);
             ChangePlayerPoints();
+        }
+
+        if (card.SelfCard.DrawCardCount != 0)
+        {
+            for (int i = 0; i < card.SelfCard.DrawCardCount; i++)
+            {
+                GiveCardtoHand(CurrentGame.PlayerDeck, _playerHand);
+            }
         }
     }
 
@@ -597,12 +631,12 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ChoseCardCoroutine(CardInfoScript card, bool isBoost, bool isDamage)
     {
-        _choosenCard = null;
         StartChoseCard = card;
         card.ImageEdge1.color = Color.green;
         UIManager.Instance.ChangeEndTurnButtonInteractable(false);
 
         yield return StartCoroutine(WaitForChoseCard(card));
+        IsChooseCard = false;
 
         if (isBoost)
         {
@@ -621,6 +655,7 @@ public class GameManager : MonoBehaviour
             foreach (CardInfoScript cardd in PlayerFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = false;
+                CardsCanChoose.Remove(cardd);
                 cardd.ImageEdge1.color = Color.white;
                 cardd.IsOrderCard = false;
             }
@@ -666,6 +701,7 @@ public class GameManager : MonoBehaviour
             foreach (CardInfoScript cardd in EnemyFieldCards)
             {
                 cardd.transform.GetComponent<ChoseCard>().enabled = false;
+                CardsCanChoose.Remove(cardd);
                 cardd.ImageEdge1.color = Color.white;
                 cardd.IsOrderCard = false;
             }
@@ -731,6 +767,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator WaitForChoseCard(CardInfoScript card)
     {
+        IsChooseCard = true;
         _choosenCard = null;
 
         while (_choosenCard == null)

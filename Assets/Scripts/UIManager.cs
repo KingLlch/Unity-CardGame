@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour
 {
@@ -43,8 +44,8 @@ public class UIManager : MonoBehaviour
         _playerPointsTMPro = GameObject.Find("UI/MainCanvas/RightUI/Points/PlayerAllPointsImage/PlayerAllPoints").GetComponent<TextMeshProUGUI>();
         _enemyPointsTMPro = GameObject.Find("UI/MainCanvas/RightUI/Points/EnemyAllPointsImage/EnemyAllPoints").GetComponent<TextMeshProUGUI>();
 
-        _playerDeckTMPro = GameObject.Find("UI/MainCanvas/RightUI/EnemyDeck/DeckCountText").GetComponent<TextMeshProUGUI>();
-        _enemyDeckTMPro = GameObject.Find("UI/MainCanvas/RightUI/PlayerDeck/DeckCountText").GetComponent<TextMeshProUGUI>();
+        _playerDeckTMPro = GameObject.Find("UI/MainCanvas/RightUI/PlayerDeck/DeckCountText").GetComponent<TextMeshProUGUI>();
+        _enemyDeckTMPro = GameObject.Find("UI/MainCanvas/RightUI/EnemyDeck/DeckCountText").GetComponent<TextMeshProUGUI>();
 
         _imageTurnTime[0] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime").GetComponent<Image>();
         _imageTurnTime[1] = GameObject.Find("UI/MainCanvas/RightUI/EndTurnButton/ImagesTurnTime/ImageTurnTime1").GetComponent<Image>();

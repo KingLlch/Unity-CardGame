@@ -49,6 +49,8 @@ public struct Card
     public int SummonCardNumber;
     public int SummonCardCount;
 
+    public int DrawCardCount;
+
 
     public StatusEffects StatusEffects;
 
@@ -61,7 +63,8 @@ public struct Card
         int selfDamage = 0,
         bool addictionWithSelfField = false, bool addictionWithEnemyField = false, bool endTurnAction = false, int endTurnQuantity = 0, int endTurnDamage = 0, int endTurnBoost = 0,
         bool summon = false, int summonCardNumber = 0, int summonCardCount = 0,
-        bool shield = false, bool stun = false, bool invisibility = false, bool invulnerability = false, bool isShielded = false)
+        bool shield = false, bool stun = false, bool invisibility = false, bool invulnerability = false, bool isShielded = false,
+        int drawCardCount = 0)
     {
         Name = name;
         SecondName = secondName;
@@ -102,6 +105,8 @@ public struct Card
         StatusEffects.IsInvisibility = invisibility;
         StatusEffects.IsInvulnerability = invulnerability;
         StatusEffects.IsShielded = isShielded;
+
+        DrawCardCount = drawCardCount;
     }
 }
 
@@ -344,11 +349,11 @@ public class CardManager : MonoBehaviour
             1, 0, 0,
             0, 0, 0,
             0, 0, false, false,
-            false, 0, 0,
+            false, 0, 0, 
             0, false, 0, 0,
             true, false, false, false, true));
 
-        CardManagerList.AllCards.Add(new Card("Windranger", "Windrun", "Invulnerability.",
+        CardManagerList.AllCards.Add(new Card("Windranger", "Windrun", "Draw 1 card",
             "Sprites/Cards/Windranger2", "Sounds/Cards/StartOrder/WindrangerWindrun", Color.green,
             9, 9,
             0, 0, 0,
@@ -356,7 +361,8 @@ public class CardManager : MonoBehaviour
             0, 0, false, false,
             false, 0, 0,
             0, false, 0, 0,
-            false, false, false, true));
+            false, false, false, false,false,
+            1));
 
         CardManagerList.AllCards.Add(new Card("Naga Siren", "Mirror Image", "Create 2 your illusion copy near.",
             "Sprites/Cards/NagaSiren1", "Sounds/Cards/StartOrder/NagaSirenMirrorImage", Color.cyan,
