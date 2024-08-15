@@ -397,7 +397,6 @@ GameObject:
   - component: {fileID: -8805600453780257939}
   - component: {fileID: 3822636935777310630}
   - component: {fileID: -5743592158190691174}
-  - component: {fileID: -1549182892061513566}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -584,21 +583,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
---- !u!114 &-1549182892061513566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2441212105074888676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa96b32a0f855cc4cbb9129c36ee5854, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IChoseCard:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &2955690349660072907
 GameObject:
   m_ObjectHideFlags: 0
