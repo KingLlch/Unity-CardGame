@@ -18,7 +18,7 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    public List<Card> Deck = new List<Card>();
+    public List<Card> Deck;
 
     private void Awake()
     {
@@ -30,7 +30,13 @@ public class DeckManager : MonoBehaviour
 
         else
         {
+            Debug.Log("Destroy");
             Destroy(gameObject);
         }
+    }
+
+    public void SetDeck(List<Card> newDeck)
+    {
+        Deck = new List<Card>(newDeck);
     }
 }

@@ -47,6 +47,7 @@ public class Deck : MonoBehaviour, IPointerClickHandler
 
             DeckList.Add(cardGameObject);
 
+            cardGameObject.AddComponent<ChoseCard>();
             cardGameObject.GetComponent<ChoseCard>().enabled = false;
             cardGameObject.GetComponent<CardMove>().enabled = false;
 

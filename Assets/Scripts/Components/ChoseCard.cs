@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class ChoseCard : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [HideInInspector] public UnityEvent<CardInfoScript> IChoseCard;
+    [HideInInspector] public UnityEvent<CardInfoScript> IChoseCard = new UnityEvent<CardInfoScript>();
 
     private void Awake()
     {

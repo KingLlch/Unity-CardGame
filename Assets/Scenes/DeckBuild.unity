@@ -731,7 +731,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 4546558329023491371, guid: a6d7a81d007ed1146ad295040c205da2, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1373,7 +1373,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.5, y: -598.49994}
+  m_AnchoredPosition: {x: -1.5, y: -598.50024}
   m_SizeDelta: {x: 330, y: 2272}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &715009374
@@ -1938,8 +1938,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2056789284}
   m_HandleRect: {fileID: 2056789283}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.64140755
+  m_Value: 1.0000002
+  m_Size: 0.640151
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2097,12 +2097,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 976129093}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2083952596}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &976129095
 MonoBehaviour:
@@ -2751,8 +2751,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 29065105}
   m_HandleRect: {fileID: 29065104}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.47315088
+  m_Value: 1.0000002
+  m_Size: 0.47222406
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3104,7 +3104,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.5, y: -300.49988}
+  m_AnchoredPosition: {x: -1.5, y: -300.5}
   m_SizeDelta: {x: 1380, y: 1675.9998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2083764916
@@ -3201,7 +3201,6 @@ Transform:
   - {fileID: 671066085}
   - {fileID: 1806993863}
   - {fileID: 326083246}
-  - {fileID: 976129094}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
@@ -3211,3 +3210,4 @@ SceneRoots:
   - {fileID: 358734978}
   - {fileID: 37268925}
   - {fileID: 2083952596}
+  - {fileID: 976129094}

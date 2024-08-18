@@ -99,7 +99,7 @@ public class DeckBuildManager : MonoBehaviour
     {
         if (CountCardInDeck == 25)
         {
-            DeckManager.Instance.Deck = Deck;
+            DeckManager.Instance.SetDeck(Deck);
             SceneManager.LoadScene("Game");
         }
     }
