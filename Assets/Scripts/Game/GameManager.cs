@@ -268,6 +268,7 @@ public class GameManager : MonoBehaviour
 
         if (isPlayerPassed && isEnemyPassed)
         {
+            EndGame();
             UIManager.Instance.EndGame(_playerPoints, _enemyPoints);
         }
 
@@ -920,5 +921,10 @@ public class GameManager : MonoBehaviour
         }
 
         Destroy(card.transform.gameObject);
+    }
+
+    private void EndGame()
+    {
+        StopAllCoroutines();
     }
 }

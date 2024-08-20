@@ -38,11 +38,6 @@ public class HowToPlay : MonoBehaviour
         }
     }
 
-    public void SetHowToPlay(bool isTrue)
-    {
-        IsHowToPlay = isTrue;
-    }
-
     public void HowToPlayDeckBuild(GameObject[] list)
     {
         if (IsHowToPlay)

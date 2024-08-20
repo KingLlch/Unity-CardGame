@@ -95,4 +95,9 @@ public class Menu : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void SetHowToPlay(bool isTrue)
+    {
+        HowToPlay.Instance.IsHowToPlay = isTrue;
+    }
 }

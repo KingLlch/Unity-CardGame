@@ -3795,8 +3795,8 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1869359641}
-        m_TargetAssemblyTypeName: HowToPlay, Assembly-CSharp
+      - m_Target: {fileID: 61866713}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: SetHowToPlay
         m_Mode: 0
         m_Arguments:
