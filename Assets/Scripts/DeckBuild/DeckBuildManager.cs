@@ -55,6 +55,7 @@ public class DeckBuildManager : MonoBehaviour
             newCard.transform.position = new Vector3(0, 0, 100);
             newCard.AddComponent<ClickCardOnDeckBuild>().IsMainCard = true;
             newCard.GetComponent<CardInfoScript>().ShowCardInfo(card);
+            newCard.GetComponent<CardMove>().enabled = false;
 
             AllCards.Add(newCard);
             CardInfoDeckList.Add(newCard.GetComponent<CardInfoScript>());

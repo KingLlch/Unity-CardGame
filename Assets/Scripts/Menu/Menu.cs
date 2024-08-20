@@ -7,6 +7,7 @@ using static UnityEngine.Rendering.DebugUI;
 public class Menu : MonoBehaviour
 {
     public GameObject SettingsPanel;
+    public GameObject HowToPlayPanel;
 
     public AudioMixer MainAudioMixer;
     public AudioSource AudioSourceVoice;
@@ -82,9 +83,19 @@ public class Menu : MonoBehaviour
         return value;
     }
 
+    public void HowToPlay()
+    {
+        HowToPlayPanel.SetActive(true);
+    }
+
     public void CloseSettingsPanel()
     {
         SettingsPanel.SetActive(false);
+    }
+
+    public void CloseHowToPlayPanel()
+    {
+        HowToPlayPanel.SetActive(false);
     }
 
     public void Exit()

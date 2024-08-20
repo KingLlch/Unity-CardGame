@@ -87,11 +87,11 @@ public class ChoseCard : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
                 }
             }
 
-            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, true) != null)
+            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, true) != null)
             {
-                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, true).Count; i++)
+                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, true).Count; i++)
                 {
-                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, true)[i].ImageEdge1.color = Color.white;
+                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, true)[i].ImageEdge1.color = Color.white;
                 }
             }
 

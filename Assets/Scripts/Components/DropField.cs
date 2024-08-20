@@ -125,7 +125,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
                 HideEmptyCard();
 
-                DropCard.Invoke(card.GetComponent<CardInfoScript>());
+                DropCard.Invoke(cardInfo);
             }
 
             else if (TypeField == TypeField.ENEMY_TABLE && cardInfo.SelfCard.StatusEffects.IsInvisibility)
@@ -146,7 +146,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
                 HideEmptyCard();
 
-                DropCard.Invoke(card.GetComponent<CardInfoScript>());
+                DropCard.Invoke(cardInfo);
             }
 
             else

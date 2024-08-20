@@ -102,7 +102,7 @@ public class CardInfoScript : MonoBehaviour
 
     public void ShowDescription()
     {
-        if ((SceneManager.loadedSceneCount != 0) || ((!IsHideCard) && (!GameManager.Instance.IsDrag) && (!IsAnimationCard) && (!IsOrderCard) && (DescriptionObject != null)))
+        if ((SceneManager.sceneCount == 1) || ((!IsHideCard) && (!GameManager.Instance.IsDrag) && (!IsAnimationCard) && (!IsOrderCard) && (DescriptionObject != null)))
         {
             DescriptionObject.SetActive(true);
             DescriptionObject.transform.SetParent(transform.parent.parent);
