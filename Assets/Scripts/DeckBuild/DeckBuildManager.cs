@@ -37,6 +37,8 @@ public class DeckBuildManager : MonoBehaviour
 
     private int CountCardInDeck;
 
+    public GameObject[] HowToPlayList;
+
     private void Awake()
     {
         if (_instance == null)
@@ -54,12 +56,16 @@ public class DeckBuildManager : MonoBehaviour
             GameObject newCard = Instantiate(CardPref, Vector3.zero, Quaternion.identity, CardContentView.transform);
             newCard.transform.position = new Vector3(0, 0, 100);
             newCard.AddComponent<ClickCardOnDeckBuild>().IsMainCard = true;
-            newCard.GetComponent<CardInfoScript>().ShowCardInfo(card);
+            CardInfoScript cardInfo = newCard.GetComponent<CardInfoScript>();
+            cardInfo.ShowCardInfo(card);
+            cardInfo.IsDeckBuildCard = true;
             newCard.GetComponent<CardMove>().enabled = false;
 
             AllCards.Add(newCard);
-            CardInfoDeckList.Add(newCard.GetComponent<CardInfoScript>());
+            CardInfoDeckList.Add(cardInfo);
         }
+
+        HowToPlay.Instance.HowToPlayDeckBuild(HowToPlayList);
     }
 
     public void AddCard(CardInfoScript card)

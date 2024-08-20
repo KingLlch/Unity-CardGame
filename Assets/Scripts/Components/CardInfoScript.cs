@@ -30,6 +30,7 @@ public class CardInfoScript : MonoBehaviour
     public bool IsHideCard;
     public bool IsAnimationCard;
     public bool IsOrderCard;
+    public bool IsDeckBuildCard;
 
     public GameObject StatusEffectPrefab;
 
@@ -102,7 +103,7 @@ public class CardInfoScript : MonoBehaviour
 
     public void ShowDescription()
     {
-        if ((SceneManager.sceneCount == 1) || ((!IsHideCard) && (!GameManager.Instance.IsDrag) && (!IsAnimationCard) && (!IsOrderCard) && (DescriptionObject != null)))
+        if ((IsDeckBuildCard) || ((!IsHideCard) && (!GameManager.Instance.IsDrag) && (!IsAnimationCard) && (!IsOrderCard) && (DescriptionObject != null)))
         {
             DescriptionObject.SetActive(true);
             DescriptionObject.transform.SetParent(transform.parent.parent);

@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Menu : MonoBehaviour
 {
@@ -17,6 +16,8 @@ public class Menu : MonoBehaviour
     public Scrollbar EffectsSoundVolume;
     public Scrollbar VoiceSoundVolume;
 
+    public Toggle HowToPlayToggle;
+
     private AudioClip[] voiceClips;
     private AudioClip[] effectsClips;
 
@@ -28,6 +29,8 @@ public class Menu : MonoBehaviour
 
         voiceClips = Resources.LoadAll<AudioClip>("Sounds/Cards/Deployment/");
         effectsClips = Resources.LoadAll<AudioClip>("Sounds/Cards/StartOrder/");
+
+        HowToPlayToggle.isOn = HowToPlay.Instance.IsHowToPlay;
     }
 
     public void MasterVolumeChanged(float value)
@@ -83,19 +86,9 @@ public class Menu : MonoBehaviour
         return value;
     }
 
-    public void HowToPlay()
-    {
-        HowToPlayPanel.SetActive(true);
-    }
-
     public void CloseSettingsPanel()
     {
         SettingsPanel.SetActive(false);
-    }
-
-    public void CloseHowToPlayPanel()
-    {
-        HowToPlayPanel.SetActive(false);
     }
 
     public void Exit()

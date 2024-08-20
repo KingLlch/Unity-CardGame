@@ -30,7 +30,6 @@ public class DeckManager : MonoBehaviour
 
         else
         {
-            Debug.Log("Destroy");
             Destroy(gameObject);
         }
     }

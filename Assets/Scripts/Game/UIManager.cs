@@ -70,6 +70,30 @@ public class UIManager : MonoBehaviour
     {
         _playerPointsTMPro.text = playerPoints.ToString();
         _enemyPointsTMPro.text = enemyPoints.ToString();
+
+        if (playerPoints > enemyPoints)
+        {
+            _enemyPointsTMPro.color = Color.black;
+            _enemyPointsTMPro.fontSize = 36;
+            _playerPointsTMPro.color = Color.red;
+            _playerPointsTMPro.fontSize = 50;
+        }
+
+        else if (enemyPoints > playerPoints) 
+        {
+            _playerPointsTMPro.color = Color.black;
+            _playerPointsTMPro.fontSize = 36;
+            _enemyPointsTMPro.color = Color.red;
+            _enemyPointsTMPro.fontSize = 50;
+        }
+
+        else
+        {
+            _playerPointsTMPro.color = Color.black;
+            _playerPointsTMPro.fontSize = 36;
+            _enemyPointsTMPro.color = Color.black;
+            _enemyPointsTMPro.fontSize = 36;
+        }
     }
 
     public void ChangeWick(int currentTime)
