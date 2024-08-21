@@ -286,8 +286,10 @@ public class GameManager : MonoBehaviour
 
         foreach (Coroutine coroutine in AllCoroutine)
         {
+            if (coroutine != null)
             StopCoroutine(coroutine);
         }
+        AllCoroutine.Clear();
 
         ChangeEnemyPoints();
         ChangePlayerPoints();

@@ -87,7 +87,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
 
     private void CheckStatusEffectGameObject(CardInfoScript card)
     {
-        if (card.SelfCard.StatusEffects.IsSelfShielded)
+        if (card.SelfCard.StatusEffects.IsSelfShielded || card.SelfCard.StatusEffects.IsShieldOther)
             StatusEffects[0].SetActive(true);
         else
             StatusEffects[0].SetActive(false);
@@ -97,7 +97,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         else
             StatusEffects[1].SetActive(false);
 
-        if (card.SelfCard.StatusEffects.IsStunOther)
+        if (card.SelfCard.StatusEffects.IsStunOther || card.SelfCard.StatusEffects.IsSelfStunned)
             StatusEffects[2].SetActive(true);
         else
             StatusEffects[2].SetActive(false);
@@ -112,7 +112,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         else
             StatusEffects[4].SetActive(false);
 
-        if (card.SelfCard.StatusEffects.SelfBleeding > 0)
+        if (card.SelfCard.StatusEffects.SelfBleeding > 0 || card.SelfCard.StatusEffects.BleedingOther != 0)
         {
             StatusEffects[5].SetActive(true);
 
@@ -120,7 +120,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         else
             StatusEffects[5].SetActive(false);
 
-        if (card.SelfCard.StatusEffects.SelfEndurance > 0)
+        if (card.SelfCard.StatusEffects.SelfEndurance > 0 || card.SelfCard.StatusEffects.EnduranceOther != 0)
         {
             StatusEffects[6].SetActive(true);
 
