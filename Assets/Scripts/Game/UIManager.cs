@@ -115,12 +115,12 @@ public class UIManager : MonoBehaviour
 
     public void CheckColorPointsCard(CardInfoScript card)
     {
-        if (card.SelfCard.Points == card.SelfCard.MaxPoints)
+        if (card.SelfCard.BaseCard.Points == card.SelfCard.BaseCard.MaxPoints)
         {
             card.Point.colorGradient = new VertexGradient(Color.white, Color.white, Color.white, Color.white);
         }
 
-        else if (card.SelfCard.Points < card.SelfCard.MaxPoints)
+        else if (card.SelfCard.BaseCard.Points < card.SelfCard.BaseCard.MaxPoints)
         {
             card.Point.colorGradient = new VertexGradient(Color.red, Color.red, Color.white, Color.white);
         }

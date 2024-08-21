@@ -41,6 +41,8 @@ public class CardView : MonoBehaviour, IPointerClickHandler
     public Sprite invisibilityImage;
     public Sprite stunImage;
     public Sprite invulnerabilityImage;
+    public Sprite bleedingImage;
+    public Sprite enduranceImage;
 
     private void Awake()
     {
@@ -57,35 +59,35 @@ public class CardView : MonoBehaviour, IPointerClickHandler
 
         Material imageMaterial = new Material(card.Image.material);
         CardViewImage.material = imageMaterial;
-        imageMaterial.SetTexture("_Image", card.SelfCard.ImageTexture);
-        imageMaterial.SetColor("_Color", card.SelfCard.ColorTheme);
+        imageMaterial.SetTexture("_Image", card.SelfCard.BaseCard.ImageTexture);
+        imageMaterial.SetColor("_Color", card.SelfCard.BaseCard.ColorTheme);
 
         CardViewName.text = card.Name.text;
         CardViewSecondName.text = card.SecondName.text;
         CardViewDescription.text = card.Description.text;
 
-        CardViewName.colorGradient = new VertexGradient(card.SelfCard.ColorTheme, card.SelfCard.ColorTheme, Color.black, Color.black);
-        CardViewSecondName.colorGradient = new VertexGradient(card.SelfCard.ColorTheme, card.SelfCard.ColorTheme, Color.black, Color.black);
-        CardViewDescription.colorGradient = new VertexGradient(card.SelfCard.ColorTheme, card.SelfCard.ColorTheme, Color.black, Color.black);
+        CardViewName.colorGradient = new VertexGradient(card.SelfCard.BaseCard.ColorTheme, card.SelfCard.BaseCard.ColorTheme, Color.black, Color.black);
+        CardViewSecondName.colorGradient = new VertexGradient(card.SelfCard.BaseCard.ColorTheme, card.SelfCard.BaseCard.ColorTheme, Color.black, Color.black);
+        CardViewDescription.colorGradient = new VertexGradient(card.SelfCard.BaseCard.ColorTheme, card.SelfCard.BaseCard.ColorTheme, Color.black, Color.black);
 
         ShowPoints(true);
 
-        CardViewPoints.text = card.SelfCard.Points.ToString();
-        if (card.SelfCard.Points < card.SelfCard.MaxPoints)
+        CardViewPoints.text = card.SelfCard.BaseCard.Points.ToString();
+        if (card.SelfCard.BaseCard.Points < card.SelfCard.BaseCard.MaxPoints)
             CardViewPoints.colorGradient = new VertexGradient(Color.red, Color.red, Color.white, Color.white);
-        else if (card.SelfCard.Points > card.SelfCard.MaxPoints)
+        else if (card.SelfCard.BaseCard.Points > card.SelfCard.BaseCard.MaxPoints)
             CardViewPoints.colorGradient = new VertexGradient(Color.green, Color.green, Color.white, Color.white);
         else
             CardViewPoints.colorGradient = new VertexGradient(Color.white, Color.white, Color.white, Color.white);
 
-        CardViewMaxPoints.text = card.SelfCard.MaxPoints.ToString();
+        CardViewMaxPoints.text = card.SelfCard.BaseCard.MaxPoints.ToString();
 
         CheckStatusEffectGameObject(card);
     }
 
     private void CheckStatusEffectGameObject(CardInfoScript card)
     {
-        if (card.SelfCard.StatusEffects.IsShielded)
+        if (card.SelfCard.StatusEffects.IsSelfShielded)
             StatusEffects[0].SetActive(true);
         else
             StatusEffects[0].SetActive(false);
@@ -95,7 +97,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         else
             StatusEffects[1].SetActive(false);
 
-        if (card.SelfCard.StatusEffects.IsStun)
+        if (card.SelfCard.StatusEffects.IsStunOther)
             StatusEffects[2].SetActive(true);
         else
             StatusEffects[2].SetActive(false);
@@ -109,6 +111,22 @@ public class CardView : MonoBehaviour, IPointerClickHandler
             StatusEffects[4].SetActive(true);
         else
             StatusEffects[4].SetActive(false);
+
+        if (card.SelfCard.StatusEffects.SelfBleeding > 0)
+        {
+            StatusEffects[5].SetActive(true);
+
+        }
+        else
+            StatusEffects[5].SetActive(false);
+
+        if (card.SelfCard.StatusEffects.SelfEndurance > 0)
+        {
+            StatusEffects[6].SetActive(true);
+
+        }
+        else
+            StatusEffects[6].SetActive(false);
     }
 
     public void ShowPoints(bool IsCurrentPoints)

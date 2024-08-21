@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class CardMechanics : MonoBehaviour
 {
@@ -30,121 +32,279 @@ public class CardMechanics : MonoBehaviour
         }
     }
 
-    public void ChangePoints(CardInfoScript targetCard, CardInfoScript startCard, bool deploymentAction = false, bool selfAction = false, bool endTurnAction = false, int distanceNearCard = 0)
+    public void Deployment(CardInfoScript targetCard, CardInfoScript startCard,  int distanceNearCard = 0)
     {
-        if (deploymentAction)
+        if (startCard.SelfCard.BoostOrDamage.Boost != 0)
         {
-            if (startCard.SelfCard.Boost != 0)
-            {
-                targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.Boost + distanceNearCard * startCard.SelfCard.ChangeBoost, startCard.SelfCard);
+            ChangeCardPoints(startCard, targetCard, startCard.SelfCard.BoostOrDamage.Boost + distanceNearCard * startCard.SelfCard.BoostOrDamage.ChangeNearBoost);
 
-                if (startCard.SelfCard.Boost > 0) EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, true);
-                else EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, false);
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, startCard.SelfCard.BoostOrDamage.Boost);
+        }
+
+        if (startCard.SelfCard.BoostOrDamage.Damage != 0)
+        {
+            ChangeCardPoints(startCard, targetCard, -startCard.SelfCard.BoostOrDamage.Damage - distanceNearCard * startCard.SelfCard.BoostOrDamage.ChangeNearDamage);
+
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, startCard.SelfCard.BoostOrDamage.Damage);
+        }
+
+        CheckUICards(targetCard, startCard);
+    }
+
+    public void Self(CardInfoScript startCard, CardInfoScript targetCard)
+    {
+        if (startCard.SelfCard.BoostOrDamage.SelfBoost != 0)
+        {
+            ChangeCardPoints(startCard, startCard, startCard.SelfCard.BoostOrDamage.SelfBoost);
+
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, startCard.SelfCard.BoostOrDamage.SelfBoost);
+        }
+
+        if (startCard.SelfCard.BoostOrDamage.SelfDamage != 0)
+        {
+            ChangeCardPoints(startCard, startCard, -startCard.SelfCard.BoostOrDamage.SelfDamage);
+
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, startCard.SelfCard.BoostOrDamage.SelfDamage);
+        }
+
+        CheckUICards(targetCard,startCard);
+    }
+
+    public void EndTurn(CardInfoScript startCard, CardInfoScript targetCard = null, bool isSelfOrNear = false)
+    {
+        if (startCard.SelfCard.EndTurnActions.EndTurnSelfBoost != 0 && isSelfOrNear)
+        {
+            ChangeCardPoints(startCard, startCard, startCard.SelfCard.EndTurnActions.EndTurnSelfBoost);
+
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, startCard.transform, startCard.SelfCard.EndTurnActions.EndTurnSelfBoost);
+        }
+
+        if (startCard.SelfCard.EndTurnActions.EndTurnSelfDamage != 0 && isSelfOrNear)
+        {
+            ChangeCardPoints(startCard, startCard, startCard.SelfCard.EndTurnActions.EndTurnSelfDamage);
+
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, startCard.transform, startCard.SelfCard.EndTurnActions.EndTurnSelfDamage);
+        }
+
+        if (startCard.SelfCard.EndTurnActions.EndTurnNearBoost != 0 && isSelfOrNear)
+        {
+            startCard.CheckSiblingIndex();
+
+            if (ReturnNearCard(startCard, 1, false) != null)
+            {
+                ChangeCardPoints(startCard, ReturnNearCard(startCard, 1, false)[0], startCard.SelfCard.EndTurnActions.EndTurnNearBoost);
+                EffectsManager.Instance.StartParticleEffects(startCard.transform, ReturnNearCard(startCard, 1, false)[0].transform, startCard.SelfCard.EndTurnActions.EndTurnNearBoost);
             }
-            if (startCard.SelfCard.Damage != 0)
-            {
-                targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.Damage - distanceNearCard * startCard.SelfCard.ChangeDamage, startCard.SelfCard);
 
-                if (startCard.SelfCard.Damage > 0) EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, false);
-                else EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, true);
+            if (ReturnNearCard(startCard, 1, true) != null)
+            {
+                ChangeCardPoints(startCard, ReturnNearCard(startCard, 1, true)[0], startCard.SelfCard.EndTurnActions.EndTurnNearBoost);
+                EffectsManager.Instance.StartParticleEffects(startCard.transform, ReturnNearCard(startCard, 1, true)[0].transform, startCard.SelfCard.EndTurnActions.EndTurnNearBoost);
             }
         }
 
-        if (selfAction)
+        if (startCard.SelfCard.EndTurnActions.EndTurnNearDamage != 0 && isSelfOrNear)
         {
-            if (startCard.SelfCard.SelfBoost != 0)
+            startCard.CheckSiblingIndex();
+
+            if (ReturnNearCard(startCard, 1, false) != null)
             {
-                targetCard.ChangePoints(ref startCard.SelfCard, startCard.SelfCard.SelfBoost, startCard.SelfCard);
-                EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, true, true);
+                ChangeCardPoints(startCard, ReturnNearCard(startCard, 1, false)[0], startCard.SelfCard.EndTurnActions.EndTurnNearDamage);
+                EffectsManager.Instance.StartParticleEffects(startCard.transform, ReturnNearCard(startCard, 1, false)[0].transform, startCard.SelfCard.EndTurnActions.EndTurnNearDamage);
             }
-            if (startCard.SelfCard.SelfDamage != 0)
+            if (ReturnNearCard(startCard, 1, true) != null)
             {
-                targetCard.ChangePoints(ref startCard.SelfCard, -startCard.SelfCard.SelfDamage, startCard.SelfCard);
-                EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, false, true);
+                ChangeCardPoints(startCard, ReturnNearCard(startCard, 1, true)[0],  startCard.SelfCard.EndTurnActions.EndTurnNearBoost);
+                EffectsManager.Instance.StartParticleEffects(startCard.transform, ReturnNearCard(startCard, 1, true)[0].transform, startCard.SelfCard.EndTurnActions.EndTurnNearBoost);
             }
         }
 
-        if (endTurnAction)
+        if (startCard.SelfCard.EndTurnActions.EndTurnRandomBoost != 0 && !isSelfOrNear)
         {
-            if (startCard.SelfCard.EndTurnBoost != 0)
-            {
-                targetCard.ChangePoints(ref targetCard.SelfCard, startCard.SelfCard.EndTurnBoost, startCard.SelfCard);
+            ChangeCardPoints(startCard, targetCard,  startCard.SelfCard.EndTurnActions.EndTurnRandomBoost);
 
-                if (startCard.SelfCard.EndTurnBoost > 0) EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, true);
-                else EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, false);
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, startCard.SelfCard.EndTurnActions.EndTurnRandomBoost);
+        }
+
+        if (startCard.SelfCard.EndTurnActions.EndTurnRandomDamage != 0 && !isSelfOrNear)
+        {
+            ChangeCardPoints(startCard, targetCard, -startCard.SelfCard.EndTurnActions.EndTurnRandomDamage);
+
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, -startCard.SelfCard.EndTurnActions.EndTurnRandomDamage);
+        }
+
+        CheckUICards(targetCard, startCard);
+    }
+
+    public void BleedingOrEndurance(CardInfoScript startCard, CardInfoScript targetCard, bool isBleed = false)
+    {
+        if (isBleed)
+            targetCard.SelfCard.StatusEffects.SelfBleeding += startCard.SelfCard.StatusEffects.BleedingOther;
+        else
+            targetCard.SelfCard.StatusEffects.SelfEndurance += startCard.SelfCard.StatusEffects.SelfEndurance;
+    }
+
+    private void CheckUICards(CardInfoScript targetCard, CardInfoScript startCard)
+    {
+        if (targetCard != null)
+        {
+            UIManager.Instance.CheckColorPointsCard(targetCard);
+            CheckStatusEffects(targetCard);
+            IsDestroyCard(targetCard);
+
+        }
+
+        if (startCard != null)
+        {
+            UIManager.Instance.CheckColorPointsCard(startCard);
+            IsDestroyCard(startCard);
+        }
+    }
+
+    public void ChangeCardPoints(CardInfoScript startCardInfo, CardInfoScript targetCardInfo,  int value)
+    {
+        ref Card targetCard = ref targetCardInfo.SelfCard;
+        ref Card startCard = ref startCardInfo.SelfCard;
+
+        if ((targetCard.StatusEffects.IsIllusion) && (value < 0))
+        {
+            value += value;
+        }
+
+        if ((targetCard.StatusEffects.IsSelfShielded) && (value < 0))
+        {
+            value = 0;
+            targetCard.StatusEffects.IsSelfShielded = false;
+        }
+
+        if (targetCard.UniqueMechanics.HealDamageValue != 0 && (value < 0))
+        {
+            if (targetCard.UniqueMechanics.HealDamageValue == -1)
+                value = -value;
+            else
+            {
+                value = -targetCard.UniqueMechanics.HealDamageValue;
             }
-            if (startCard.SelfCard.EndTurnDamage != 0)
-            {
-                targetCard.ChangePoints(ref targetCard.SelfCard, -startCard.SelfCard.EndTurnDamage, startCard.SelfCard);
 
-                if (startCard.SelfCard.EndTurnDamage > 0) EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, false);
-                else EffectsManager.Instance.ParticleEffects(startCard.transform, targetCard.transform, true);
+        }
+
+        if (targetCard.UniqueMechanics.ReturnDamageValue != 0 && (value < 0) && targetCardInfo != startCardInfo)
+        {
+            if (targetCard.UniqueMechanics.ReturnDamageValue == -1)
+            {
+                ChangeCardPoints(targetCardInfo, startCardInfo, value);
+            }
+            else
+            {
+                ChangeCardPoints(targetCardInfo, startCardInfo, 1);
             }
         }
 
-        UIManager.Instance.CheckColorPointsCard(targetCard);
-        UIManager.Instance.CheckColorPointsCard(startCard);
+        targetCard.BaseCard.Points += value;
 
-        CheckStatusEffects(targetCard);
+        Debug.Log(startCard.BaseCard.Name + " изменила силу " + targetCard.BaseCard.Name + " в размере " + value + "\n" + (targetCard.BaseCard.Points - value) + " => " + targetCard.BaseCard.Points);
 
-        IsDestroyCard(targetCard);
-        IsDestroyCard(startCard);
+        CheckUICards(targetCardInfo, startCardInfo);
+        ShowPointsUI(targetCardInfo);
+    }
+
+    public void ShowPointsUI(CardInfoScript cardInfo)
+    {
+        cardInfo.Point.text = cardInfo.SelfCard.BaseCard.Points.ToString();
     }
 
     public void IsDestroyCard(CardInfoScript card)
     {
-        if (card.SelfCard.Points <= 0)
+        if (card.SelfCard.BaseCard.Points <= 0)
         {
-            card.SelfCard.Points = 0;
+            card.SelfCard.BaseCard.Points = 0;
 
-            if (GameManager.Instance.PlayerFieldCards.Contains(card))
-                GameManager.Instance.PlayerFieldCards.Remove(card);
-
-            else if (GameManager.Instance.EnemyFieldCards.Contains(card))
-                GameManager.Instance.EnemyFieldCards.Remove(card);
-
-            if (GameManager.Instance.PlayerFieldInvulnerabilityCards.Contains(card))
-                GameManager.Instance.PlayerFieldInvulnerabilityCards.Remove(card);
-
-            else if (GameManager.Instance.EnemyFieldInvulnerabilityCards.Contains(card))
-                GameManager.Instance.EnemyFieldInvulnerabilityCards.Remove(card);
-
-            EffectsManager.Instance.StartDestroyCoroutine(card);
-
-            Destroy(card.DescriptionObject);
-            Destroy(card.gameObject, 1f);
+            DestroyCard(card);
         }
     }
 
-    public void EndTurnActions()
+    public void DestroyCard(CardInfoScript card, CardInfoScript startCard = null)
+    {
+        if (startCard != null)
+            Debug.Log(startCard.SelfCard.BaseCard.Name + " уничтожила " + card.SelfCard.BaseCard.Name);
+
+        if (GameManager.Instance.PlayerFieldCards.Contains(card))
+            GameManager.Instance.PlayerFieldCards.Remove(card);
+
+        else if (GameManager.Instance.EnemyFieldCards.Contains(card))
+            GameManager.Instance.EnemyFieldCards.Remove(card);
+
+        if (GameManager.Instance.PlayerFieldInvulnerabilityCards.Contains(card))
+            GameManager.Instance.PlayerFieldInvulnerabilityCards.Remove(card);
+
+        else if (GameManager.Instance.EnemyFieldInvulnerabilityCards.Contains(card))
+            GameManager.Instance.EnemyFieldInvulnerabilityCards.Remove(card);
+
+        EffectsManager.Instance.StartDestroyCoroutine(card);
+
+        Destroy(card.DescriptionObject);
+        Destroy(card.gameObject, 1f);
+    }
+
+    public void SwapPoints(CardInfoScript firstCard, CardInfoScript secondCard)
+    {
+        int temporaryVariable;
+        temporaryVariable = firstCard.SelfCard.BaseCard.Points;
+        firstCard.SelfCard.BaseCard.Points = secondCard.SelfCard.BaseCard.Points;
+        secondCard.SelfCard.BaseCard.Points = temporaryVariable;
+
+        CheckUICards(firstCard, secondCard);
+
+        ShowPointsUI(firstCard);
+        ShowPointsUI(secondCard);
+    }
+
+    public IEnumerator EndTurnActions()
     {
         if (GameManager.Instance.IsPlayerTurn)
         {
             foreach (CardInfoScript card in GameManager.Instance.PlayerFieldCards)
             {
-                if (card.SelfCard.EndTurnAction == true && !card.SelfCard.StatusEffects.IsStunned)
+                if (card.SelfCard.EndTurnActions.EndTurnActionCount > 0 && !card.SelfCard.StatusEffects.IsSelfStunned)
                 {
-                    for (int i = 0; i < card.SelfCard.EndTurnActionQuantity; i++)
+                    for (int i = 0; i < card.SelfCard.EndTurnActions.EndTurnActionCount; i++)
                     {
+                        EndTurn(card, isSelfOrNear:true);
 
-                        if ((card.SelfCard.EndTurnDamage != 0) && (GameManager.Instance.EnemyFieldCards.Count > 0))
+                        if ((card.SelfCard.EndTurnActions.EndTurnRandomDamage != 0) && (GameManager.Instance.EnemyFieldCards.Count > 0))
                         {
-                            ChangePoints(GameManager.Instance.EnemyFieldCards[Random.Range(0, GameManager.Instance.EnemyFieldCards.Count)], card, false, false, true);
-                            EndTurnCardEvent.Invoke(card);
+                            EndTurn(card, GameManager.Instance.EnemyFieldCards[Random.Range(0, GameManager.Instance.EnemyFieldCards.Count)], false);
                         }
 
-                        if ((card.SelfCard.EndTurnBoost != 0) && (GameManager.Instance.PlayerFieldCards.Count > 0))
+                        if ((card.SelfCard.EndTurnActions.EndTurnRandomBoost != 0) && (GameManager.Instance.PlayerFieldCards.Count > 0))
                         {
-                            ChangePoints(GameManager.Instance.PlayerFieldCards[Random.Range(0, GameManager.Instance.PlayerFieldCards.Count)], card, false, false, true);
-                            EndTurnCardEvent.Invoke(card);
+                            EndTurn(card,  GameManager.Instance.PlayerFieldCards[Random.Range(0, GameManager.Instance.PlayerFieldCards.Count)], false);
                         }
                     }
+
+                    EndTurnCardEvent.Invoke(card);
+
+                    yield return new WaitForSeconds(0.5f);
                 }
 
-                if (card.SelfCard.StatusEffects.IsStunned)
+                if (card.SelfCard.StatusEffects.IsSelfStunned)
                 {
-                    card.SelfCard.StatusEffects.IsStunned = false;
+                    card.SelfCard.StatusEffects.IsSelfStunned = false;
                     CheckStatusEffects(card);
+                }
+
+                if (card.SelfCard.StatusEffects.SelfBleeding > 0)
+                {
+                    ChangeCardPoints(card, card, -1);
+                    card.SelfCard.StatusEffects.SelfBleeding--;
+                    CheckBleeding(card);
+                }
+
+                if (card.SelfCard.StatusEffects.SelfEndurance > 0)
+                {
+                    ChangeCardPoints(card, card, 1);
+                    card.SelfCard.StatusEffects.SelfEndurance--;
+                    CheckBleeding(card);
                 }
             }
         }
@@ -153,41 +313,60 @@ public class CardMechanics : MonoBehaviour
         {
             foreach (CardInfoScript card in GameManager.Instance.EnemyFieldCards)
             {
-                if (card.SelfCard.EndTurnAction == true && !card.SelfCard.StatusEffects.IsStunned)
+                if (card.SelfCard.EndTurnActions.EndTurnActionCount > 0 && !card.SelfCard.StatusEffects.IsSelfStunned)
                 {
-                    for (int i = 0; i < card.SelfCard.EndTurnActionQuantity; i++)
+                    for (int i = 0; i < card.SelfCard.EndTurnActions.EndTurnActionCount; i++)
                     {
+                        EndTurn(card, isSelfOrNear: true);
 
-                        if ((card.SelfCard.EndTurnDamage != 0) && (GameManager.Instance.PlayerFieldCards.Count > 0))
+                        if ((card.SelfCard.EndTurnActions.EndTurnRandomDamage != 0) && (GameManager.Instance.PlayerFieldCards.Count > 0))
                         {
-                            ChangePoints(GameManager.Instance.PlayerFieldCards[Random.Range(0, GameManager.Instance.PlayerFieldCards.Count)], card, false, false, true);
-                            EndTurnCardEvent.Invoke(card);
+                            EndTurn(card, GameManager.Instance.PlayerFieldCards[Random.Range(0, GameManager.Instance.PlayerFieldCards.Count)], false);
                         }
 
-                        if ((card.SelfCard.EndTurnBoost != 0) && (GameManager.Instance.EnemyFieldCards.Count > 0))
+                        if ((card.SelfCard.EndTurnActions.EndTurnRandomBoost != 0) && (GameManager.Instance.EnemyFieldCards.Count > 0))
                         {
-                            ChangePoints(GameManager.Instance.EnemyFieldCards[Random.Range(0, GameManager.Instance.EnemyFieldCards.Count)], card, false, false, true);
-                            EndTurnCardEvent.Invoke(card);
+                            EndTurn(card, GameManager.Instance.EnemyFieldCards[Random.Range(0, GameManager.Instance.EnemyFieldCards.Count)], false);
                         }
                     }
+
+                    EndTurnCardEvent.Invoke(card);
+
+                    yield return new WaitForSeconds(0.5f);
                 }
 
-                if (card.SelfCard.StatusEffects.IsStunned)
+                if (card.SelfCard.StatusEffects.IsSelfStunned)
                 {
-                    card.SelfCard.StatusEffects.IsStunned = false;
+                    card.SelfCard.StatusEffects.IsSelfStunned = false;
                     CheckStatusEffects(card);
+                }
+
+                if (card.SelfCard.StatusEffects.SelfBleeding > 0)
+                {
+                    ChangeCardPoints(card, card, -1);
+                    card.SelfCard.StatusEffects.SelfBleeding--;
+                    CheckBleeding(card);
+                }
+
+                if (card.SelfCard.StatusEffects.SelfEndurance > 0)
+                {
+                    ChangeCardPoints(card, card, 1);
+                    card.SelfCard.StatusEffects.SelfEndurance--;
+                    CheckBleeding(card);
                 }
             }
         }
+
+        yield break;
     }
 
     public void SpawnCard(CardInfoScript card, bool player)
     {
         GameObject summonCard;
 
-        if (card.SelfCard.SummonCardNumber == -1)
+        if (card.SelfCard.Summons.SummonCardNumber == -1)
         {
-            for (int i = 0; i < card.SelfCard.SummonCardCount; i++)
+            for (int i = 0; i < card.SelfCard.Summons.SummonCardCount; i++)
             {
                 if (!((player && GameManager.Instance.PlayerFieldCards.Count < GameManager.Instance.MaxNumberCardInField) ||
                     (!player && GameManager.Instance.EnemyFieldCards.Count < GameManager.Instance.MaxNumberCardInField)))
@@ -215,7 +394,7 @@ public class CardMechanics : MonoBehaviour
 
         else
         {
-            for (int i = 0; i < card.SelfCard.SummonCardCount; i++)
+            for (int i = 0; i < card.SelfCard.Summons.SummonCardCount; i++)
             {
                 if (!((player && GameManager.Instance.PlayerFieldCards.Count < GameManager.Instance.MaxNumberCardInField) ||
                 (!player && GameManager.Instance.EnemyFieldCards.Count < GameManager.Instance.MaxNumberCardInField)))
@@ -232,7 +411,7 @@ public class CardMechanics : MonoBehaviour
 
                 if (player) GameManager.Instance.PlayerFieldCards.Add(summonCardInfo);
                 else GameManager.Instance.EnemyFieldCards.Add(summonCardInfo);
-                summonCardInfo.ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.SummonCardNumber]);
+                summonCardInfo.ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.Summons.SummonCardNumber]);
                 summonCard.AddComponent<ChoseCard>();
                 summonCard.GetComponent<ChoseCard>().enabled = false;
             }
@@ -266,14 +445,14 @@ public class CardMechanics : MonoBehaviour
 
     public void CheckStatusEffects(CardInfoScript card)
     {
-        if (card.SelfCard.StatusEffects.IsShielded && card.StatusEffectShield == null)
+        if (card.SelfCard.StatusEffects.IsSelfShielded && card.StatusEffectShield == null)
         {
             card.CardStatusEffectImage.material = new Material(EffectsManager.Instance.shieldMaterial);
             card.StatusEffectShield = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
             card.StatusEffectShield.GetComponent<StatusEffect>().Initialize(StatusEffectsType.shield);
         }
 
-        else if (!card.SelfCard.StatusEffects.IsShielded && card.StatusEffectShield != null)
+        else if (!card.SelfCard.StatusEffects.IsSelfShielded && card.StatusEffectShield != null)
         {
             card.CardStatusEffectImage.material = null;
             Destroy(card.StatusEffectShield);
@@ -287,13 +466,13 @@ public class CardMechanics : MonoBehaviour
             card.StatusEffectIllusion.GetComponent<StatusEffect>().Initialize(StatusEffectsType.illusion);
         }
 
-        if (card.SelfCard.StatusEffects.IsStunned && card.StatusEffectStunned == null)
+        if (card.SelfCard.StatusEffects.IsSelfStunned && card.StatusEffectStunned == null)
         {
             card.StatusEffectStunned = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
             card.StatusEffectStunned.GetComponent<StatusEffect>().Initialize(StatusEffectsType.stun);
         }
 
-        else if (!card.SelfCard.StatusEffects.IsStunned && card.StatusEffectStunned != null)
+        else if (!card.SelfCard.StatusEffects.IsSelfStunned && card.StatusEffectStunned != null)
         {
             Destroy(card.StatusEffectStunned);
             card.StatusEffectStunned = null;
@@ -311,6 +490,30 @@ public class CardMechanics : MonoBehaviour
             card.CardStatusEffectImage.material = new Material(EffectsManager.Instance.invisibilityMaterial);
             card.StatusEffectInvisibility = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
             card.StatusEffectInvisibility.GetComponent<StatusEffect>().Initialize(StatusEffectsType.invisibility);
+        }
+
+        CheckBleeding(card);
+    }
+
+    public void CheckBleeding(CardInfoScript card)
+    {
+        if (card.SelfCard.StatusEffects.SelfBleeding > 0)
+        {
+            card.BleedingPanel.SetActive(true);
+            card.BleedingPanel.GetComponent<Image>().color = Color.red;
+            card.BleedingPanelText.text = card.SelfCard.StatusEffects.SelfBleeding.ToString();
+        }
+
+        else if (card.SelfCard.StatusEffects.SelfEndurance > 0)
+        {
+            card.BleedingPanel.SetActive(true);
+            card.BleedingPanel.GetComponent<Image>().color = Color.green;
+            card.BleedingPanelText.text = card.SelfCard.StatusEffects.SelfEndurance.ToString();
+        }
+
+        else
+        {
+            card.BleedingPanel.SetActive(false);
         }
     }
 }

@@ -19,6 +19,12 @@ public class StatusEffect : MonoBehaviour
 
         if (type == StatusEffectsType.invulnerability)
             transform.GetComponent<Image>().sprite = CardView.Instance.invulnerabilityImage;
+
+        if (type == StatusEffectsType.bleeding)
+            transform.GetComponent<Image>().sprite = CardView.Instance.bleedingImage;
+
+        if (type == StatusEffectsType.endurance)
+            transform.GetComponent<Image>().sprite = CardView.Instance.enduranceImage;
     }
 }
 
@@ -28,6 +34,9 @@ public enum StatusEffectsType
     illusion = 1,
     invisibility = 2,
     stun = 3,
-    invulnerability = 4
+    invulnerability = 4,
+    bleeding = 5,
+    endurance = 6
+
 }
 

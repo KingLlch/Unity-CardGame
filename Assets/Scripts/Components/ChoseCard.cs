@@ -24,39 +24,39 @@ public class ChoseCard : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
         CardInfoScript card = transform.GetComponent<CardInfoScript>();
         card.ImageEdge1.color = Color.red;
 
-        if (GameManager.Instance.StartChoseCard.SelfCard.RangeBoost > 0 || GameManager.Instance.StartChoseCard.SelfCard.RangeDamage > 0)
+        if (GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost > 0 || GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage > 0)
         {
             card.CheckSiblingIndex();
 
-            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, true) != null)
+            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, true) != null)
             {
-                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, true).Count; i++)
+                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, true).Count; i++)
                 {
-                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, true)[i].ImageEdge1.color = Color.red;
+                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, true)[i].ImageEdge1.color = Color.red;
                 }
             }
 
-            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, false) != null)
+            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, false) != null)
             {
-                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, false).Count; i++)
+                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, false).Count; i++)
                 {
-                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, false)[i].ImageEdge1.color = Color.red;
+                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, false)[i].ImageEdge1.color = Color.red;
                 }
             }
 
-            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, true) != null)
+            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, true) != null)
             {
-                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, true).Count; i++)
+                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, true).Count; i++)
                 {
-                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, true)[i].ImageEdge1.color = Color.red;
+                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, true)[i].ImageEdge1.color = Color.red;
                 }
             }
 
-            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, false) != null)
+            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, false) != null)
             {
-                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, false).Count; i++)
+                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, false).Count; i++)
                 {
-                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, false)[i].ImageEdge1.color = Color.red;
+                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, false)[i].ImageEdge1.color = Color.red;
                 }
             }
         }
@@ -67,39 +67,39 @@ public class ChoseCard : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
         CardInfoScript card = transform.GetComponent<CardInfoScript>();
         card.ImageEdge1.color = Color.white;
 
-        if (GameManager.Instance.StartChoseCard.SelfCard.RangeBoost > 0 || GameManager.Instance.StartChoseCard.SelfCard.RangeDamage > 0)
+        if (GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost > 0 || GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage > 0)
         {
             card.CheckSiblingIndex();
 
-            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, true) != null)
+            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, true) != null)
             {
-                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, true).Count; i++)
+                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, true).Count; i++)
                 {
-                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, true)[i].ImageEdge1.color = Color.white;
+                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, true)[i].ImageEdge1.color = Color.white;
                 }
             }
 
-            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, false) != null)
+            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, false) != null)
             {
-                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, false).Count; i++)
+                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, false).Count; i++)
                 {
-                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeBoost, false)[i].ImageEdge1.color = Color.white;
+                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearBoost, false)[i].ImageEdge1.color = Color.white;
                 }
             }
 
-            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, true) != null)
+            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, true) != null)
             {
-                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, true).Count; i++)
+                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, true).Count; i++)
                 {
-                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, true)[i].ImageEdge1.color = Color.white;
+                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, true)[i].ImageEdge1.color = Color.white;
                 }
             }
 
-            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, false) != null)
+            if (CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, false) != null)
             {
-                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, false).Count; i++)
+                for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, false).Count; i++)
                 {
-                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.RangeDamage, false)[i].ImageEdge1.color = Color.white;
+                    CardMechanics.Instance.ReturnNearCard(card, GameManager.Instance.StartChoseCard.SelfCard.BoostOrDamage.NearDamage, false)[i].ImageEdge1.color = Color.white;
                 }
             }
         }

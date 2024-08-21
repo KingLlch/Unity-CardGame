@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CardInfoScript : MonoBehaviour
@@ -34,6 +33,9 @@ public class CardInfoScript : MonoBehaviour
 
     public GameObject StatusEffectPrefab;
 
+    public GameObject BleedingPanel;
+    public TextMeshProUGUI BleedingPanelText;
+
     [HideInInspector] public GameObject StatusEffectShield;
     [HideInInspector] public GameObject StatusEffectIllusion;
     [HideInInspector] public GameObject StatusEffectStunned;
@@ -42,27 +44,7 @@ public class CardInfoScript : MonoBehaviour
 
     public int ShowPoints(Card card)
     {
-        return card.Points;
-    }
-
-    public void ChangePoints(ref Card targetCard, int value, Card startCard)
-    {
-        if ((targetCard.StatusEffects.IsIllusion) && (value < 0))
-        {
-            value += value;
-        }
-
-        if ((targetCard.StatusEffects.IsShielded) && (value < 0))
-        {
-            value = 0;
-            targetCard.StatusEffects.IsShielded = false;
-        }
-
-        targetCard.Points += value;
-
-        Debug.Log(startCard.Name + " изменила силу " + targetCard.Name + " в размере " + value + "\n" + (targetCard.Points - value) + " => " + targetCard.Points);
-
-        ShowPointsUI(targetCard);
+        return card.BaseCard.Points;
     }
 
     public void ShowCardInfo(Card card)
@@ -74,21 +56,21 @@ public class CardInfoScript : MonoBehaviour
         ShadowCard.SetActive(true);
         ShadowPoint.SetActive(true);
         IsHideCard = false;
-        Point.text = card.Points.ToString();
-        Name.text = card.Name.ToString();
-        SecondName.text = card.SecondName.ToString();
-        Description.text = card.Description.ToString();
+        Point.text = card.BaseCard.Points.ToString();
+        Name.text = card.BaseCard.Name.ToString();
+        SecondName.text = card.BaseCard.AbilityName.ToString();
+        Description.text = card.BaseCard.Description.ToString();
 
-        Name.colorGradient = new VertexGradient(card.ColorTheme, card.ColorTheme, Color.black, Color.black);
-        SecondName.colorGradient = new VertexGradient(card.ColorTheme, card.ColorTheme, Color.black, Color.black);
-        Description.colorGradient = new VertexGradient(card.ColorTheme, card.ColorTheme, Color.black, Color.black);
+        Name.colorGradient = new VertexGradient(card.BaseCard.ColorTheme, card.BaseCard.ColorTheme, Color.black, Color.black);
+        SecondName.colorGradient = new VertexGradient(card.BaseCard.ColorTheme, card.BaseCard.ColorTheme, Color.black, Color.black);
+        Description.colorGradient = new VertexGradient(card.BaseCard.ColorTheme, card.BaseCard.ColorTheme, Color.black, Color.black);
 
         Material imageMaterial = new Material(Image.material);
 
         Image.material = imageMaterial;
 
-        imageMaterial.SetTexture("_Image", card.ImageTexture);
-        imageMaterial.SetColor("_Color", card.ColorTheme);
+        imageMaterial.SetTexture("_Image", card.BaseCard.ImageTexture);
+        imageMaterial.SetColor("_Color", card.BaseCard.ColorTheme);
     }
 
     public void HideCardInfo(Card card)
@@ -117,11 +99,6 @@ public class CardInfoScript : MonoBehaviour
             DescriptionObject.SetActive(false);
             DescriptionObject.transform.SetParent(transform);
         }
-    }
-
-    public void ShowPointsUI(Card card)
-    {
-        Point.text = card.Points.ToString();
     }
 
     public void CheckSiblingIndex()

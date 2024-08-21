@@ -60,7 +60,25 @@ public class EffectsManager : MonoBehaviour
         CardBack.SetActive(false);
     }
 
-    public void ParticleEffects(Transform start, Transform end, bool isBoost, bool isSelf = false)
+    public void StartParticleEffects(Transform start, Transform end, int value)
+    {
+        if (value > 0)
+        {
+            if (start == end)
+                ParticleEffects(start, end, false, true);
+            else
+                ParticleEffects(start, end, false, false);
+        }
+        else
+        {
+            if (start == end)
+                ParticleEffects(start, end, false, true);
+            else
+                ParticleEffects(start, end, false, false);
+        }
+    }
+
+    private void ParticleEffects(Transform start, Transform end, bool isBoost, bool isSelf)
     {
         if (isBoost)
         {

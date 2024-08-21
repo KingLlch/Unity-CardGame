@@ -82,7 +82,7 @@ public class DeckBuildManager : MonoBehaviour
         click.CardInfoScript = card;
 
         CardInDeck cardInDeck = newCardInDeck.GetComponent<CardInDeck>();
-        cardInDeck.Image.sprite = card.SelfCard.Sprite;
+        cardInDeck.Image.sprite = card.SelfCard.BaseCard.Sprite;
         cardInDeck.Name.text = card.Name.text + ": " + card.SecondName.text;
         cardInDeck.Points.text = card.Point.text;
 
@@ -164,7 +164,7 @@ public class DeckBuildManager : MonoBehaviour
 
     private void CardSound(CardInfoScript card)
     {
-        AudioSource.clip = Resources.Load<AudioClip>("Sounds/Cards/Deployment/" + card.SelfCard.Name + Random.Range(0, 6));
+        AudioSource.clip = Resources.Load<AudioClip>("Sounds/Cards/Deployment/" + card.SelfCard.BaseCard.Name + Random.Range(0, 6));
         AudioSource.Play();
     }
 }
