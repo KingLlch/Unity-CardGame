@@ -49,10 +49,10 @@ public struct EndTurnActions
     public int EndTurnNearDamage;
 }
 
-public struct Summons
+public struct Spawns
 {
-    public int SummonCardNumber;
-    public int SummonCardCount;
+    public int SpawnCardNumber;
+    public int SpawnCardCount;
 }
 
 public struct DrawCard
@@ -95,7 +95,7 @@ public struct Card
     public BaseCard BaseCard;
     public BoostOrDamage BoostOrDamage;
     public EndTurnActions EndTurnActions;
-    public Summons Summons;
+    public Spawns Summons;
     public DrawCard DrawCard;
     public UniqueMechanics UniqueMechanics;
     public StatusEffects StatusEffects;
@@ -108,7 +108,7 @@ public struct Card
         int endTurnQuantity = 0, int endTurnRandomBoost = 0, int endTurnRandomDamage = 0, 
         int endTurnSelfBoost = 0, int endTurnSelfDamage = 0, int endTurnNearBoost = 0, int endTurnNearDamage = 0,
 
-        int summonCardCount = 0, int summonCardNumber = 0, 
+        int spawnCardCount = 0, int spawnCardNumber = 0, 
 
         int drawCardCount = 0,
 
@@ -157,9 +157,9 @@ public struct Card
         EndTurnActions.EndTurnNearDamage = endTurnNearDamage;
 
 
-        Summons = new Summons();
-        Summons.SummonCardNumber = summonCardNumber;
-        Summons.SummonCardCount = summonCardCount;
+        Summons = new Spawns();
+        Summons.SpawnCardNumber = spawnCardNumber;
+        Summons.SpawnCardCount = spawnCardCount;
 
 
         DrawCard = new DrawCard();
@@ -328,22 +328,22 @@ public class CardManager : MonoBehaviour
 
             CardManagerList.AllCards.Add(new Card("Chaos Knight", "Phantasm", "Spawn 3 your illusion units near.",
                 "Sprites/Cards/ChaosKnight1", "Sounds/Cards/StartOrder/ChaosKnightPhantasm", Color.red,
-                6, 6, summonCardCount: 3, summonCardNumber: -1));
+                6, 6, spawnCardCount: 3, spawnCardNumber: -1));
 
             CardManagerList.AllCards.Add(new Card("Chaos Knight", "Chaos Bolt", "Damage enemy unit by 2, stun him and spawn 1 your illusion unit near.",
                 "Sprites/Cards/ChaosKnight2", "Sounds/Cards/StartOrder/ChaosKnightChaosBolt", Color.red,
-                6, 6, damage:2,addictionWithEnemyField: true, summonCardCount: 1, summonCardNumber: -1, stunOther: true));
+                6, 6, damage:2,addictionWithEnemyField: true, spawnCardCount: 1, spawnCardNumber: -1, stunOther: true));
 
             CardManagerList.AllCards.Add(new Card("Lycan", "Summon Wolves", "Spawn 2 units Wolves near.",
                 "Sprites/Cards/Lycan1", "Sounds/Cards/StartOrder/LycanSummonWolves", Color.gray,
-                11, 11, summonCardCount: 2, summonCardNumber: 0));
+                11, 11, spawnCardCount: 2, spawnCardNumber: 0));
 
             CardManagerList.AllCards.Add(new Card("Lycan", "Feral Impulce", "At the end of the your turn, deal 2 boost to a random allied unit.",
                 "Sprites/Cards/Lycan2", "Sounds/Cards/StartOrder/LycanFeralImpulce", Color.gray,
                 6, 6, endTurnQuantity: 1, endTurnRandomBoost: 2));
 
-            CardManagerList.AllCards.Add(new Card("Lycan", "Shape Shift", "Transformation this unit to Lycan Wolf ",
-                "Sprites/Cards/Lycan3", "Sounds/Cards/StartOrder/LycanShapeShift", Color.gray,
+            CardManagerList.AllCards.Add(new Card("Lycan", "Shapeshift", "Transformation this unit to Lycan Wolf ",
+                "Sprites/Cards/Lycan3", "Sounds/Cards/StartOrder/LycanShapeshift", Color.gray,
                 1, 1, transformationNumber: 0));
 
             CardManagerList.AllCards.Add(new Card("Riki", "Tricks of the Trade", "Damage 3 enemy units by 4. Invisibility. Invulnerability.",
@@ -364,11 +364,11 @@ public class CardManager : MonoBehaviour
 
             CardManagerList.AllCards.Add(new Card("Juggernaut", "Healing Ward", "Spawn Healing Ward to the left of this unit.",
                 "Sprites/Cards/Juggernaut3", "Sounds/Cards/StartOrder/JuggernautHealingWard", Color.green,
-                 3, 3, summonCardCount:1, summonCardNumber:1));
+                 3, 3, spawnCardCount:1, spawnCardNumber:1));
 
             CardManagerList.AllCards.Add(new Card("Naga Siren", "Mirror Image", "Spawn 2 your illusion units copy near.",
                 "Sprites/Cards/NagaSiren1", "Sounds/Cards/StartOrder/NagaSirenMirrorImage", Color.cyan,
-                7, 7, summonCardCount: 2, summonCardNumber: -1));
+                7, 7, spawnCardCount: 2, spawnCardNumber: -1));
 
             CardManagerList.AllCards.Add(new Card("Naga Siren", "Song of the Siren", "Stun all enemy units. Invulnerability.",
                 "Sprites/Cards/NagaSiren2", "Sounds/Cards/StartOrder/NagaSirenSongOfTheSiren", Color.cyan,
@@ -376,7 +376,7 @@ public class CardManager : MonoBehaviour
 
             CardManagerList.AllCards.Add(new Card("Terrorblade", "Conjure Image", "Spawn 1 your illusion unit copy near. At the end of the your turn, deal 1 damage to a random enemy unit.",
                 "Sprites/Cards/Terrorblade1", "Sounds/Cards/StartOrder/TerrorbladeConjureImage", Color.blue,
-                3, 3, endTurnQuantity:1, endTurnRandomDamage:1 ,summonCardCount:1, summonCardNumber:-1));
+                3, 3, endTurnQuantity:1, endTurnRandomDamage:1 ,spawnCardCount:1, spawnCardNumber:-1));
 
             CardManagerList.AllCards.Add(new Card("Terrorblade", "Sunder", "Swap points with enemy unit.",
                 "Sprites/Cards/Terrorblade2", "Sounds/Cards/StartOrder/TerrorbladeSunder", Color.blue,

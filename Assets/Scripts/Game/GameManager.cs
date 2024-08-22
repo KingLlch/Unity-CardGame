@@ -380,6 +380,7 @@ public class GameManager : MonoBehaviour
                 if (card.SelfCard.StatusEffects.EnduranceOrBleedingOther != 0 && !card.SelfCard.StatusEffects.IsEnemyTargetEnduranceOrBleeding)
                 {
                     CardMechanics.Instance.BleedingOrEndurance(card, EnemyFieldCards[i]);
+                    UIManager.Instance.CheckBleeding(EnemyFieldCards[i]);
                 }
             }
             EnemyOrderCardEvent.Invoke(card);
@@ -494,7 +495,7 @@ public class GameManager : MonoBehaviour
             EnemyOrderCardEvent.Invoke(card);
         }
 
-        if (card.SelfCard.Summons.SummonCardCount != 0 && (!card.SelfCard.BoostOrDamage.AddictionWithEnemyField) || (card.SelfCard.BoostOrDamage.AddictionWithEnemyField && PlayerFieldCards.Count > 0))
+        if (card.SelfCard.Summons.SpawnCardCount != 0 && (!card.SelfCard.BoostOrDamage.AddictionWithEnemyField) || (card.SelfCard.BoostOrDamage.AddictionWithEnemyField && PlayerFieldCards.Count > 0))
         {
             EnemyOrderCardEvent.Invoke(card);
             CardMechanics.Instance.SpawnCard(card, false);
@@ -506,9 +507,7 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < card.SelfCard.DrawCard.DrawCardCount; i++)
             {
                 EffectsManager.Instance.DrawCardEffect(_enemyHand, false);
-                UIManager.Instance.ChangeEndTurnButtonInteractable(false);
                 yield return new WaitForSeconds(0.3f);
-                UIManager.Instance.ChangeEndTurnButtonInteractable(true);
                 EffectsManager.Instance.HideDrawCardEffect();
                 GiveCardtoHand(CurrentGame.EnemyDeck, _enemyHand);
             }
@@ -636,6 +635,7 @@ public class GameManager : MonoBehaviour
                 if (card.SelfCard.StatusEffects.EnduranceOrBleedingOther != 0 && !card.SelfCard.StatusEffects.IsEnemyTargetEnduranceOrBleeding)
                 {
                     CardMechanics.Instance.BleedingOrEndurance(card, PlayerFieldCards[i]);
+                    UIManager.Instance.CheckBleeding(PlayerFieldCards[i]);
                 }
 
             }
@@ -693,7 +693,7 @@ public class GameManager : MonoBehaviour
             PlayerOrderCard.Invoke(card);
         }
 
-        if (card.SelfCard.Summons.SummonCardCount != 0 && !card.SelfCard.BoostOrDamage.AddictionWithEnemyField)
+        if (card.SelfCard.Summons.SpawnCardCount != 0 && !card.SelfCard.BoostOrDamage.AddictionWithEnemyField)
         {
             PlayerOrderCard.Invoke(card);
             CardMechanics.Instance.SpawnCard(card, true);
@@ -702,6 +702,7 @@ public class GameManager : MonoBehaviour
 
         if (card.SelfCard.DrawCard.DrawCardCount != 0)
         {
+            UIManager.Instance.ChangeEndTurnButtonInteractable(false);
             for (int i = 0; i < card.SelfCard.DrawCard.DrawCardCount; i++)
             {
                 EffectsManager.Instance.DrawCardEffect(_playerHand, true);
@@ -713,6 +714,7 @@ public class GameManager : MonoBehaviour
                 EffectsManager.Instance.HideDrawCardEffect();
                 GiveCardtoHand(CurrentGame.PlayerDeck, _playerHand);
             }
+            UIManager.Instance.ChangeEndTurnButtonInteractable(true);
         }
 
         if (card.SelfCard.UniqueMechanics.DestroyCardPoints != 0)
@@ -748,7 +750,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (card.SelfCard.UniqueMechanics.SwapPoints)
+        if (card.SelfCard.UniqueMechanics.SwapPoints && (((EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count) > 0) || ((PlayerFieldCards.Count - PlayerFieldInvulnerabilityCards.Count) > 1)))
         {
             PrepareToChoseCard(card, true);
             PrepareToChoseCard(card, false);
@@ -758,13 +760,13 @@ public class GameManager : MonoBehaviour
 
         if (card.SelfCard.StatusEffects.EnduranceOrBleedingOther != 0)
         {
-            if (card.SelfCard.StatusEffects.IsEnemyTargetEnduranceOrBleeding)
+            if (card.SelfCard.StatusEffects.IsEnemyTargetEnduranceOrBleeding && ((EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count) > 0))
             {
                 PrepareToChoseCard(card, true);
                 AllCoroutine.Add(StartCoroutine(ChoseCardCoroutine(card, isEnduranceOrBleeding: true, isEnduranceOrBleedingEnemy: true)));
             }
 
-            else
+            else if ((PlayerFieldCards.Count - PlayerFieldInvulnerabilityCards.Count) > 1)
             {
                 PrepareToChoseCard(card, false);
                 AllCoroutine.Add(StartCoroutine(ChoseCardCoroutine(card, isEnduranceOrBleeding: true, isEnduranceOrBleedingEnemy: false)));
@@ -1009,7 +1011,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (playedCard.SelfCard.Summons.SummonCardCount != 0 && playedCard.SelfCard.BoostOrDamage.AddictionWithEnemyField && EnemyFieldCards.Count > 0 && (EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count) > 0)
+        if (playedCard.SelfCard.Summons.SpawnCardCount != 0 && playedCard.SelfCard.BoostOrDamage.AddictionWithEnemyField && EnemyFieldCards.Count > 0 && (EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count) > 0)
         {
             CardMechanics.Instance.SpawnCard(playedCard, true);
         }

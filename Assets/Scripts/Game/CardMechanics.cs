@@ -44,7 +44,7 @@ public class CardMechanics : MonoBehaviour
         {
             ChangeCardPoints(startCard, targetCard, -startCard.SelfCard.BoostOrDamage.Damage - distanceNearCard * startCard.SelfCard.BoostOrDamage.ChangeNearDamage);
 
-            EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, startCard.SelfCard.BoostOrDamage.Damage);
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, -startCard.SelfCard.BoostOrDamage.Damage);
         }
 
         CheckUICards(targetCard, startCard);
@@ -63,7 +63,7 @@ public class CardMechanics : MonoBehaviour
         {
             ChangeCardPoints(startCard, startCard, -startCard.SelfCard.BoostOrDamage.SelfDamage);
 
-            EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, startCard.SelfCard.BoostOrDamage.SelfDamage);
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, -startCard.SelfCard.BoostOrDamage.SelfDamage);
         }
 
         CheckUICards(targetCard, startCard);
@@ -82,7 +82,7 @@ public class CardMechanics : MonoBehaviour
         {
             ChangeCardPoints(startCard, startCard, -startCard.SelfCard.EndTurnActions.EndTurnSelfDamage, true);
 
-            EffectsManager.Instance.StartParticleEffects(startCard.transform, startCard.transform, startCard.SelfCard.EndTurnActions.EndTurnSelfDamage);
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, startCard.transform, -startCard.SelfCard.EndTurnActions.EndTurnSelfDamage);
         }
 
         if (startCard.SelfCard.EndTurnActions.EndTurnNearBoost != 0 && isSelfOrNear)
@@ -109,12 +109,12 @@ public class CardMechanics : MonoBehaviour
             if (ReturnNearCard(startCard, 1, false) != null)
             {
                 ChangeCardPoints(startCard, ReturnNearCard(startCard, 1, false)[0], -startCard.SelfCard.EndTurnActions.EndTurnNearDamage, true);
-                EffectsManager.Instance.StartParticleEffects(startCard.transform, ReturnNearCard(startCard, 1, false)[0].transform, startCard.SelfCard.EndTurnActions.EndTurnNearDamage);
+                EffectsManager.Instance.StartParticleEffects(startCard.transform, ReturnNearCard(startCard, 1, false)[0].transform, -startCard.SelfCard.EndTurnActions.EndTurnNearDamage);
             }
             if (ReturnNearCard(startCard, 1, true) != null)
             {
                 ChangeCardPoints(startCard, ReturnNearCard(startCard, 1, true)[0], -startCard.SelfCard.EndTurnActions.EndTurnNearDamage, true);
-                EffectsManager.Instance.StartParticleEffects(startCard.transform, ReturnNearCard(startCard, 1, true)[0].transform, startCard.SelfCard.EndTurnActions.EndTurnNearDamage);
+                EffectsManager.Instance.StartParticleEffects(startCard.transform, ReturnNearCard(startCard, 1, true)[0].transform, -startCard.SelfCard.EndTurnActions.EndTurnNearDamage);
             }
         }
 
@@ -188,11 +188,11 @@ public class CardMechanics : MonoBehaviour
         {
             if (targetCard.UniqueMechanics.ReturnDamageValue == -1)
             {
-                ChangeCardPoints(targetCardInfo, startCardInfo, value);
+                ChangeCardPoints(targetCardInfo, startCardInfo, -value);
             }
             else
             {
-                ChangeCardPoints(targetCardInfo, startCardInfo, 1);
+                ChangeCardPoints(targetCardInfo, startCardInfo, -1);
             }
         }
 
@@ -401,58 +401,58 @@ public class CardMechanics : MonoBehaviour
 
     public void SpawnCard(CardInfoScript card, bool player)
     {
-        GameObject summonCard;
+        GameObject spawnCard;
 
-        if (card.SelfCard.Summons.SummonCardNumber == -1)
+        if (card.SelfCard.Summons.SpawnCardNumber == -1)
         {
-            for (int i = 0; i < card.SelfCard.Summons.SummonCardCount; i++)
+            for (int i = 0; i < card.SelfCard.Summons.SpawnCardCount; i++)
             {
                 if (!((player && GameManager.Instance.PlayerFieldCards.Count < GameManager.Instance.MaxNumberCardInField) ||
                     (!player && GameManager.Instance.EnemyFieldCards.Count < GameManager.Instance.MaxNumberCardInField)))
                     return;
 
-                summonCard = Instantiate(GameManager.Instance.CardPref, card.transform.parent, false);
-                CardInfoScript summonCardInfo = summonCard.GetComponent<CardInfoScript>();
+                spawnCard = Instantiate(GameManager.Instance.CardPref, card.transform.parent, false);
+                CardInfoScript summonCardInfo = spawnCard.GetComponent<CardInfoScript>();
 
                 card.CheckSiblingIndex();
                 if ((i == 0) && (i % 2 == 0))
-                    summonCard.transform.SetSiblingIndex(card.SiblingIndex);
+                    spawnCard.transform.SetSiblingIndex(card.SiblingIndex);
                 else
-                    summonCard.transform.SetSiblingIndex(card.SiblingIndex + 1);
+                    spawnCard.transform.SetSiblingIndex(card.SiblingIndex + 1);
 
                 if (player) GameManager.Instance.PlayerFieldCards.Add(summonCardInfo);
                 else GameManager.Instance.EnemyFieldCards.Add(summonCardInfo);
                 summonCardInfo.ShowCardInfo(card.SelfCard);
                 summonCardInfo.SelfCard.StatusEffects.IsIllusion = true;
                 CheckStatusEffects(summonCardInfo);
-                summonCard.AddComponent<ChoseCard>();
-                summonCard.GetComponent<ChoseCard>().enabled = false;
+                spawnCard.AddComponent<ChoseCard>();
+                spawnCard.GetComponent<ChoseCard>().enabled = false;
 
             }
         }
 
         else
         {
-            for (int i = 0; i < card.SelfCard.Summons.SummonCardCount; i++)
+            for (int i = 0; i < card.SelfCard.Summons.SpawnCardCount; i++)
             {
                 if (!((player && GameManager.Instance.PlayerFieldCards.Count < GameManager.Instance.MaxNumberCardInField) ||
                 (!player && GameManager.Instance.EnemyFieldCards.Count < GameManager.Instance.MaxNumberCardInField)))
                     return;
 
-                summonCard = Instantiate(GameManager.Instance.CardPref, card.transform.parent, false);
-                CardInfoScript summonCardInfo = summonCard.GetComponent<CardInfoScript>();
+                spawnCard = Instantiate(GameManager.Instance.CardPref, card.transform.parent, false);
+                CardInfoScript summonCardInfo = spawnCard.GetComponent<CardInfoScript>();
 
                 card.CheckSiblingIndex();
                 if ((i == 0) && (i % 2 == 0))
-                    summonCard.transform.SetSiblingIndex(card.SiblingIndex);
+                    spawnCard.transform.SetSiblingIndex(card.SiblingIndex);
                 else
-                    summonCard.transform.SetSiblingIndex(card.SiblingIndex + 1);
+                    spawnCard.transform.SetSiblingIndex(card.SiblingIndex + 1);
 
                 if (player) GameManager.Instance.PlayerFieldCards.Add(summonCardInfo);
                 else GameManager.Instance.EnemyFieldCards.Add(summonCardInfo);
-                summonCardInfo.ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.Summons.SummonCardNumber]);
-                summonCard.AddComponent<ChoseCard>();
-                summonCard.GetComponent<ChoseCard>().enabled = false;
+                summonCardInfo.ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.Summons.SpawnCardNumber]);
+                spawnCard.AddComponent<ChoseCard>();
+                spawnCard.GetComponent<ChoseCard>().enabled = false;
             }
         }
     }

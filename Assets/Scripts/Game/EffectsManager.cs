@@ -65,9 +65,9 @@ public class EffectsManager : MonoBehaviour
         if (value > 0)
         {
             if (start == end)
-                ParticleEffects(start, end, false, true);
+                ParticleEffects(start, end, true, true);
             else
-                ParticleEffects(start, end, false, false);
+                ParticleEffects(start, end, true, false);
         }
         else
         {

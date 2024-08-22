@@ -91,9 +91,9 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         CheckStatusEffectGameObject(card);
         SpawnCardView.SetActive(false);
 
-        if (card.SelfCard.Summons.SummonCardCount != 0 && card.SelfCard.Summons.SummonCardNumber == -1)
+        if (card.SelfCard.Summons.SpawnCardCount != 0 && card.SelfCard.Summons.SpawnCardNumber == -1)
             ShowSpawnCardView(card, true, true);
-        else if (card.SelfCard.Summons.SummonCardCount != 0)
+        else if (card.SelfCard.Summons.SpawnCardCount != 0)
             ShowSpawnCardView(card, true);
         else if(card.SelfCard.UniqueMechanics.TransformationNumber != -1)
             ShowSpawnCardView(card, false);
@@ -110,7 +110,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         if (isSpawn && selfIllusion)
             SpawnCard = card.SelfCard;
         else if (isSpawn && !selfIllusion)
-            SpawnCard = CardManagerList.SummonCards[card.SelfCard.Summons.SummonCardNumber];
+            SpawnCard = CardManagerList.SummonCards[card.SelfCard.Summons.SpawnCardNumber];
         else
             SpawnCard = CardManagerList.TransformationCards[card.SelfCard.UniqueMechanics.TransformationNumber];
 
