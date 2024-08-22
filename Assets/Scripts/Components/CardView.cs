@@ -112,7 +112,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         else
             StatusEffects[4].SetActive(false);
 
-        if (card.SelfCard.StatusEffects.SelfBleeding > 0 || card.SelfCard.StatusEffects.BleedingOther != 0)
+        if (card.SelfCard.StatusEffects.SelfEnduranceOrBleeding < 0 || card.SelfCard.StatusEffects.EnduranceOrBleedingOther < 0)
         {
             StatusEffects[5].SetActive(true);
 
@@ -120,7 +120,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         else
             StatusEffects[5].SetActive(false);
 
-        if (card.SelfCard.StatusEffects.SelfEndurance > 0 || card.SelfCard.StatusEffects.EnduranceOther != 0)
+        if (card.SelfCard.StatusEffects.SelfEnduranceOrBleeding > 0 || card.SelfCard.StatusEffects.EnduranceOrBleedingOther > 0)
         {
             StatusEffects[6].SetActive(true);
 

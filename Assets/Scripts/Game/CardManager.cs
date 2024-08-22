@@ -15,6 +15,8 @@ public struct BaseCard
 
     public AudioClip CardPlaySound;
     public Color ColorTheme;
+
+    public bool isDestroyed;
 }
 
 public struct BoostOrDamage
@@ -69,10 +71,9 @@ public struct StatusEffects
     public bool IsSelfShielded;
     public bool IsSelfStunned;
 
-    public int EnduranceOther;
-    public int SelfEndurance;
-    public int BleedingOther;
-    public int SelfBleeding;
+    public int EnduranceOrBleedingOther;
+    public int SelfEnduranceOrBleeding;
+    public bool IsEnemyTargetEnduranceOrBleeding;
 }
 
 public struct UniqueMechanics
@@ -112,7 +113,7 @@ public struct Card
         int drawCardCount = 0,
 
         bool shieldOther = false, bool stunOther = false, bool invisibility = false, bool invulnerability = false, bool isSelfShielded = false,
-        int enduranceSelf = 0, int enduranceOther = 0, int bleedingSelf = 0, int bleedingOther = 0,
+        int enduranceOrBleedingSelf = 0, int enduranceOrBleedingOther = 0, bool isEnemyTargetEnduranceOrBleeding = false,
 
         int destroyCardPoints = 0, bool swapPoints = false, int transformationNumber = -1, int returnDamageValue = 0, int healDamageValue = 0)
 
@@ -172,10 +173,9 @@ public struct Card
         StatusEffects.IsInvulnerability = invulnerability;
         StatusEffects.IsSelfShielded = isSelfShielded;
 
-        StatusEffects.SelfEndurance = enduranceSelf;
-        StatusEffects.EnduranceOther = enduranceOther;
-        StatusEffects.SelfBleeding = bleedingSelf;
-        StatusEffects.BleedingOther = bleedingOther;
+        StatusEffects.SelfEnduranceOrBleeding = enduranceOrBleedingSelf;
+        StatusEffects.EnduranceOrBleedingOther = enduranceOrBleedingOther;
+        StatusEffects.IsEnemyTargetEnduranceOrBleeding = isEnemyTargetEnduranceOrBleeding;
 
 
         UniqueMechanics = new UniqueMechanics();
@@ -290,12 +290,12 @@ public class CardManager : MonoBehaviour
                 "Sprites/Cards/Earthshaker2", "Sounds/Cards/StartOrder/EarthshakerEchoSlam", Color.yellow,
                 4, 4, damage: 2, rangeDamage: -1));
 
-            CardManagerList.AllCards.Add(new Card("Chen", "Hand Of God", "Boost all allied units by 1.",
+            CardManagerList.AllCards.Add(new Card("Chen", "Hand Of God", "Give all allied units 2 endurance.",
                 "Sprites/Cards/Chen1", "Sounds/Cards/StartOrder/ChenHandOfGod", Color.yellow,
-                3, 3, boost: 1, rangeBoost: -1));
+                3, 3, boost: 0, rangeBoost: -1, enduranceOrBleedingOther:2, isEnemyTargetEnduranceOrBleeding: false));
 
-            CardManagerList.AllCards.Add(new Card("Chen", "Divine Fervor", "At the end of the your turn, deal 1 boost to a random 2 allied units.",
-                "Sprites/Cards/Chen2", "Sounds/Cards/StartOrder/ChenDivineFervor", Color.yellow,
+            CardManagerList.AllCards.Add(new Card("Chen", "Divine Favor", "At the end of the your turn, deal 1 boost to a random 2 allied units.",
+                "Sprites/Cards/Chen2", "Sounds/Cards/StartOrder/ChenDivineFavor", Color.yellow,
                 5, 5, endTurnQuantity: 2, endTurnRandomBoost: 1));
 
             CardManagerList.AllCards.Add(new Card("Sniper", "Assasinate", "Damage enemy unit by 17.",
@@ -342,9 +342,9 @@ public class CardManager : MonoBehaviour
                 "Sprites/Cards/Lycan2", "Sounds/Cards/StartOrder/LycanFeralImpulce", Color.gray,
                 6, 6, endTurnQuantity: 1, endTurnRandomBoost: 2));
 
-            //CardManagerList.AllCards.Add(new Card("Lycan", "Shape Shift", "Tranformation this unit to (Lycan Wolf 20)",
-            //    "Sprites/Cards/Lycan3", "Sounds/Cards/StartOrder/LycanShapeShift", Color.gray,
-            //    1, 1, transformationNumber:0));
+            CardManagerList.AllCards.Add(new Card("Lycan", "Shape Shift", "Transformation this unit to (Lycan Wolf 20)",
+                "Sprites/Cards/Lycan3", "Sounds/Cards/StartOrder/LycanShapeShift", Color.gray,
+                1, 1, transformationNumber: 0));
 
             CardManagerList.AllCards.Add(new Card("Riki", "Tricks of the Trade", "Damage 3 enemy units by 4. Invisibility. Invulnerability.",
                 "Sprites/Cards/Riki1", "Sounds/Cards/StartOrder/RikiTricksOfTheTrade", Color.magenta,
@@ -384,18 +384,18 @@ public class CardManager : MonoBehaviour
 
             CardManagerList.AllCards.Add(new Card("Bloodseeker", "Bloodrage", "Give self 3 bleeding.",
                 "Sprites/Cards/Bloodseeker1", "Sounds/Cards/StartOrder/BloodseekerBloodrage", Color.red,
-                11, 11, bleedingSelf:3));
+                11, 11, enduranceOrBleedingSelf:-3));
 
             CardManagerList.AllCards.Add(new Card("Bloodseeker", "Rupture", "Give an enemy unit 7 bleeding.",
                 "Sprites/Cards/Bloodseeker2", "Sounds/Cards/StartOrder/BloodseekerRupture", Color.red,
-                8, 8, bleedingOther:7));
+                8, 8, enduranceOrBleedingOther: -7, isEnemyTargetEnduranceOrBleeding: true));
 
 
             //Transformation
 
-            CardManagerList.TransformationCards.Add(new Card("Lycan", "Wolf Form", "At the end of the your turn, deal 2 Damage self.",
+            CardManagerList.TransformationCards.Add(new Card("Lycan", "Wolf Form", "At the end of the your turn, deal 2 Damage near units.",
                 "Sprites/Cards/LycanWolf", "Sounds/Cards/StartOrder/LycanWolf", Color.gray,
-                20, 20, endTurnQuantity:1, endTurnSelfDamage:2));
+                20, 20, endTurnQuantity:1, endTurnNearDamage:2));
 
             //SUMMONS
 

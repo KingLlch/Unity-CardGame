@@ -131,6 +131,28 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void CheckBleeding(CardInfoScript card)
+    {
+        if (card.SelfCard.StatusEffects.SelfEnduranceOrBleeding < 0)
+        {
+            card.BleedingPanel.SetActive(true);
+            card.BleedingPanel.GetComponent<Image>().color = Color.red;
+            card.BleedingPanelText.text = (-card.SelfCard.StatusEffects.SelfEnduranceOrBleeding).ToString();
+        }
+
+        else if (card.SelfCard.StatusEffects.SelfEnduranceOrBleeding > 0)
+        {
+            card.BleedingPanel.SetActive(true);
+            card.BleedingPanel.GetComponent<Image>().color = Color.green;
+            card.BleedingPanelText.text = card.SelfCard.StatusEffects.SelfEnduranceOrBleeding.ToString();
+        }
+
+        else
+        {
+            card.BleedingPanel.SetActive(false);
+        }
+    }
+
     public void EndGame(int playerPoints, int enemyPoint)
     {
         StopAllCoroutines();
