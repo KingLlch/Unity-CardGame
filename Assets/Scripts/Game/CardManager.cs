@@ -342,7 +342,7 @@ public class CardManager : MonoBehaviour
                 "Sprites/Cards/Lycan2", "Sounds/Cards/StartOrder/LycanFeralImpulce", Color.gray,
                 6, 6, endTurnQuantity: 1, endTurnRandomBoost: 2));
 
-            CardManagerList.AllCards.Add(new Card("Lycan", "Shape Shift", "Transformation this unit to (Lycan Wolf 20)",
+            CardManagerList.AllCards.Add(new Card("Lycan", "Shape Shift", "Transformation this unit to Lycan Wolf ",
                 "Sprites/Cards/Lycan3", "Sounds/Cards/StartOrder/LycanShapeShift", Color.gray,
                 1, 1, transformationNumber: 0));
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DeckBuildManager : MonoBehaviour
 {
@@ -65,6 +66,9 @@ public class DeckBuildManager : MonoBehaviour
             CardInfoDeckList.Add(cardInfo);
         }
 
+        float height = Mathf.Ceil((float)CardContentView.transform.childCount / 6) * 150 + (Mathf.Ceil((float)CardContentView.transform.childCount / 6) - 1) * 100 + 150;
+        CardContentView.GetComponent<RectTransform>().sizeDelta = new Vector2(CardContentView.GetComponent<RectTransform>().sizeDelta.x, height);
+
         HowToPlay.Instance.HowToPlayDeckBuild(HowToPlayList);
     }
 
@@ -87,6 +91,9 @@ public class DeckBuildManager : MonoBehaviour
         cardInDeck.Points.text = card.Point.text;
 
         Deck.Add(card.SelfCard);
+
+        float height = DeckGameObject.transform.childCount * CardInDeckPref.GetComponent<RectTransform>().sizeDelta.y;
+        DeckGameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(DeckGameObject.GetComponent<RectTransform>().sizeDelta.x, height);
 
         CardSound(card);
     }

@@ -44,6 +44,12 @@ public class CardView : MonoBehaviour, IPointerClickHandler
     public Sprite bleedingImage;
     public Sprite enduranceImage;
 
+    public GameObject SpawnCardView;
+    public Image SpawnCardViewImage;
+    public TextMeshProUGUI SpawnCardViewName;
+    public TextMeshProUGUI SpawnCardViewDescription;
+    public TextMeshProUGUI SpawnCardPoints;
+
     private void Awake()
     {
         if (_instance == null)
@@ -83,6 +89,42 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         CardViewMaxPoints.text = card.SelfCard.BaseCard.MaxPoints.ToString();
 
         CheckStatusEffectGameObject(card);
+        SpawnCardView.SetActive(false);
+
+        if (card.SelfCard.Summons.SummonCardCount != 0 && card.SelfCard.Summons.SummonCardNumber == -1)
+            ShowSpawnCardView(card, true, true);
+        else if (card.SelfCard.Summons.SummonCardCount != 0)
+            ShowSpawnCardView(card, true);
+        else if(card.SelfCard.UniqueMechanics.TransformationNumber != -1)
+            ShowSpawnCardView(card, false);
+    }
+
+    private void ShowSpawnCardView(CardInfoScript card, bool isSpawn, bool selfIllusion = false)
+    {
+        SpawnCardView.SetActive(true);
+
+        Material imageMaterial = new Material(card.Image.material);
+        SpawnCardViewImage.material = imageMaterial;
+        Card SpawnCard;
+
+        if (isSpawn && selfIllusion)
+            SpawnCard = card.SelfCard;
+        else if (isSpawn && !selfIllusion)
+            SpawnCard = CardManagerList.SummonCards[card.SelfCard.Summons.SummonCardNumber];
+        else
+            SpawnCard = CardManagerList.TransformationCards[card.SelfCard.UniqueMechanics.TransformationNumber];
+
+        imageMaterial.SetTexture("_Image", SpawnCard.BaseCard.ImageTexture);
+        imageMaterial.SetColor("_Color", SpawnCard.BaseCard.ColorTheme);
+
+        SpawnCardPoints.text = SpawnCard.BaseCard.Points.ToString();
+
+        SpawnCardViewName.text = SpawnCard.BaseCard.Name;
+
+        if(!selfIllusion)
+            SpawnCardViewDescription.text = SpawnCard.BaseCard.Description;
+        else
+            SpawnCardViewDescription.text = "Illusion.";
     }
 
     private void CheckStatusEffectGameObject(CardInfoScript card)
@@ -113,18 +155,12 @@ public class CardView : MonoBehaviour, IPointerClickHandler
             StatusEffects[4].SetActive(false);
 
         if (card.SelfCard.StatusEffects.SelfEnduranceOrBleeding < 0 || card.SelfCard.StatusEffects.EnduranceOrBleedingOther < 0)
-        {
             StatusEffects[5].SetActive(true);
-
-        }
         else
             StatusEffects[5].SetActive(false);
 
         if (card.SelfCard.StatusEffects.SelfEnduranceOrBleeding > 0 || card.SelfCard.StatusEffects.EnduranceOrBleedingOther > 0)
-        {
             StatusEffects[6].SetActive(true);
-
-        }
         else
             StatusEffects[6].SetActive(false);
     }

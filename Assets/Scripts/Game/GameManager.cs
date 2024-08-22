@@ -25,7 +25,7 @@ public class Game
         for (int i = 0; i < GameManager.Instance.ValueDeckCards; i++)
         {
             DeckList.Add(CardManagerList.AllCards[Random.Range(0, CardManagerList.AllCards.Count)]);
-            DeckList.Add(CardManagerList.AllCards[32]);
+            //DeckList.Add(CardManagerList.AllCards[32]);
         }
         return DeckList;
     }
@@ -391,6 +391,12 @@ public class GameManager : MonoBehaviour
             botChoosedCard = ChooseCard(false);
             CardMechanics.Instance.Deployment(botChoosedCard, card);
 
+            if (card.SelfCard.StatusEffects.IsShieldOther)
+            {
+                botChoosedCard.SelfCard.StatusEffects.IsSelfShielded = true;
+                CardMechanics.Instance.CheckStatusEffects(botChoosedCard);
+            }
+
             if (card.SelfCard.BoostOrDamage.NearBoost > 0)
             {
                 botChoosedCard.CheckSiblingIndex();
@@ -438,6 +444,12 @@ public class GameManager : MonoBehaviour
             botChoosedCard = ChooseCard(false, false);
             CardMechanics.Instance.Deployment(botChoosedCard, card);
 
+            if (card.SelfCard.StatusEffects.IsStunOther)
+            {
+                botChoosedCard.SelfCard.StatusEffects.IsSelfStunned = true;
+                CardMechanics.Instance.CheckStatusEffects(botChoosedCard);
+            }
+
             if (card.SelfCard.BoostOrDamage.NearDamage > 0)
             {
                 botChoosedCard.CheckSiblingIndex();
@@ -447,6 +459,12 @@ public class GameManager : MonoBehaviour
                     for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.BoostOrDamage.NearDamage, true).Count; i++)
                     {
                         CardMechanics.Instance.Deployment(CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.BoostOrDamage.NearDamage, true)[i], card, i + 1);
+
+                        if (card.SelfCard.StatusEffects.IsStunOther)
+                        {
+                            CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.BoostOrDamage.NearDamage, true)[i].SelfCard.StatusEffects.IsSelfStunned = true;
+                            CardMechanics.Instance.CheckStatusEffects(CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.BoostOrDamage.NearDamage, true)[i]);
+                        }
                     }
                 }
 
@@ -455,6 +473,12 @@ public class GameManager : MonoBehaviour
                     for (int i = 0; i < CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.BoostOrDamage.NearDamage, false).Count; i++)
                     {
                         CardMechanics.Instance.Deployment(CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.BoostOrDamage.NearDamage, false)[i], card, i + 1);
+
+                        if (card.SelfCard.StatusEffects.IsStunOther)
+                        {
+                            CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.BoostOrDamage.NearDamage, false)[i].SelfCard.StatusEffects.IsSelfStunned = true;
+                            CardMechanics.Instance.CheckStatusEffects(CardMechanics.Instance.ReturnNearCard(botChoosedCard, card.SelfCard.BoostOrDamage.NearDamage, false)[i]);
+                        }
                     }
                 }
             }
