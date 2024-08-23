@@ -345,6 +345,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator EnemyDropCard(CardInfoScript card)
     {
+        yield return new WaitForSeconds(0.1f);
+
         CardInfoScript botChoosedCard;
 
         EnemyHandCards.Remove(card);
@@ -556,18 +558,22 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (card.SelfCard.StatusEffects.EnduranceOrBleedingOther < 0)
+        if (card.SelfCard.StatusEffects.EnduranceOrBleedingOther != 0)
         {
-            botChoosedCard = ChooseCard(false, false);
-            CardMechanics.Instance.BleedingOrEndurance(card, botChoosedCard);
-            UIManager.Instance.CheckBleeding(botChoosedCard);
-        }
+            if (card.SelfCard.StatusEffects.IsEnemyTargetEnduranceOrBleeding && card.SelfCard.BoostOrDamage.NearBoost != -1 && ((PlayerFieldCards.Count - PlayerFieldInvulnerabilityCards.Count) > 0))
+            {
+                botChoosedCard = ChooseCard(false, false);
+                CardMechanics.Instance.BleedingOrEndurance(card, botChoosedCard);
+                UIManager.Instance.CheckBleeding(botChoosedCard);
+            }
 
-        if (card.SelfCard.StatusEffects.EnduranceOrBleedingOther > 0)
-        {
-            botChoosedCard = ChooseCard(false, true);
-            CardMechanics.Instance.BleedingOrEndurance(card, botChoosedCard);
-            UIManager.Instance.CheckBleeding(botChoosedCard);
+            else if (card.SelfCard.BoostOrDamage.NearDamage != -1 && (EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count) > 1)
+            {
+                botChoosedCard = ChooseCard(false, true);
+                CardMechanics.Instance.BleedingOrEndurance(card, botChoosedCard);
+                UIManager.Instance.CheckBleeding(botChoosedCard);
+            }
+
         }
 
         if (card.SelfCard.UniqueMechanics.TransformationNumber != -1)
@@ -760,13 +766,13 @@ public class GameManager : MonoBehaviour
 
         if (card.SelfCard.StatusEffects.EnduranceOrBleedingOther != 0)
         {
-            if (card.SelfCard.StatusEffects.IsEnemyTargetEnduranceOrBleeding && ((EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count) > 0))
+            if (card.SelfCard.StatusEffects.IsEnemyTargetEnduranceOrBleeding && card.SelfCard.BoostOrDamage.NearDamage != -1 && ((EnemyFieldCards.Count - EnemyFieldInvulnerabilityCards.Count) > 0))
             {
                 PrepareToChoseCard(card, true);
                 AllCoroutine.Add(StartCoroutine(ChoseCardCoroutine(card, isEnduranceOrBleeding: true, isEnduranceOrBleedingEnemy: true)));
             }
 
-            else if ((PlayerFieldCards.Count - PlayerFieldInvulnerabilityCards.Count) > 1)
+            else if (card.SelfCard.BoostOrDamage.NearBoost != -1 && (PlayerFieldCards.Count - PlayerFieldInvulnerabilityCards.Count) > 1)
             {
                 PrepareToChoseCard(card, false);
                 AllCoroutine.Add(StartCoroutine(ChoseCardCoroutine(card, isEnduranceOrBleeding: true, isEnduranceOrBleedingEnemy: false)));

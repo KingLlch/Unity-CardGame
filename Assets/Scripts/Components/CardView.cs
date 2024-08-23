@@ -74,7 +74,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
 
         CardViewName.colorGradient = new VertexGradient(card.SelfCard.BaseCard.ColorTheme, card.SelfCard.BaseCard.ColorTheme, Color.black, Color.black);
         CardViewSecondName.colorGradient = new VertexGradient(card.SelfCard.BaseCard.ColorTheme, card.SelfCard.BaseCard.ColorTheme, Color.black, Color.black);
-        CardViewDescription.colorGradient = new VertexGradient(card.SelfCard.BaseCard.ColorTheme, card.SelfCard.BaseCard.ColorTheme, Color.black, Color.black);
+        CardViewDescription.color = Color.black;
 
         ShowPoints(true);
 
@@ -120,11 +120,14 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         SpawnCardPoints.text = SpawnCard.BaseCard.Points.ToString();
 
         SpawnCardViewName.text = SpawnCard.BaseCard.Name;
+        SpawnCardViewName.colorGradient = new VertexGradient(SpawnCard.BaseCard.ColorTheme, SpawnCard.BaseCard.ColorTheme, Color.black, Color.black);
+        SpawnCardViewDescription.colorGradient = new VertexGradient(Color.white, Color.white, Color.black, Color.black);
 
-        if(!selfIllusion)
+        if (!selfIllusion)
             SpawnCardViewDescription.text = SpawnCard.BaseCard.Description;
         else
             SpawnCardViewDescription.text = "Illusion.";
+
     }
 
     private void CheckStatusEffectGameObject(CardInfoScript card)

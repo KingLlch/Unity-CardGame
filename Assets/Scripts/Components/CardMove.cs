@@ -94,7 +94,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     public void EnemyMoveToField(Transform field)
     {
         if (field.childCount > 0)
-            transform.DOMove(field.GetChild(field.childCount - 1).position + new Vector3(50, 0, 0), 0.5f);
+            transform.DOMove(field.GetChild(field.childCount - 1).position + new Vector3(150, 0, 0), 0.5f);
         else transform.DOMove(field.position, 0.5f);
     }
 

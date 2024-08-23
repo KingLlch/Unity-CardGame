@@ -235,7 +235,10 @@ public class CardMechanics : MonoBehaviour
     public void DestroyCard(CardInfoScript card, CardInfoScript startCard = null)
     {
         if (startCard != null)
+        {
             Debug.Log(startCard.SelfCard.BaseCard.Name + " уничтожила " + card.SelfCard.BaseCard.Name);
+            EffectsManager.Instance.StartParticleEffects(startCard.transform, card.transform, -1);
+        }
 
         if (GameManager.Instance.PlayerFieldCards.Contains(card))
             GameManager.Instance.PlayerFieldCards.Remove(card);
@@ -252,12 +255,14 @@ public class CardMechanics : MonoBehaviour
         EffectsManager.Instance.StartDestroyCoroutine(card);
 
         Destroy(card.DescriptionObject);
-        Destroy(card.gameObject, 1f);
+        Destroy(card.gameObject, EffectsManager.Instance.ParticleTimeToMove + 1);
     }
 
     public void SwapPoints(CardInfoScript firstCard, CardInfoScript secondCard)
     {
         int temporaryVariable;
+        int color = firstCard.SelfCard.BaseCard.Points - secondCard.SelfCard.BaseCard.Points;
+
         temporaryVariable = firstCard.SelfCard.BaseCard.Points;
         firstCard.SelfCard.BaseCard.Points = secondCard.SelfCard.BaseCard.Points;
         secondCard.SelfCard.BaseCard.Points = temporaryVariable;
@@ -266,6 +271,8 @@ public class CardMechanics : MonoBehaviour
 
         ShowPointsUI(firstCard);
         ShowPointsUI(secondCard);
+
+        EffectsManager.Instance.StartParticleEffects(firstCard.transform, secondCard.transform, color);
     }
 
     public IEnumerator EndTurnActions()
@@ -386,12 +393,14 @@ public class CardMechanics : MonoBehaviour
             if (card.SelfCard.StatusEffects.SelfEnduranceOrBleeding < 0)
             {
                 ChangeCardPoints(card, card, -1);
+                EffectsManager.Instance.StartParticleEffects(card.transform, card.transform, -1);
                 card.SelfCard.StatusEffects.SelfEnduranceOrBleeding++;
             }
 
             else
             {
                 ChangeCardPoints(card, card, 1);
+                EffectsManager.Instance.StartParticleEffects(card.transform, card.transform, 1);
                 card.SelfCard.StatusEffects.SelfEnduranceOrBleeding--;
             }
 
@@ -427,7 +436,6 @@ public class CardMechanics : MonoBehaviour
                 CheckStatusEffects(summonCardInfo);
                 spawnCard.AddComponent<ChoseCard>();
                 spawnCard.GetComponent<ChoseCard>().enabled = false;
-
             }
         }
 
@@ -462,6 +470,7 @@ public class CardMechanics : MonoBehaviour
         card.SelfCard = CardManagerList.TransformationCards[card.SelfCard.UniqueMechanics.TransformationNumber];
         card.ShowCardInfo(card.SelfCard);
 
+        EffectsManager.Instance.StartParticleEffects(card.transform, card.transform, 1);
     }
 
     public List<CardInfoScript> ReturnNearCard(CardInfoScript card, int range, bool IsRight)

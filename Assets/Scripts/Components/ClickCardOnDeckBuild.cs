@@ -18,15 +18,12 @@ public class ClickCardOnDeckBuild : MonoBehaviour, IPointerClickHandler
             {
 
                 DeckBuildManager.Instance.AddCard(card);
-                card.ImageEdge1.color = Color.red;
-                IsInDeck = true;
+                CardInDeck(card);
             }
             else if (!IsMainCard)
             {
                 DeckBuildManager.Instance.RemoveCard(CardInfoScript, gameObject);
-
-                CardInfoScript.ImageEdge1.color = Color.white;
-                IsInDeck = false;
+                CardRemoveFromDeck(card);
             }
         }
 
@@ -35,5 +32,18 @@ public class ClickCardOnDeckBuild : MonoBehaviour, IPointerClickHandler
             CardView.Instance.CardViewObject.SetActive(true);
             CardView.Instance.ShowCard(card);
         }
+
+    }
+    public void CardInDeck(CardInfoScript card)
+    {
+        card.ImageEdge1.color = Color.red;
+        IsInDeck = true;
+    }
+
+    public void CardRemoveFromDeck(CardInfoScript card)
+    {
+        CardInfoScript.ImageEdge1.color = Color.white;
+        card.GetComponent<ClickCardOnDeckBuild>().IsInDeck = false;
+        IsInDeck = false;
     }
 }

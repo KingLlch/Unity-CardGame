@@ -2,9 +2,14 @@ using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class ArrowMove : MonoBehaviour
 {
     public bool Vertical;
+
+    public float TimeMoveArrow = 0.25f;
+    public float TimeStopArrow = 0.5f;
+
+    public float DistanceArrowMove = 15;
 
     private void Start()
     {
@@ -20,18 +25,18 @@ public class NewBehaviourScript : MonoBehaviour
         {
             if (isVertical)
             {
-                transform.DOMoveY(transform.position.y + 15, 0.5f);
-                yield return new WaitForSeconds(1f);
-                transform.DOMoveY(transform.position.y - 15, 0.5f);
-                yield return new WaitForSeconds(0.5f);
+                transform.DOMoveY(transform.position.y + DistanceArrowMove, TimeMoveArrow);
+                yield return new WaitForSeconds(TimeStopArrow);
+                transform.DOMoveY(transform.position.y - DistanceArrowMove, TimeMoveArrow);
+                yield return new WaitForSeconds(TimeStopArrow);
             }
 
             else
             {
-                transform.DOMoveX(transform.position.x + 15, 0.5f);
-                yield return new WaitForSeconds(1f);
-                transform.DOMoveX(transform.position.x - 15, 0.5f);
-                yield return new WaitForSeconds(0.5f);
+                transform.DOMoveX(transform.position.x + DistanceArrowMove, TimeMoveArrow);
+                yield return new WaitForSeconds(TimeStopArrow);
+                transform.DOMoveX(transform.position.x - DistanceArrowMove, TimeMoveArrow);
+                yield return new WaitForSeconds(TimeStopArrow);
             }
         }
     }

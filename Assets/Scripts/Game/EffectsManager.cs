@@ -37,6 +37,9 @@ public class EffectsManager : MonoBehaviour
     public Transform PlayerDeck;
     public Transform EnemyDeck;
 
+    [HideInInspector] public int ParticleZCoordinate = 50;
+    [HideInInspector] public float ParticleTimeToMove = 0.4f;
+
     private void Awake()
     {
         if (_instance == null)
@@ -67,18 +70,18 @@ public class EffectsManager : MonoBehaviour
             if (start == end)
                 ParticleEffects(start, end, true, true);
             else
-                ParticleEffects(start, end, true, false);
+                ParticleEffects(start, end, true, false, true);
         }
         else
         {
             if (start == end)
                 ParticleEffects(start, end, false, true);
             else
-                ParticleEffects(start, end, false, false);
+                ParticleEffects(start, end, false, false, true);
         }
     }
 
-    private void ParticleEffects(Transform start, Transform end, bool isBoost, bool isSelf)
+    private void ParticleEffects(Transform start, Transform end, bool isBoost, bool isSelf, bool isStartDelay = false)
     {
         if (isBoost)
         {
@@ -88,17 +91,20 @@ public class EffectsManager : MonoBehaviour
                 {
                     if (!isSelf)
                     {
-                        BoostParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
-                        BoostParticle[i].Play();
-                        BoostParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
 
-                        BoostBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
+                        BoostParticle[i].transform.position = new Vector3(start.position.x, start.position.y, ParticleZCoordinate);
+                        BoostParticle[i].Play();
+                        BoostParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, ParticleZCoordinate), ParticleTimeToMove);
+
+                        if (isStartDelay)
+                            BoostBurstParticle[i].startDelay = ParticleTimeToMove;
+                        BoostBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, ParticleZCoordinate);
                         BoostBurstParticle[i].Play();
                         break;
                     }
                     else
                     {
-                        BoostBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
+                        BoostBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, ParticleZCoordinate);
                         BoostBurstParticle[i].Play();
                         break;
                     }
@@ -114,17 +120,19 @@ public class EffectsManager : MonoBehaviour
                 {
                     if (!isSelf)
                     {
-                        DamageParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
+                        DamageParticle[i].transform.position = new Vector3(start.position.x, start.position.y, ParticleZCoordinate);
                         DamageParticle[i].Play();
-                        DamageParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, 5), 0.2f);
+                        DamageParticle[i].transform.DOMove(new Vector3(end.position.x, end.position.y, ParticleZCoordinate), ParticleTimeToMove);
 
-                        DamageBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, 5);
+                        if (isStartDelay)
+                            DamageBurstParticle[i].startDelay = ParticleTimeToMove;
+                        DamageBurstParticle[i].transform.position = new Vector3(end.position.x, end.position.y, ParticleZCoordinate);
                         DamageBurstParticle[i].Play();
                         break;
                     }
                     else
                     {
-                        DamageBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, 5);
+                        DamageBurstParticle[i].transform.position = new Vector3(start.position.x, start.position.y, ParticleZCoordinate);
                         DamageBurstParticle[i].Play();
                         break;
                     }
@@ -141,12 +149,15 @@ public class EffectsManager : MonoBehaviour
 
         Material DestroyMaterial = new Material(destroyMaterial);
         card.DestroyImage.material = DestroyMaterial;
+        DestroyMaterial.SetTexture("_Image", card.SelfCard.BaseCard.ImageTexture);
         DestroyMaterial.SetFloat("_Trashold", 0);
         DestroyCoroutine = StartCoroutine(DestroyEffectsCoroutine(card));
     }
 
     private IEnumerator DestroyEffectsCoroutine(CardInfoScript card)
     {
+        yield return new WaitForSeconds(ParticleTimeToMove);
+
         float trashold = 0;
 
         while (trashold <= 1)

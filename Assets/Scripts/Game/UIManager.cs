@@ -60,6 +60,11 @@ public class UIManager : MonoBehaviour
         _endTurnButton.interactable = isInteractable;
     }
 
+    public bool ReturnEndTurnButtonInteractable()
+    {
+        return _endTurnButton.interactable;
+    }
+
     public void ChangeDeckCount(Game currentGame)
     {
         _playerDeckTMPro.text = currentGame.PlayerDeck.Count.ToString();

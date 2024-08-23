@@ -63,7 +63,7 @@ public class CardInfoScript : MonoBehaviour
 
         Name.colorGradient = new VertexGradient(card.BaseCard.ColorTheme, card.BaseCard.ColorTheme, Color.black, Color.black);
         SecondName.colorGradient = new VertexGradient(card.BaseCard.ColorTheme, card.BaseCard.ColorTheme, Color.black, Color.black);
-        Description.colorGradient = new VertexGradient(card.BaseCard.ColorTheme, card.BaseCard.ColorTheme, Color.black, Color.black);
+        Description.colorGradient = new VertexGradient(Color.white, Color.white, Color.black, Color.black);
 
         Material imageMaterial = new Material(Image.material);
 

@@ -11,5 +11,11 @@ public class InputController : MonoBehaviour
             else
                 UIManager.Instance.UnPause();
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (UIManager.Instance.ReturnEndTurnButtonInteractable())
+                GameManager.Instance.StartChangeTurn();
+        }
     }
 }
