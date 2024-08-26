@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class EffectsManager : MonoBehaviour
@@ -39,6 +40,7 @@ public class EffectsManager : MonoBehaviour
 
     [HideInInspector] public int ParticleZCoordinate = 50;
     [HideInInspector] public float ParticleTimeToMove = 0.4f;
+    [HideInInspector] public float ShaderChangePointsTime = 1f;
 
     private void Awake()
     {
@@ -141,6 +143,29 @@ public class EffectsManager : MonoBehaviour
         }
     }
 
+    public void StartShaderEffect(CardInfoScript card, Color color)
+    {
+        StartCoroutine(ShaderEffect(card, color));
+    }
+
+    private IEnumerator ShaderEffect(CardInfoScript card, Color color)
+    {
+        yield return new WaitForSeconds(ParticleTimeToMove);
+
+        float damage = ShaderChangePointsTime;
+        card.Image.material.SetFloat("_Damage", damage);
+        card.Image.material.SetColor("_Color", color);
+
+        while (damage > 0)
+        {
+            damage -= 0.05f;
+            card.Image.material.SetFloat("_Damage", damage);
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        yield break;
+    }
+
     public void StartDestroyCoroutine(CardInfoScript card)
     {
         card.PointObject.SetActive(false);
@@ -151,7 +176,8 @@ public class EffectsManager : MonoBehaviour
         card.DestroyImage.material = DestroyMaterial;
         DestroyMaterial.SetTexture("_Image", card.SelfCard.BaseCard.ImageTexture);
         DestroyMaterial.SetFloat("_Trashold", 0);
-        DestroyCoroutine = StartCoroutine(DestroyEffectsCoroutine(card));
+
+        StartCoroutine(DestroyEffectsCoroutine(card));
     }
 
     private IEnumerator DestroyEffectsCoroutine(CardInfoScript card)
@@ -167,6 +193,6 @@ public class EffectsManager : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
-        StopCoroutine(DestroyCoroutine);
+        yield break;
     }
 }

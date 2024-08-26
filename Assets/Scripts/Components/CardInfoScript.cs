@@ -14,16 +14,13 @@ public class CardInfoScript : MonoBehaviour
     public GameObject ShadowPoint;
     public GameObject DestroyGameObject;
 
+
     public Image Image;
     public Image ImageEdge1;
     public Image DestroyImage;
 
+    public GameObject StatusEffectPrefab;
     public Image CardStatusEffectImage;
-
-    public TextMeshProUGUI Point;
-    public TextMeshProUGUI Name;
-    public TextMeshProUGUI SecondName;
-    public TextMeshProUGUI Description;
 
     public int SiblingIndex;
     public bool IsHideCard;
@@ -31,10 +28,19 @@ public class CardInfoScript : MonoBehaviour
     public bool IsOrderCard;
     public bool IsDeckBuildCard;
 
-    public GameObject StatusEffectPrefab;
+    public TextMeshProUGUI Point;
+    public TextMeshProUGUI Name;
+    public TextMeshProUGUI SecondName;
+    public TextMeshProUGUI Description;
+
+    public GameObject ArmorObject;
+    public TextMeshProUGUI ArmorPoints;
 
     public GameObject BleedingPanel;
     public TextMeshProUGUI BleedingPanelText;
+
+    public GameObject TimerObject;
+    public TextMeshProUGUI TimerText;
 
     [HideInInspector] public GameObject StatusEffectShield;
     [HideInInspector] public GameObject StatusEffectIllusion;
@@ -60,6 +66,18 @@ public class CardInfoScript : MonoBehaviour
         Name.text = card.BaseCard.Name.ToString();
         SecondName.text = card.BaseCard.AbilityName.ToString();
         Description.text = card.BaseCard.Description.ToString();
+
+        if(card.BaseCard.ArmorPoints > 0)
+        {
+            ArmorObject.SetActive(true);
+            ArmorPoints.text = card.BaseCard.ArmorPoints.ToString();
+        }
+
+        if (card.EndTurnActions.Timer > 0)
+        {
+            TimerObject.SetActive(true);
+            TimerText.text = card.EndTurnActions.Timer.ToString();
+        }
 
         Name.colorGradient = new VertexGradient(card.BaseCard.ColorTheme, card.BaseCard.ColorTheme, Color.black, Color.black);
         SecondName.colorGradient = new VertexGradient(card.BaseCard.ColorTheme, card.BaseCard.ColorTheme, Color.black, Color.black);

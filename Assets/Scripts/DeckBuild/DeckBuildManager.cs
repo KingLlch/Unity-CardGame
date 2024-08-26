@@ -31,7 +31,8 @@ public class DeckBuildManager : MonoBehaviour
     public TextMeshProUGUI CountCard;
     public TextMeshProUGUI NeedCountCard;
 
-    public AudioSource AudioSource;
+    public AudioSource AudioSourceVoice;
+    public AudioSource AudioSourceEffects;
 
     private List<Card> Deck = new List<Card>();
     private List<GameObject> AllCards = new List<GameObject>();
@@ -72,10 +73,11 @@ public class DeckBuildManager : MonoBehaviour
             CardInfoDeckList.Add(cardInfo);
         }
 
-        float height = Mathf.Ceil((float)CardContentView.transform.childCount / 6) * 150 + (Mathf.Ceil((float)CardContentView.transform.childCount / 6) - 1) * 100 + 150;
+        float height = (Mathf.Ceil((float)CardContentView.transform.childCount / 6) * 150 + (Mathf.Ceil((float)CardContentView.transform.childCount / 6) - 1) * 100) - 1065 + 250;
         CardContentView.GetComponent<RectTransform>().sizeDelta = new Vector2(CardContentView.GetComponent<RectTransform>().sizeDelta.x, height);
+        CardContentView.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -height/2);
 
-        if(Object.FindObjectOfType<HowToPlay>() != null)
+        if (Object.FindObjectOfType<HowToPlay>() != null)
             HowToPlay.Instance.HowToPlayDeckBuild(HowToPlayList);
     }
 
@@ -99,9 +101,9 @@ public class DeckBuildManager : MonoBehaviour
 
         Deck.Add(card.SelfCard);
 
-        float height = DeckGameObject.transform.childCount * CardInDeckPref.GetComponent<RectTransform>().sizeDelta.y + DeckGameObject.transform.childCount * 5; 
+        float height = (DeckGameObject.transform.childCount * CardInDeckPref.GetComponent<RectTransform>().sizeDelta.y + DeckGameObject.transform.childCount * 5) - 1065 + 100; 
 
-        if (height > 1075)
+        if (height > 0)
             DeckGameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(DeckGameObject.GetComponent<RectTransform>().sizeDelta.x, height);
 
         CardSound(card);
@@ -117,9 +119,9 @@ public class DeckBuildManager : MonoBehaviour
 
         Destroy(cardInDeck);
 
-        float height = DeckGameObject.transform.childCount * CardInDeckPref.GetComponent<RectTransform>().sizeDelta.y + DeckGameObject.transform.childCount * 5;
+        float height = DeckGameObject.transform.childCount * CardInDeckPref.GetComponent<RectTransform>().sizeDelta.y + DeckGameObject.transform.childCount * 5 - 1065 + 100;
 
-        if (height > 1075)
+        if (height > 0)
             DeckGameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(DeckGameObject.GetComponent<RectTransform>().sizeDelta.x, height);
     }
 
@@ -206,7 +208,10 @@ public class DeckBuildManager : MonoBehaviour
 
     private void CardSound(CardInfoScript card)
     {
-        AudioSource.clip = Resources.Load<AudioClip>("Sounds/Cards/Deployment/" + card.SelfCard.BaseCard.Name + Random.Range(0, 6));
-        AudioSource.Play();
+        AudioSourceVoice.clip = Resources.Load<AudioClip>("Sounds/Cards/Deployment/" + card.SelfCard.BaseCard.Name + Random.Range(0, 6));
+        AudioSourceVoice.Play();
+
+        AudioSourceEffects.clip = card.SelfCard.BaseCard.CardPlaySound;
+        AudioSourceEffects.Play();
     }
 }

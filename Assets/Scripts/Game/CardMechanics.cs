@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class CardMechanics : MonoBehaviour
 {
     private static CardMechanics _instance;
-
-    [HideInInspector] public UnityEvent<CardInfoScript> EndTurnCardEvent;
 
     public static CardMechanics Instance
     {
@@ -74,14 +71,14 @@ public class CardMechanics : MonoBehaviour
         if (startCard.SelfCard.EndTurnActions.EndTurnSelfBoost != 0 && isSelfOrNear)
         {
             ChangeCardPoints(startCard, startCard, startCard.SelfCard.EndTurnActions.EndTurnSelfBoost, true);
-
+            SoundManager.Instance.EndTurnSound(startCard);
             EffectsManager.Instance.StartParticleEffects(startCard.transform, startCard.transform, startCard.SelfCard.EndTurnActions.EndTurnSelfBoost);
         }
 
         if (startCard.SelfCard.EndTurnActions.EndTurnSelfDamage != 0 && isSelfOrNear)
         {
             ChangeCardPoints(startCard, startCard, -startCard.SelfCard.EndTurnActions.EndTurnSelfDamage, true);
-
+            SoundManager.Instance.EndTurnSound(startCard);
             EffectsManager.Instance.StartParticleEffects(startCard.transform, startCard.transform, -startCard.SelfCard.EndTurnActions.EndTurnSelfDamage);
         }
 
@@ -100,6 +97,8 @@ public class CardMechanics : MonoBehaviour
                 ChangeCardPoints(startCard, ReturnNearCard(startCard, 1, true)[0], startCard.SelfCard.EndTurnActions.EndTurnNearBoost, true);
                 EffectsManager.Instance.StartParticleEffects(startCard.transform, ReturnNearCard(startCard, 1, true)[0].transform, startCard.SelfCard.EndTurnActions.EndTurnNearBoost);
             }
+
+            SoundManager.Instance.EndTurnSound(startCard);
         }
 
         if (startCard.SelfCard.EndTurnActions.EndTurnNearDamage != 0 && isSelfOrNear)
@@ -116,23 +115,23 @@ public class CardMechanics : MonoBehaviour
                 ChangeCardPoints(startCard, ReturnNearCard(startCard, 1, true)[0], -startCard.SelfCard.EndTurnActions.EndTurnNearDamage, true);
                 EffectsManager.Instance.StartParticleEffects(startCard.transform, ReturnNearCard(startCard, 1, true)[0].transform, -startCard.SelfCard.EndTurnActions.EndTurnNearDamage);
             }
+
+            SoundManager.Instance.EndTurnSound(startCard);
         }
 
         if (startCard.SelfCard.EndTurnActions.EndTurnRandomBoost != 0 && !isSelfOrNear)
         {
-            ChangeCardPoints(startCard, targetCard, startCard.SelfCard.EndTurnActions.EndTurnRandomBoost);
-
+            ChangeCardPoints(startCard, targetCard, startCard.SelfCard.EndTurnActions.EndTurnRandomBoost, true);
+            SoundManager.Instance.EndTurnSound(startCard);
             EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, startCard.SelfCard.EndTurnActions.EndTurnRandomBoost);
         }
 
         if (startCard.SelfCard.EndTurnActions.EndTurnRandomDamage != 0 && !isSelfOrNear)
         {
-            ChangeCardPoints(startCard, targetCard, -startCard.SelfCard.EndTurnActions.EndTurnRandomDamage);
-
+            ChangeCardPoints(startCard, targetCard, -startCard.SelfCard.EndTurnActions.EndTurnRandomDamage, true);
+            SoundManager.Instance.EndTurnSound(startCard);
             EffectsManager.Instance.StartParticleEffects(startCard.transform, targetCard.transform, -startCard.SelfCard.EndTurnActions.EndTurnRandomDamage);
         }
-
-        CheckUICards(targetCard, startCard);
     }
 
     public void BleedingOrEndurance(CardInfoScript startCard, CardInfoScript targetCard)
@@ -157,7 +156,7 @@ public class CardMechanics : MonoBehaviour
         }
     }
 
-    public void ChangeCardPoints(CardInfoScript startCardInfo, CardInfoScript targetCardInfo, int value, bool isEndTurn = false)
+    public void ChangeCardPoints(CardInfoScript startCardInfo, CardInfoScript targetCardInfo, int value, bool isEndTurn = false, bool isPiercingDamage = false)
     {
         ref Card targetCard = ref targetCardInfo.SelfCard;
         ref Card startCard = ref startCardInfo.SelfCard;
@@ -182,23 +181,48 @@ public class CardMechanics : MonoBehaviour
                 value = -targetCard.UniqueMechanics.HealDamageValue;
             }
 
+            SoundManager.Instance.EndTurnSound(targetCardInfo);
         }
 
         if (targetCard.UniqueMechanics.ReturnDamageValue != 0 && (value < 0) && targetCardInfo != startCardInfo)
         {
             if (targetCard.UniqueMechanics.ReturnDamageValue == -1)
             {
-                ChangeCardPoints(targetCardInfo, startCardInfo, -value);
+                ChangeCardPoints(targetCardInfo, startCardInfo, -value, isEndTurn);
             }
             else
             {
-                ChangeCardPoints(targetCardInfo, startCardInfo, -1);
+                ChangeCardPoints(targetCardInfo, startCardInfo, -1, isEndTurn);
             }
+
+            SoundManager.Instance.EndTurnSound(targetCardInfo);
+        }
+
+        if ((!isPiercingDamage) && (value < 0 && targetCard.BaseCard.ArmorPoints > 0))
+        {
+            int temporaryArmor = Mathf.Min(targetCard.BaseCard.ArmorPoints, -value);
+
+            value += temporaryArmor;
+            targetCard.BaseCard.ArmorPoints += -temporaryArmor;
+
+            if (targetCard.BaseCard.ArmorPoints < 0)
+                targetCard.BaseCard.ArmorPoints = 0;
+
+            UIManager.Instance.CheckArmor(targetCardInfo);
+            Debug.Log(startCard.BaseCard.Name + " изменила броню " + targetCard.BaseCard.Name + " в размере " + -temporaryArmor + "\n" + (targetCard.BaseCard.ArmorPoints + temporaryArmor) + " => " + targetCard.BaseCard.ArmorPoints);
         }
 
         targetCard.BaseCard.Points += value;
 
-        Debug.Log(startCard.BaseCard.Name + " изменила силу " + targetCard.BaseCard.Name + " в размере " + value + "\n" + (targetCard.BaseCard.Points - value) + " => " + targetCard.BaseCard.Points);
+        if (value < 0)
+            EffectsManager.Instance.StartShaderEffect(targetCardInfo, Color.red);
+        else if (value > 0)
+            EffectsManager.Instance.StartShaderEffect(targetCardInfo, Color.green);
+        else
+            EffectsManager.Instance.StartShaderEffect(targetCardInfo, Color.grey);
+
+        if (value != 0)
+            Debug.Log(startCard.BaseCard.Name + " изменила силу " + targetCard.BaseCard.Name + " в размере " + value + "\n" + (targetCard.BaseCard.Points - value) + " => " + targetCard.BaseCard.Points);
 
         CheckUICards(targetCardInfo, startCardInfo, isEndTurn);
         ShowPointsUI(targetCardInfo);
@@ -216,7 +240,10 @@ public class CardMechanics : MonoBehaviour
             card.SelfCard.BaseCard.Points = 0;
 
             if (!isEndTurn)
+            {
                 DestroyCard(card);
+            }
+
             else
             {
                 card.SelfCard.BaseCard.isDestroyed = true;
@@ -234,6 +261,7 @@ public class CardMechanics : MonoBehaviour
 
     public void DestroyCard(CardInfoScript card, CardInfoScript startCard = null)
     {
+
         if (startCard != null)
         {
             Debug.Log(startCard.SelfCard.BaseCard.Name + " уничтожила " + card.SelfCard.BaseCard.Name);
@@ -281,12 +309,22 @@ public class CardMechanics : MonoBehaviour
         {
             foreach (CardInfoScript card in GameManager.Instance.PlayerFieldCards)
             {
-                if (!card.SelfCard.BaseCard.isDestroyed)
+                if (card.SelfCard.EndTurnActions.Timer > 0)
+                {
+                    card.SelfCard.EndTurnActions.Timer--;
+                    SoundManager.Instance.TimerSound(card);
+                    UIManager.Instance.CheckTimer(card);
+                }
+
+                if (!card.SelfCard.BaseCard.isDestroyed && card.SelfCard.EndTurnActions.Timer == 0)
                 {
                     if (card.SelfCard.EndTurnActions.EndTurnActionCount > 0 && !card.SelfCard.StatusEffects.IsSelfStunned)
                     {
                         for (int i = 0; i < card.SelfCard.EndTurnActions.EndTurnActionCount; i++)
                         {
+                            if (card.SelfCard.BaseCard.isDestroyed)
+                                break;
+
                             EndTurn(card, isSelfOrNear: true);
 
                             if ((card.SelfCard.EndTurnActions.EndTurnRandomDamage != 0) && (GameManager.Instance.EnemyFieldCards.Count - GameManager.Instance.EnemyFieldDestroyedInEndTurnCards.Count > 0))
@@ -312,20 +350,24 @@ public class CardMechanics : MonoBehaviour
 
                                 EndTurn(card, existingPlayerFieldCards[Random.Range(0, existingPlayerFieldCards.Count)], false);
                             }
-                        }
 
-                        EndTurnCardEvent.Invoke(card);
+                            if (!card.SelfCard.EndTurnActions.TimerMoreActions)
+                                card.SelfCard.EndTurnActions.Timer = -1;
+
+                            yield return new WaitForSeconds(0.25f);
+                        }
 
                         yield return new WaitForSeconds(0.5f);
                     }
 
-                    if (card.SelfCard.StatusEffects.IsSelfStunned)
-                    {
-                        card.SelfCard.StatusEffects.IsSelfStunned = false;
-                        CheckStatusEffects(card);
-                    }
 
                     CheckBleedingOrEndurance(card);
+                }
+
+                if (card.SelfCard.StatusEffects.IsSelfStunned)
+                {
+                    card.SelfCard.StatusEffects.IsSelfStunned = false;
+                    CheckStatusEffects(card);
                 }
             }
         }
@@ -334,7 +376,15 @@ public class CardMechanics : MonoBehaviour
         {
             foreach (CardInfoScript card in GameManager.Instance.EnemyFieldCards)
             {
-                if (!card.SelfCard.BaseCard.isDestroyed)
+
+                if (card.SelfCard.EndTurnActions.Timer > 0)
+                {
+                    card.SelfCard.EndTurnActions.Timer--;
+                    SoundManager.Instance.TimerSound(card);
+                    UIManager.Instance.CheckTimer(card);
+                }
+
+                if (!card.SelfCard.BaseCard.isDestroyed && card.SelfCard.EndTurnActions.Timer == 0)
                 {
                     if (card.SelfCard.EndTurnActions.EndTurnActionCount > 0 && !card.SelfCard.StatusEffects.IsSelfStunned)
                     {
@@ -365,20 +415,23 @@ public class CardMechanics : MonoBehaviour
 
                                 EndTurn(card, existingEnemyFieldCards[Random.Range(0, existingEnemyFieldCards.Count)], false);
                             }
-                        }
 
-                        EndTurnCardEvent.Invoke(card);
+                            if (!card.SelfCard.EndTurnActions.TimerMoreActions)
+                                card.SelfCard.EndTurnActions.Timer = -1;
+
+                            yield return new WaitForSeconds(0.25f);
+                        }
 
                         yield return new WaitForSeconds(0.5f);
                     }
 
-                    if (card.SelfCard.StatusEffects.IsSelfStunned)
-                    {
-                        card.SelfCard.StatusEffects.IsSelfStunned = false;
-                        CheckStatusEffects(card);
-                    }
-
                     CheckBleedingOrEndurance(card);
+                }
+
+                if (card.SelfCard.StatusEffects.IsSelfStunned)
+                {
+                    card.SelfCard.StatusEffects.IsSelfStunned = false;
+                    CheckStatusEffects(card);
                 }
             }
         }
@@ -392,14 +445,14 @@ public class CardMechanics : MonoBehaviour
         {
             if (card.SelfCard.StatusEffects.SelfEnduranceOrBleeding < 0)
             {
-                ChangeCardPoints(card, card, -1);
+                ChangeCardPoints(card, card, -1, isPiercingDamage: true);
                 EffectsManager.Instance.StartParticleEffects(card.transform, card.transform, -1);
                 card.SelfCard.StatusEffects.SelfEnduranceOrBleeding++;
             }
 
             else
             {
-                ChangeCardPoints(card, card, 1);
+                ChangeCardPoints(card, card, 1, isPiercingDamage: true);
                 EffectsManager.Instance.StartParticleEffects(card.transform, card.transform, 1);
                 card.SelfCard.StatusEffects.SelfEnduranceOrBleeding--;
             }
@@ -412,9 +465,9 @@ public class CardMechanics : MonoBehaviour
     {
         GameObject spawnCard;
 
-        if (card.SelfCard.Summons.SpawnCardNumber == -1)
+        if (card.SelfCard.Spawns.SpawnCardNumber == -1)
         {
-            for (int i = 0; i < card.SelfCard.Summons.SpawnCardCount; i++)
+            for (int i = 0; i < card.SelfCard.Spawns.SpawnCardCount; i++)
             {
                 if (!((player && GameManager.Instance.PlayerFieldCards.Count < GameManager.Instance.MaxNumberCardInField) ||
                     (!player && GameManager.Instance.EnemyFieldCards.Count < GameManager.Instance.MaxNumberCardInField)))
@@ -441,7 +494,7 @@ public class CardMechanics : MonoBehaviour
 
         else
         {
-            for (int i = 0; i < card.SelfCard.Summons.SpawnCardCount; i++)
+            for (int i = 0; i < card.SelfCard.Spawns.SpawnCardCount; i++)
             {
                 if (!((player && GameManager.Instance.PlayerFieldCards.Count < GameManager.Instance.MaxNumberCardInField) ||
                 (!player && GameManager.Instance.EnemyFieldCards.Count < GameManager.Instance.MaxNumberCardInField)))
@@ -458,7 +511,7 @@ public class CardMechanics : MonoBehaviour
 
                 if (player) GameManager.Instance.PlayerFieldCards.Add(summonCardInfo);
                 else GameManager.Instance.EnemyFieldCards.Add(summonCardInfo);
-                summonCardInfo.ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.Summons.SpawnCardNumber]);
+                summonCardInfo.ShowCardInfo(CardManagerList.SummonCards[card.SelfCard.Spawns.SpawnCardNumber]);
                 spawnCard.AddComponent<ChoseCard>();
                 spawnCard.GetComponent<ChoseCard>().enabled = false;
             }
@@ -504,7 +557,7 @@ public class CardMechanics : MonoBehaviour
         {
             card.CardStatusEffectImage.material = new Material(EffectsManager.Instance.shieldMaterial);
             card.StatusEffectShield = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
-            card.StatusEffectShield.GetComponent<StatusEffect>().Initialize(StatusEffectsType.shield);
+            card.StatusEffectShield.GetComponent<StatusEffect>().InitializeStatusEffect(StatusEffectsType.shield);
         }
 
         else if (!card.SelfCard.StatusEffects.IsSelfShielded && card.StatusEffectShield != null)
@@ -518,13 +571,13 @@ public class CardMechanics : MonoBehaviour
         {
             card.CardStatusEffectImage.material = new Material(EffectsManager.Instance.illusionMaterial);
             card.StatusEffectIllusion = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
-            card.StatusEffectIllusion.GetComponent<StatusEffect>().Initialize(StatusEffectsType.illusion);
+            card.StatusEffectIllusion.GetComponent<StatusEffect>().InitializeStatusEffect(StatusEffectsType.illusion);
         }
 
         if (card.SelfCard.StatusEffects.IsSelfStunned && card.StatusEffectStunned == null)
         {
             card.StatusEffectStunned = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
-            card.StatusEffectStunned.GetComponent<StatusEffect>().Initialize(StatusEffectsType.stun);
+            card.StatusEffectStunned.GetComponent<StatusEffect>().InitializeStatusEffect(StatusEffectsType.stun);
         }
 
         else if (!card.SelfCard.StatusEffects.IsSelfStunned && card.StatusEffectStunned != null)
@@ -537,14 +590,14 @@ public class CardMechanics : MonoBehaviour
         {
             card.CardStatusEffectImage.material = new Material(EffectsManager.Instance.invulnerabilityMaterial);
             card.StatusEffectInvulnerability = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
-            card.StatusEffectInvulnerability.GetComponent<StatusEffect>().Initialize(StatusEffectsType.invulnerability);
+            card.StatusEffectInvulnerability.GetComponent<StatusEffect>().InitializeStatusEffect(StatusEffectsType.invulnerability);
         }
 
         if (card.SelfCard.StatusEffects.IsInvisibility && card.StatusEffectInvisibility == null)
         {
             card.CardStatusEffectImage.material = new Material(EffectsManager.Instance.invisibilityMaterial);
             card.StatusEffectInvisibility = Instantiate(card.StatusEffectPrefab, card.CardStatusEffectImage.gameObject.transform);
-            card.StatusEffectInvisibility.GetComponent<StatusEffect>().Initialize(StatusEffectsType.invisibility);
+            card.StatusEffectInvisibility.GetComponent<StatusEffect>().InitializeStatusEffect(StatusEffectsType.invisibility);
         }
 
         UIManager.Instance.CheckBleeding(card);

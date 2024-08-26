@@ -23,7 +23,7 @@ public class ClickCardOnDeckBuild : MonoBehaviour, IPointerClickHandler
             else if (!IsMainCard)
             {
                 DeckBuildManager.Instance.RemoveCard(CardInfoScript, gameObject);
-                CardRemoveFromDeck(card);
+                CardRemoveFromDeck(CardInfoScript);
             }
         }
 

@@ -136,6 +136,17 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void CheckTimer(CardInfoScript card)
+    {
+        if (card.SelfCard.EndTurnActions.Timer > 0)
+        {
+            card.TimerObject.SetActive(true);
+            card.TimerText.text = card.SelfCard.EndTurnActions.Timer.ToString();
+        }
+        else
+            card.TimerObject.SetActive(false);
+    }
+
     public void CheckBleeding(CardInfoScript card)
     {
         if (card.SelfCard.StatusEffects.SelfEnduranceOrBleeding < 0)
@@ -155,6 +166,20 @@ public class UIManager : MonoBehaviour
         else
         {
             card.BleedingPanel.SetActive(false);
+        }
+    }
+
+    public void CheckArmor(CardInfoScript card)
+    {
+        if (card.SelfCard.BaseCard.ArmorPoints > 0)
+        {
+            card.ArmorObject.SetActive(true);
+            card.ArmorPoints.text = card.SelfCard.BaseCard.ArmorPoints.ToString();
+        }
+
+        else
+        {
+            card.ArmorObject.SetActive(false);
         }
     }
 
