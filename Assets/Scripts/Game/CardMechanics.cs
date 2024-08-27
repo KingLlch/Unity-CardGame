@@ -307,6 +307,7 @@ public class CardMechanics : MonoBehaviour
     {
         if (GameManager.Instance.IsPlayerTurn)
         {
+            GameManager.Instance.PlayerFieldCards = GameManager.Instance.EndTurnOrderCard(GameManager.Instance.PlayerFieldCards, true);
             foreach (CardInfoScript card in GameManager.Instance.PlayerFieldCards)
             {
                 if (card.SelfCard.EndTurnActions.Timer > 0)
@@ -318,6 +319,7 @@ public class CardMechanics : MonoBehaviour
 
                 if (!card.SelfCard.BaseCard.isDestroyed && card.SelfCard.EndTurnActions.Timer == 0)
                 {
+
                     if (card.SelfCard.EndTurnActions.EndTurnActionCount > 0 && !card.SelfCard.StatusEffects.IsSelfStunned)
                     {
                         for (int i = 0; i < card.SelfCard.EndTurnActions.EndTurnActionCount; i++)
@@ -351,8 +353,10 @@ public class CardMechanics : MonoBehaviour
                                 EndTurn(card, existingPlayerFieldCards[Random.Range(0, existingPlayerFieldCards.Count)], false);
                             }
 
-                            if (!card.SelfCard.EndTurnActions.TimerMoreActions)
+                            if (card.SelfCard.EndTurnActions.TimerNoMoreActions)
+                            {
                                 card.SelfCard.EndTurnActions.Timer = -1;
+                            }
 
                             yield return new WaitForSeconds(0.25f);
                         }
@@ -374,9 +378,9 @@ public class CardMechanics : MonoBehaviour
 
         else
         {
+            GameManager.Instance.EnemyFieldCards = GameManager.Instance.EndTurnOrderCard(GameManager.Instance.EnemyFieldCards, false);
             foreach (CardInfoScript card in GameManager.Instance.EnemyFieldCards)
             {
-
                 if (card.SelfCard.EndTurnActions.Timer > 0)
                 {
                     card.SelfCard.EndTurnActions.Timer--;
@@ -416,8 +420,10 @@ public class CardMechanics : MonoBehaviour
                                 EndTurn(card, existingEnemyFieldCards[Random.Range(0, existingEnemyFieldCards.Count)], false);
                             }
 
-                            if (!card.SelfCard.EndTurnActions.TimerMoreActions)
+                            if (card.SelfCard.EndTurnActions.TimerNoMoreActions)
+                            {
                                 card.SelfCard.EndTurnActions.Timer = -1;
+                            }
 
                             yield return new WaitForSeconds(0.25f);
                         }

@@ -51,7 +51,7 @@ public struct EndTurnActions
     public int EndTurnNearDamage;
 
     public int Timer;
-    public bool TimerMoreActions;
+    public bool TimerNoMoreActions;
 
     public int ArmorOther;
 }
@@ -113,7 +113,7 @@ public struct Card
         int selfBoost = 0, int selfDamage = 0, bool addictionWithSelfField = false, bool addictionWithEnemyField = false,
 
         int endTurnCount = 0, int endTurnRandomBoost = 0, int endTurnRandomDamage = 0, 
-        int endTurnSelfBoost = 0, int endTurnSelfDamage = 0, int endTurnNearBoost = 0, int endTurnNearDamage = 0, int timer = 0, bool timerEndTurnMoreAction = false, int armorOther = 0,
+        int endTurnSelfBoost = 0, int endTurnSelfDamage = 0, int endTurnNearBoost = 0, int endTurnNearDamage = 0, int timer = 0, bool timerEndTurnNoMoreAction = false, int armorOther = 0,
 
         int spawnCardCount = 0, int spawnCardNumber = 0, 
 
@@ -170,7 +170,7 @@ public struct Card
             EndTurnNearBoost = endTurnNearBoost,
             EndTurnNearDamage = endTurnNearDamage,
             Timer = timer,
-            TimerMoreActions = timerEndTurnMoreAction,
+            TimerNoMoreActions = timerEndTurnNoMoreAction,
 
             ArmorOther = armorOther
         };
@@ -446,7 +446,7 @@ public class CardManager : MonoBehaviour
             CardManagerList.AllCards.Add(new Card("Hoodwink", "Sharpshooter", "<color=blue>Timer</color> 4: at the end of the your turn, deal 4 <color=red>damage</color> to a random enemy unit 1 <color=red>times</color>.",
                 "Sprites/Cards/Hoodwink2", "Sounds/Cards/StartOrder/HoodwinkSharpshooter", Color.green,
                 3, 3, timerSoundPath: "Sounds/Cards/StartOrder/HoodwinkSharpshooterTimer", 
-                timer:4, endTurnCount:1, endTurnRandomDamage:4, timerEndTurnMoreAction:true)); //3 + 4 end turn
+                timer:4, endTurnCount:1, endTurnRandomDamage:4)); //3 + 4 end turn
 
             CardManagerList.AllCards.Add(new Card("Sven", "Storm Hammer", "<color=red>Damage</color> enemy unit by 2 and <color=yellow>stun</color> then.",
                 "Sprites/Cards/Sven1", "Sounds/Cards/StartOrder/SvenStormHammer", Color.gray,
@@ -459,7 +459,7 @@ public class CardManager : MonoBehaviour
             CardManagerList.AllCards.Add(new Card("Sven", "God's Strength", "<color=blue>Timer</color> 3: <color=green>boost</color> self by self max point",
                 "Sprites/Cards/Sven3", "Sounds/Cards/StartOrder/SvenGod'sStrength", Color.gray,
                 8, 8, timerSoundPath: "Sounds/Cards/StartOrder/SvenGod'sStrengthTimer", 
-                armor: 2, timer:3, endTurnCount:1 , endTurnSelfBoost:8)); //
+                armor: 2, timer:3, endTurnCount:1 , endTurnSelfBoost:8, timerEndTurnNoMoreAction:true)); //
 
             //Transformation
 
