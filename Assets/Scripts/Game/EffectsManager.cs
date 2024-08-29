@@ -26,8 +26,6 @@ public class EffectsManager : MonoBehaviour
     public ParticleSystem[] BoostParticle;
     public ParticleSystem[] BoostBurstParticle;
 
-    private Coroutine DestroyCoroutine;
-
     public Material destroyMaterial;
     public Material shieldMaterial;
     public Material illusionMaterial;
@@ -145,7 +143,11 @@ public class EffectsManager : MonoBehaviour
 
     public void StartShaderEffect(CardInfoScript card, Color color)
     {
-        StartCoroutine(ShaderEffect(card, color));
+        if (!card.IsShaderActive)
+        {
+            StartCoroutine(ShaderEffect(card, color));
+            card.IsShaderActive = true;
+        }
     }
 
     private IEnumerator ShaderEffect(CardInfoScript card, Color color)
@@ -162,6 +164,8 @@ public class EffectsManager : MonoBehaviour
             card.Image.material.SetFloat("_Damage", damage);
             yield return new WaitForSeconds(0.05f);
         }
+
+        card.IsShaderActive = false;
 
         yield break;
     }

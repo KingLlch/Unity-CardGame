@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: EffectSpiteAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 1
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: Standalone
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 12
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 74dab0501c9e2c64099718155f89859f, type: 3}
+    - {fileID: 2800000, guid: 6861a18eb252ec24b9ef2b92efd8d22f, type: 3}
+    - {fileID: 2800000, guid: 2412ea3c57d81fc48bcfdb2d968ba9c3, type: 3}
+    - {fileID: 2800000, guid: 6d91d3e498a6b054cb9b89ab82276e56, type: 3}
+    - {fileID: 2800000, guid: 32069b366fb5f7046889910cea678ac0, type: 3}
+    - {fileID: 2800000, guid: 25c48d22763378b4aa8505595029b70f, type: 3}
+    - {fileID: 2800000, guid: e38ba31be2c580444bd90a3dde32775c, type: 3}
+    - {fileID: 2800000, guid: a98d53eaf7d669c4092dd4eb9d2289b7, type: 3}
+    - {fileID: 2800000, guid: f0d01c7bc1ecf2a47b38bc7ad7fdf71b, type: 3}
+    - {fileID: 2800000, guid: 71fdea47b8eb6b940994f1d87725acf3, type: 3}
+    - {fileID: 2800000, guid: 29eb322ed93b13a4fa589b8422d61168, type: 3}
+    - {fileID: 2800000, guid: 1b7f5c554cc768d4c9d9ef5e4fcfbb77, type: 3}
+    - {fileID: 2800000, guid: ebe852cfb57833e46abbc78d660953cd, type: 3}
+    - {fileID: 2800000, guid: c376eab6c50e1bb4ea40f7db96abd182, type: 3}
+    - {fileID: 2800000, guid: 7cd624fc0661e9a4cb95ed5ccca2228e, type: 3}
+    - {fileID: 2800000, guid: 41d251a562e625c45a43f6db5acc9c87, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 74dab0501c9e2c64099718155f89859f: 21300000
+    - 25c48d22763378b4aa8505595029b70f: 21300000
+    - 6d91d3e498a6b054cb9b89ab82276e56: 21300000
+    - 1b7f5c554cc768d4c9d9ef5e4fcfbb77: 21300000
+    - 41d251a562e625c45a43f6db5acc9c87: 21300000
+    - 32069b366fb5f7046889910cea678ac0: 21300000
+    - c376eab6c50e1bb4ea40f7db96abd182: 21300000
+    - 71fdea47b8eb6b940994f1d87725acf3: 21300000
+    - a98d53eaf7d669c4092dd4eb9d2289b7: 21300000
+    - e38ba31be2c580444bd90a3dde32775c: 21300000
+    - f0d01c7bc1ecf2a47b38bc7ad7fdf71b: 21300000
+    - 2412ea3c57d81fc48bcfdb2d968ba9c3: 21300000
+    - 7cd624fc0661e9a4cb95ed5ccca2228e: 21300000
+    - 29eb322ed93b13a4fa589b8422d61168: 21300000
+    - 6861a18eb252ec24b9ef2b92efd8d22f: 21300000
+    - ebe852cfb57833e46abbc78d660953cd: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 74dab0501c9e2c64099718155f89859f, type: 3}
+  - {fileID: 21300000, guid: 25c48d22763378b4aa8505595029b70f, type: 3}
+  - {fileID: 21300000, guid: 6d91d3e498a6b054cb9b89ab82276e56, type: 3}
+  - {fileID: 21300000, guid: 1b7f5c554cc768d4c9d9ef5e4fcfbb77, type: 3}
+  - {fileID: 21300000, guid: 41d251a562e625c45a43f6db5acc9c87, type: 3}
+  - {fileID: 21300000, guid: 32069b366fb5f7046889910cea678ac0, type: 3}
+  - {fileID: 21300000, guid: c376eab6c50e1bb4ea40f7db96abd182, type: 3}
+  - {fileID: 21300000, guid: 71fdea47b8eb6b940994f1d87725acf3, type: 3}
+  - {fileID: 21300000, guid: a98d53eaf7d669c4092dd4eb9d2289b7, type: 3}
+  - {fileID: 21300000, guid: e38ba31be2c580444bd90a3dde32775c, type: 3}
+  - {fileID: 21300000, guid: f0d01c7bc1ecf2a47b38bc7ad7fdf71b, type: 3}
+  - {fileID: 21300000, guid: 2412ea3c57d81fc48bcfdb2d968ba9c3, type: 3}
+  - {fileID: 21300000, guid: 7cd624fc0661e9a4cb95ed5ccca2228e, type: 3}
+  - {fileID: 21300000, guid: 29eb322ed93b13a4fa589b8422d61168, type: 3}
+  - {fileID: 21300000, guid: 6861a18eb252ec24b9ef2b92efd8d22f, type: 3}
+  - {fileID: 21300000, guid: ebe852cfb57833e46abbc78d660953cd, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Armor
+  - Destroy
+  - Boost
+  - Near
+  - Timer
+  - Damage
+  - Spawn
+  - Invisibility
+  - Endurance
+  - Draw
+  - Illusion
+  - Bleeding
+  - Stun
+  - Invulnerability
+  - Armor1
+  - Shield
+  m_RenderDataMap: {}
+  m_Tag: EffectSpiteAtlas
+  m_IsVariant: 0

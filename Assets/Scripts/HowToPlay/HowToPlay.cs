@@ -20,8 +20,8 @@ public class HowToPlay : MonoBehaviour
     }
 
     public bool IsHowToPlay;
-    public GameObject[] HowToPlayDeckList;
-    public GameObject[] HowToPlayGameList;
+    [HideInInspector] public GameObject[] HowToPlayDeckList;
+    [HideInInspector] public GameObject[] HowToPlayGameList;
     private GameObject HowToPlayGameFon;
 
     private void Awake()

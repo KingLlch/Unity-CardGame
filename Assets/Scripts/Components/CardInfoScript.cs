@@ -27,6 +27,7 @@ public class CardInfoScript : MonoBehaviour
     public bool IsAnimationCard;
     public bool IsOrderCard;
     public bool IsDeckBuildCard;
+    public bool IsShaderActive;
 
     public TextMeshProUGUI Point;
     public TextMeshProUGUI Name;
@@ -65,7 +66,21 @@ public class CardInfoScript : MonoBehaviour
         Point.text = card.BaseCard.Points.ToString();
         Name.text = card.BaseCard.Name.ToString();
         SecondName.text = card.BaseCard.AbilityName.ToString();
-        Description.text = card.BaseCard.Description.ToString();
+
+        switch (LocalizationManager.Instance.Language)
+        {
+            case "eng":
+                Description.text = card.BaseCard.DescriptionEng.ToString();
+                break;
+
+            case "ru":
+                Description.text = card.BaseCard.DescriptionRu.ToString();
+                break;
+
+            case "uk":
+                Description.text = card.BaseCard.DescriptionUk.ToString();
+                break;
+        }
 
         if(card.BaseCard.ArmorPoints > 0)
         {

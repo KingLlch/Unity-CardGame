@@ -638,8 +638,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 12
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4f39a3b0723114148ba3f9d728349d73, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 574987b86628284418d6c46f150a9c83, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6b0b3603dfa35e43a083506c5d67534, type: 2}
+  m_sharedMaterial: {fileID: 6758017372566725270, guid: c6b0b3603dfa35e43a083506c5d67534, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -894,6 +894,7 @@ MonoBehaviour:
   IsAnimationCard: 0
   IsOrderCard: 0
   IsDeckBuildCard: 0
+  IsShaderActive: 0
   Point: {fileID: 6089050918954820202}
   Name: {fileID: 6236580174244072488}
   SecondName: {fileID: 1556932504444547871}
@@ -1122,7 +1123,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 19.2
+  m_fontSize: 20
   m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1807,7 +1808,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Naga Siren
+  m_text: Templar Assasin
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4f39a3b0723114148ba3f9d728349d73, type: 2}
   m_sharedMaterial: {fileID: 6640169494650683046, guid: 4f39a3b0723114148ba3f9d728349d73, type: 2}
@@ -1834,7 +1835,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.7
+  m_fontSize: 27.2
   m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1844,9 +1845,9 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -15
-  m_wordSpacing: 10
-  m_lineSpacing: -85
+  m_characterSpacing: -10
+  m_wordSpacing: 0
+  m_lineSpacing: -60
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -2150,10 +2151,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10
+  m_text: 17
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4f39a3b0723114148ba3f9d728349d73, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 47155e75ca95c8b43b9d61bb84779558, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6b0b3603dfa35e43a083506c5d67534, type: 2}
+  m_sharedMaterial: {fileID: 6758017372566725270, guid: c6b0b3603dfa35e43a083506c5d67534, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2177,17 +2178,17 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
+  m_fontSize: 28.8
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 30
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -30
+  m_characterSpacing: -15
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2213,7 +2214,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -3.5319557, y: -3.6785889, z: 0, w: 0}
+  m_margin: {x: 0.20213127, y: 1.0246067, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2286,6 +2287,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Damage enemy card by 2. 2121323131231231231
 
+    Damage enemy card by
+    2. 2121323131231231231
+
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4f39a3b0723114148ba3f9d728349d73, type: 2}
@@ -2313,21 +2317,21 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
+  m_fontSize: 13.95
   m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 12
-  m_fontSizeMax: 14
+  m_fontSizeMax: 16
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
-  m_characterSpacing: -13.19
-  m_wordSpacing: 20
-  m_lineSpacing: -40
+  m_characterSpacing: -5
+  m_wordSpacing: 10
+  m_lineSpacing: -50
   m_lineSpacingMax: 0
-  m_paragraphSpacing: 10
+  m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4

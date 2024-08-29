@@ -151,7 +151,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         SpawnCardViewDescription.color = Color.black;
 
         if (!selfIllusion)
-            SpawnCardViewDescription.text = SpawnCard.BaseCard.Description;
+            SpawnCardViewDescription.text = SpawnCard.BaseCard.DescriptionUk;
         else
             SpawnCardViewDescription.text = "Illusion.";
 
@@ -161,8 +161,24 @@ public class CardView : MonoBehaviour, IPointerClickHandler
     {
         CardViewDescription cardViewDescription = Instantiate(CardViewDescriptionPrefab, Vector3.forward, Quaternion.identity, CardViewDescriptionParent.transform);
         cardViewDescription.Image.sprite = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].EffectImage;
-        cardViewDescription.Name.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].Name;
-        cardViewDescription.Description.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].Description;
+
+        switch (LocalizationManager.Instance.Language)
+        {
+            case "eng":
+                cardViewDescription.Name.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].NameEng;
+                cardViewDescription.Description.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].DescriptionEng;
+                break;
+
+            case "ru":
+                cardViewDescription.Name.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].NameRu;
+                cardViewDescription.Description.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].DescriptionRu;
+                break;
+
+            case "uk":
+                cardViewDescription.Name.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].NameUk;
+                cardViewDescription.Description.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].DescriptionUk;
+                break;
+        }
 
         StatusEffectDescriptionList.Add(cardViewDescription.gameObject);
     }
