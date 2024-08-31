@@ -178,6 +178,7 @@ MonoBehaviour:
   EffectsSoundVolume: {fileID: 854988997}
   VoiceSoundVolume: {fileID: 459688864}
   HowToPlayToggle: {fileID: 1879127772}
+  LanguageDropdown: {fileID: 1902991304}
 --- !u!1 &122785413
 GameObject:
   m_ObjectHideFlags: 0
@@ -3814,7 +3815,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Language: en
-  selectLanguage: {fileID: 1902991304}
 --- !u!4 &1359608207
 Transform:
   m_ObjectHideFlags: 0
@@ -5151,8 +5151,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1359608206}
-        m_TargetAssemblyTypeName: LocalizationManager, Assembly-CSharp
+      - m_Target: {fileID: 61866713}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: SwitchLanguage
         m_Mode: 0
         m_Arguments:

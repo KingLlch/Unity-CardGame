@@ -69,7 +69,7 @@ public class CardInfoScript : MonoBehaviour
 
         switch (LocalizationManager.Instance.Language)
         {
-            case "eng":
+            case "en":
                 Description.text = card.BaseCard.DescriptionEng.ToString();
                 break;
 

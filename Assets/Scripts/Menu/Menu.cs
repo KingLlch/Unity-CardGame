@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -18,6 +19,8 @@ public class Menu : MonoBehaviour
 
     public Toggle HowToPlayToggle;
 
+    public TMP_Dropdown LanguageDropdown;
+
     private AudioClip[] voiceClips;
     private AudioClip[] effectsClips;
 
@@ -31,6 +34,29 @@ public class Menu : MonoBehaviour
         effectsClips = Resources.LoadAll<AudioClip>("Sounds/Cards/StartOrder/");
 
         HowToPlayToggle.isOn = HowToPlay.Instance.IsHowToPlay;
+
+        if (PlayerPrefs.HasKey("Language"))
+            LocalizationManager.Instance.Language = PlayerPrefs.GetString("Language");
+        else
+            LocalizationManager.Instance.Language = "en";
+
+        if (LanguageDropdown != null)
+        {
+            switch (LocalizationManager.Instance.Language)
+            {
+                case "en":
+                    LanguageDropdown.value = 0;
+                    break;
+
+                case "ru":
+                    LanguageDropdown.value = 1;
+                    break;
+
+                case "uk":
+                    LanguageDropdown.value = 2;
+                    break;
+            }
+        }
     }
 
     public void MasterVolumeChanged(float value)
@@ -63,6 +89,33 @@ public class Menu : MonoBehaviour
             audioSource.clip = effectsClips[Random.Range(0, effectsClips.Length)];
 
         audioSource.Play();
+    }
+
+    public void SwitchLanguage(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                LocalizationManager.Instance.Language = "en";
+                break;
+
+            case 1:
+                LocalizationManager.Instance.Language = "ru";
+                break;
+
+            case 2:
+                LocalizationManager.Instance.Language = "uk";
+                break;
+        }
+
+        PlayerPrefs.SetString("Language", LocalizationManager.Instance.Language);
+        PlayerPrefs.Save();
+
+        LocalizedText[] texts = FindObjectsOfType<LocalizedText>();
+        foreach (var text in texts)
+        {
+            text.UpdateText();
+        }
     }
 
     public void StartGame()

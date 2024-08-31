@@ -164,7 +164,7 @@ public class CardView : MonoBehaviour, IPointerClickHandler
 
         switch (LocalizationManager.Instance.Language)
         {
-            case "eng":
+            case "en":
                 cardViewDescription.Name.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].NameEng;
                 cardViewDescription.Description.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].DescriptionEng;
                 break;
