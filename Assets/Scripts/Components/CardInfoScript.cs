@@ -67,6 +67,8 @@ public class CardInfoScript : MonoBehaviour
         Name.text = card.BaseCard.Name.ToString();
         SecondName.text = card.BaseCard.AbilityName.ToString();
 
+
+        if(FindObjectOfType<LocalizationManager>() != null)
         switch (LocalizationManager.Instance.Language)
         {
             case "en":
@@ -81,8 +83,10 @@ public class CardInfoScript : MonoBehaviour
                 Description.text = card.BaseCard.DescriptionUk.ToString();
                 break;
         }
+        else
+            Description.text = card.BaseCard.DescriptionEng.ToString();
 
-        if(card.BaseCard.ArmorPoints > 0)
+        if (card.BaseCard.ArmorPoints > 0)
         {
             ArmorObject.SetActive(true);
             ArmorPoints.text = card.BaseCard.ArmorPoints.ToString();

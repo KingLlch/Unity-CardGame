@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.U2D;
 
 public struct BaseCard
 {
@@ -283,13 +282,13 @@ public class CardManager : MonoBehaviour
                 "В конце вашего хода нанесите 1 <color=red>урон</color> случайному вражескому отряду, повторите 2 <color=red>раза</color>.",
                 "В кінці вашого ходу завдайте 1 <color=red>шкоду</color> випадковому ворожому загіну, повторіть 2 <color=red>рази</color>.",
                 "Sprites/Cards/Luna2", "Sounds/Cards/StartOrder/LunaMoonGlaives", Color.blue,
-                6, 6, endTurnCount: 2, endTurnRandomDamage: 1)); //6 + 2 end turn
+                5, 5, armor:2, endTurnCount: 2, endTurnRandomDamage: 1)); //5 + 2 end turn
 
             CardManagerList.AllCards.Add(new Card("Luna", "Eclipse", "<color=red>Damage</color> 5 near enemy units by 2.",
                 "Нанесите 2 <color=red>урона</color> 5 вражеским отрядам, находящимся рядом.",
                 "Завдайте 2 <color=red>шкоди</color> 5 ворожим загінам поруч.",
                 "Sprites/Cards/Luna3", "Sounds/Cards/StartOrder/LunaEclipse", Color.blue,
-                8, 8, damage: 2, nearDamage: 2)); // 18
+                7, 7, damage: 2, nearDamage: 2)); // 17
 
             CardManagerList.AllCards.Add(new Card("Templar Assasin", "Refraction", "<color=green>Boost</color> allied unit by 8. <color=red>Shield</color>.",
                 "<color=green>Усильте</color> союзный отряд на 8. <color=red>Щит</color>.",
@@ -307,7 +306,7 @@ public class CardManager : MonoBehaviour
                 "<color=green>Усильте</color> вражеский отряд на 3.",
                 "<color=green>Підсильте</color> союзний загін на 3.",
                 "Sprites/Cards/Axe1", "Sounds/Cards/StartOrder/AxeBerserker'sCall", Color.red,
-                14, 13, armor: 4, damage: -3)); // 10
+                14, 13, armor: 6, damage: -3)); // 10
 
             CardManagerList.AllCards.Add(new Card("Axe", "Culling Blade", "<color=red>Destroy</color> an enemy unit with 4 or less points.",
                 "<color=red>Уничтожьте</color> вражеский отряд с 4 или менее очками.",
@@ -331,19 +330,19 @@ public class CardManager : MonoBehaviour
                 "Нанесите себе и вражескому отряду по 7 <color=red>урона</color>.",
                 "Завдайте собі і ворожому загіну по 7 <color=red>шкоди</color>.",
                 "Sprites/Cards/Huskar1", "Sounds/Cards/StartOrder/HuskarLifeBreak", Color.yellow,
-                19, 17, damage: 7, selfDamage: 7, addictionWithEnemyField: true)); //17
+                19, 15, damage: 7, selfDamage: 7, addictionWithEnemyField: true)); //15
 
-            CardManagerList.AllCards.Add(new Card("Huskar", "Burning Spear", "At the end of the your turn, deal 1 <color=red>damage</color> to a random enemy unit, repeat 3 <color=red>times</color>.",
-                "В конце вашего хода нанесите 1 <color=red>урон</color> случайному вражескому отряду, повторите 3 <color=red>раза</color>.",
-                "В кінці вашого ходу завдайте 1 <color=red>шкоду</color> випадковому ворожому загіну, повторіть 3 <color=red>рази</color>.",
+            CardManagerList.AllCards.Add(new Card("Huskar", "Burning Spear", "At the end of the your turn, deal 1 <color=red>damage</color> to a random enemy unit and self, repeat 2 <color=red>times</color>.",
+                "В конце вашего хода нанесите 1 <color=red>урон</color> случайному вражескому отряду и себе, повторите 2 <color=red>раза</color>.",
+                "В кінці вашого ходу завдайте 1 <color=red>шкоду</color> випадковому ворожому загіну i собi, повторіть 2 <color=red>рази</color>.",
                 "Sprites/Cards/Huskar2", "Sounds/Cards/StartOrder/HuskarBurningSpear", Color.yellow,
-                8, 8, endTurnCount: 3, endTurnRandomDamage: 1)); //9 + 3 end turn
+                6, 6, armor:4 ,endTurnCount: 2, endTurnSelfDamage:1, endTurnRandomDamage: 1)); //6 + 2 end turn
 
             CardManagerList.AllCards.Add(new Card("Huskar", "Berserkers Blood", "At the end of the your turn, <color=red>boost</color> self by 1, repeat 1 <color=red>times</color>.",
                 "<color=red>Увеличьте</color> себя на 1 в конце вашего хода, повторите 1 <color=red>раз</color>.",
                 "<color=red>Збільшіть</color> себе на 1 в кінці вашого ходу, повторіть 1 <color=red>раз</color>.",
                 "Sprites/Cards/Huskar3", "Sounds/Cards/StartOrder/BerserkersBlood", Color.yellow,
-                19, 4, endTurnCount: 1, endTurnSelfBoost: 1)); //4 + 1 end turn
+                19, 6, endTurnCount: 1, endTurnSelfBoost: 1)); //6 + 1 end turn
 
             CardManagerList.AllCards.Add(new Card("Windranger", "Powershot", "<color=red>Damage</color> enemy unit by 5 and units near by 1.",
                 "<color=red>Повредите</color> вражеский отряд на 5 и отряды рядом на 1.",
@@ -397,13 +396,13 @@ public class CardManager : MonoBehaviour
                 "<color=red>Повредите</color> вражеский отряд на 11.",
                 "<color=red>Завдайте шкоди</color> ворожому загону на 11.",
                 "Sprites/Cards/Sniper1", "Sounds/Cards/StartOrder/SniperAssasinate", Color.yellow,
-                3, 3, damage: 11)); // 14
+                3, 3, damage: 11)); // 13
 
             CardManagerList.AllCards.Add(new Card("Sniper", "Shrapnel", "At the end of the your turn, deal 1 <color=red>damage</color> to a random enemy unit, repeat 2 <color=red>times</color>.",
                 "В конце вашего хода нанесите 1 <color=red>урон</color> случайному вражескому отряду, повторите 2 <color=red>раза</color>.",
                 "В кінці вашого ходу завдайте 1 <color=red>шкоду</color> випадковому ворожому загону, повторіть 2 <color=red>рази</color>.",
                 "Sprites/Cards/Sniper2", "Sounds/Cards/StartOrder/SniperAssasinate", Color.yellow,
-                4, 4, endTurnCount: 2, endTurnRandomDamage: 1)); // 4 + 2 end turn
+                4, 4, armor: 1, endTurnCount: 2, endTurnRandomDamage: 1)); // 4 + 2 end turn
 
             CardManagerList.AllCards.Add(new Card("Bane", "BrainSap", "<color=red>Damage</color> enemy unit and <color=green>boost</color> self by 4.",
                 "<color=red>Повредите</color> вражеский отряд и <color=green>усильте</color> себя на 4.",
@@ -427,7 +426,7 @@ public class CardManager : MonoBehaviour
                 "Нанесите 3 <color=red>урона</color> всем вражеским отрядам.",
                 "Завдайте 3 <color=red>шкоди</color> всім ворожим загонам.",
                 "Sprites/Cards/Zeus3", "Sounds/Cards/StartOrder/ZeusThundergod'sWrath", Color.blue,
-                 1, 1, damage: 3, nearDamage: -1)); //11
+                 1, 1, damage: 3, nearDamage: -1)); //1 + 3 all
 
             CardManagerList.AllCards.Add(new Card("Abaddon", "Mist Coil", "<color=green>Boost</color> allied unit by 8 and <color=red>damage</color> self by 4.",
                 "<color=green>Усильте</color> союзный отряд на 8 и нанесите 4 <color=red>урона</color> себе.",
@@ -493,7 +492,7 @@ public class CardManager : MonoBehaviour
                 "Нанесите 12 <color=red>урона</color> вражескому отряду. <color=purple>Невидимость</color>.",
                 "Завдайте 12 <color=red>шкоди</color> ворожому загону. <color=purple>Невидимість</color>.",
                 "Sprites/Cards/Riki2", "Sounds/Cards/StartOrder/RikiCloakAndDagger", Color.magenta,
-                1, 1, damage: 12, invisibility: true)); // -1 + 12
+                1, 1, armor:2, damage: 12, invisibility: true)); // -1 + 12
 
             CardManagerList.AllCards.Add(new Card("Juggernaut", "Omnislash", "<color=red>Damage</color> enemy units by 5 and near by 3 and near by 1. <color=orange>Invulnerability</color>.",
                 "Нанесите 5 <color=red>урона</color> вражеским отрядам, 3 <color=red>урона</color> соседним отрядам и 1 <color=red>урон</color> соседнему отряду. <color=orange>Неуязвимость</color>.",
@@ -511,7 +510,7 @@ public class CardManager : MonoBehaviour
                 "Создайте Healing Ward слева от этого отряда.",
                 "Створіть Healing Ward зліва від цього загону.",
                 "Sprites/Cards/Juggernaut3", "Sounds/Cards/StartOrder/JuggernautHealingWard", Color.green,
-                 2, 2, spawnCardCount: 1, spawnCardNumber: 1)); //2 + 1 + 4 end turn
+                 1, 1, armor:2, spawnCardCount: 1, spawnCardNumber: 1)); //1 + 1 + 4 end turn
 
             CardManagerList.AllCards.Add(new Card("Naga Siren", "Mirror Image", "<color=blue>Spawn</color> 2 your <color=blue>illusions</color> units near.",
                 "Создайте 2 ваши <color=blue>иллюзии</color> рядом.",
@@ -587,7 +586,7 @@ public class CardManager : MonoBehaviour
             CardManagerList.TransformationCards.Add(new Card("Lycan", "Wolf Form", "At the end of your turn, deal 2 <color=red>Damage</color> to nearby units.",
                 "В конце вашего хода нанесите 2 <color=red>урона</color> соседним отрядам.",
                 "В кінці вашого ходу завдайте 2 <color=red>шкоди</color> сусіднім загонам.",
-                "LycanWolf", "Sounds/Cards/StartOrder/LycanWolf", Color.gray,
+                "Sprites/Cards/LycanWolf", "Sounds/Cards/StartOrder/LycanWolf", Color.gray,
                 20, 20, endTurnCount: 1, endTurnNearDamage: 2));
 
             // SUMMONS
@@ -595,19 +594,19 @@ public class CardManager : MonoBehaviour
             CardManagerList.SummonCards.Add(new Card("Wolf", "Summon", "Nothing",
                 "Ничего",
                 "Нічого",
-                "Wolf", "Sounds/Cards/StartOrder/Wolf", Color.gray,
+                "Sprites/Cards/Wolf", "Sounds/Cards/StartOrder/Wolf", Color.gray,
                 2, 2));
 
             CardManagerList.SummonCards.Add(new Card("Healing Ward", "Ward", "At the end of your turn, <color=green>boost</color> 2 nearby units by 2",
                 "В конце вашего хода <color=green>усильте</color> 2 соседних отряда на 2.",
                 "В кінці вашого ходу <color=green>підсильте</color> 2 сусідні загони на 2.",
-                "HealingWard", "Sounds/Cards/StartOrder/HealingWard", Color.green,
+                "Sprites/Cards/HealingWard", "Sounds/Cards/StartOrder/HealingWard", Color.green,
                 1, 1, endTurnCount: 1, endTurnNearBoost: 2));
 
             CardManagerList.SummonCards.Add(new Card("Ghost Ship", "Ship", "At the end of your turn, deal 2 <color=red>damage</color> to a random enemy unit and 1 damage to yourself 1 <color=red>times</color>.",
                 "В конце вашего хода нанесите 2 <color=red>урона</color> случайному вражескому отряду и 1 <color=red>урон</color> себе 1 <color=red>раз</color>.",
                 "В кінці вашого ходу завдайте 2 <color=red>шкоди</color> випадковому ворожому загону і 1 <color=red>шкоду</color> собі 1 <color=red>раз</color>.",
-                "GhostShip", "Sounds/Cards/StartOrder/GhostShip", Color.blue,
+                "Sprites/Cards/GhostShip", "Sounds/Cards/StartOrder/GhostShip", Color.blue,
                 5, 5, endTurnCount: 1, endTurnRandomDamage: 2, endTurnSelfDamage: 1));
 
             CardManagerList.IsAddCardInGame = true;

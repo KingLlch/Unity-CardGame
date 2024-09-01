@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour
 {
@@ -31,6 +30,11 @@ public class UIManager : MonoBehaviour
 
     public GameObject EndGamePanel;
     public TextMeshProUGUI EndGameText;
+
+    public TextMeshProUGUI EndGameWin;
+    public TextMeshProUGUI EndGameLose;
+    public TextMeshProUGUI EndGameDraw;
+    public TextMeshProUGUI PauseText;
 
     public bool IsPause;
 
@@ -190,17 +194,17 @@ public class UIManager : MonoBehaviour
 
         if (playerPoints < enemyPoint)
         {
-            EndGameText.text = "You Lose";
+            EndGameText.text = EndGameLose.text;
         }
 
         else if (playerPoints > enemyPoint)
         {
-            EndGameText.text = "You Win";
+            EndGameText.text = EndGameWin.text;
         }
 
         else
         {
-            EndGameText.text = "Draw";
+            EndGameText.text = EndGameDraw.text;
         }
     }
 
@@ -208,7 +212,7 @@ public class UIManager : MonoBehaviour
     {
         IsPause = true;
         EndGamePanel.SetActive(true);
-        EndGameText.text = "Pause";
+        EndGameText.text = PauseText.text;
     }
     public void UnPause()
     {

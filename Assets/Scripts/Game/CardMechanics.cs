@@ -247,7 +247,7 @@ public class CardMechanics : MonoBehaviour
             else
             {
                 card.SelfCard.BaseCard.isDestroyed = true;
-                card.gameObject.transform.parent = null;
+                card.gameObject.transform.parent = card.transform.parent.parent;
                 card.gameObject.SetActive(false);
 
                 if (GameManager.Instance.PlayerFieldCards.Contains(card))

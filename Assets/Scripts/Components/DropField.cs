@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
@@ -42,6 +43,8 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         cardInfo = card.GetComponent<CardInfoScript>();
         if (!card.IsDraggable) return;
 
+        ChildRayCast(false);
+
         card.ChangeCardPosition.AddListener(ChangeCardPosition);
         card.HideEmptyCard.AddListener(HideEmptyCard);
 
@@ -74,6 +77,7 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         if (pointer.pointerDrag == null) return;
         card = pointer.pointerDrag.GetComponent<CardMove>();
+        ChildRayCast(true);
 
         if ((TypeField == TypeField.SELF_HAND) && (card.IsDraggable))
         {
@@ -102,6 +106,8 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         if (pointer.pointerDrag == null) return;
 
         if (!card.IsDraggable) return;
+
+        ChildRayCast(true);
 
         if ((TypeField == TypeField.SELF_TABLE && !cardInfo.SelfCard.StatusEffects.IsInvisibility) ||
             (TypeField == TypeField.SELF_HAND) ||
@@ -169,6 +175,16 @@ public class DropField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         EmptyTableCard.SetParent(transform.parent);
         EmptyEnemyTableCard.SetParent(transform.parent);
     }
+
+    private void ChildRayCast(bool isOn)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).GetComponent<Image>())
+                transform.GetChild(i).GetComponent<Image>().raycastTarget = isOn;
+        }
+    }
+
 }
 
 public enum TypeField

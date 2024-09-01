@@ -162,6 +162,8 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         CardViewDescription cardViewDescription = Instantiate(CardViewDescriptionPrefab, Vector3.forward, Quaternion.identity, CardViewDescriptionParent.transform);
         cardViewDescription.Image.sprite = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].EffectImage;
 
+
+        if(FindObjectOfType<LocalizationManager>() != null)
         switch (LocalizationManager.Instance.Language)
         {
             case "en":
@@ -178,6 +180,11 @@ public class CardView : MonoBehaviour, IPointerClickHandler
                 cardViewDescription.Name.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].NameUk;
                 cardViewDescription.Description.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].DescriptionUk;
                 break;
+        }
+        else
+        {
+            cardViewDescription.Name.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].NameEng;
+            cardViewDescription.Description.text = CardEffectsDescriptionList.effectDescriptionList[NumberEffects].DescriptionEng;
         }
 
         StatusEffectDescriptionList.Add(cardViewDescription.gameObject);

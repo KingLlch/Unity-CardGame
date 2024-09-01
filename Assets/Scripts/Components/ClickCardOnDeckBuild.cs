@@ -27,7 +27,7 @@ public class ClickCardOnDeckBuild : MonoBehaviour, IPointerClickHandler
             }
         }
 
-        else if (eventData.button == PointerEventData.InputButton.Right && !IsInDeck)
+        else if (eventData.button == PointerEventData.InputButton.Right)
         {
             CardView.Instance.CardViewObject.SetActive(true);
             CardView.Instance.ShowCard(card);
