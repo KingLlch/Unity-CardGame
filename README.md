@@ -13,10 +13,12 @@ Card Game about Dota2.
 - Возможность создания колоды
 
 Игра была создана для закрепления знаний о Коллекциях, работы со звуками, встроенными интерфейсами, структурами, ключевыми словами.
+
+https://github.com/user-attachments/assets/34ca4c00-f027-4cb2-862e-ccdd7b3ede9d
+
 ![CardGameGif](https://github.com/KingLlch/CardGame/assets/76882612/7ab189ee-30b3-4f21-8844-c828f90d736f)
 
 
-https://github.com/user-attachments/assets/34ca4c00-f027-4cb2-862e-ccdd7b3ede9d
 
 
 
