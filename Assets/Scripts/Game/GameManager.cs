@@ -311,6 +311,18 @@ public class GameManager : MonoBehaviour
 
         yield return StartCoroutine(CardMechanics.Instance.EndTurnActions());
 
+        ClearDestroyedInEndTurnCards();
+
+        foreach (Coroutine coroutine in AllCoroutine)
+        {
+            if (coroutine != null)
+                StopCoroutine(coroutine);
+        }
+        AllCoroutine.Clear();
+
+        ChangeEnemyPoints();
+        ChangePlayerPoints();
+
         if (PlayerHandCards.Count == 0)
         {
             _playerHandPass.SetActive(true);
@@ -329,21 +341,11 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.EndGame(_playerPoints, _enemyPoints);
         }
 
-        ClearDestroyedInEndTurnCards();
-
-        foreach (Coroutine coroutine in AllCoroutine)
-        {
-            if (coroutine != null)
-                StopCoroutine(coroutine);
-        }
-        AllCoroutine.Clear();
-
-        ChangeEnemyPoints();
-        ChangePlayerPoints();
-
         _turn++;
         IsHandCardPlaying = false;
         UIManager.Instance.ChangeEndTurnButtonInteractable(IsPlayerTurn);
+
+        if(!(isPlayerPassed && isEnemyPassed))
         AllCoroutine.Add(StartCoroutine(TurnFunk()));
     }
 

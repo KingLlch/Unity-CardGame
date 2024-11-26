@@ -441,8 +441,6 @@ public class CardMechanics : MonoBehaviour
                 }
             }
         }
-
-        yield break;
     }
 
     private void CheckBleedingOrEndurance(CardInfoScript card)
