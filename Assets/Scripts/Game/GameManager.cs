@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour
 
         CurrentGame = new Game();
 
-        DebugGame();
+        //DebugGame();
         Deck.Instance.CreateDeck(CurrentGame.PlayerDeck);
 
         GiveHandCards(CurrentGame.EnemyDeck, _enemyHand);
@@ -278,6 +278,13 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ChangeTurn()
     {
+        UIManager.Instance.ChangeEndTurnButtonInteractable(false);
+
+        if (IsPlayerTurn && !IsHandCardPlaying && PlayerHandCards.Count != 0)
+            ThrowCard(PlayerHandCards[Random.Range(0, PlayerHandCards.Count)], true);
+
+        yield return StartCoroutine(CardMechanics.Instance.EndTurnActions());
+
         if (PlayerHandCards.Count == 0)
         {
             _playerHandPass.SetActive(true);
@@ -296,11 +303,6 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.EndGame(_playerPoints, _enemyPoints);
         }
 
-        if (IsPlayerTurn && !IsHandCardPlaying && PlayerHandCards.Count != 0)
-            ThrowCard(PlayerHandCards[Random.Range(0, PlayerHandCards.Count)], true);
-
-        yield return StartCoroutine(CardMechanics.Instance.EndTurnActions());
-
         ClearDestroyedInEndTurnCards();
 
         foreach (Coroutine coroutine in AllCoroutine)
@@ -317,8 +319,6 @@ public class GameManager : MonoBehaviour
         IsHandCardPlaying = false;
         UIManager.Instance.ChangeEndTurnButtonInteractable(IsPlayerTurn);
         AllCoroutine.Add(StartCoroutine(TurnFunk()));
-
-        yield break;
     }
 
     private IEnumerator EnemyTurn(List<CardInfoScript> enemyHandCards)
