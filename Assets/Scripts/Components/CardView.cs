@@ -151,15 +151,22 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         SpawnCardViewName.colorGradient = new VertexGradient(SpawnCard.BaseCard.ColorTheme, SpawnCard.BaseCard.ColorTheme, Color.black, Color.black);
         SpawnCardViewDescription.color = Color.black;
 
-        if (!selfIllusion)
-            SpawnCardViewDescription.text = card.Description.text;
-        else if(LocalizationManager.Instance.Language == "en")
-            SpawnCardViewDescription.text = "Illusion.";
-        else if (LocalizationManager.Instance.Language == "ru")
-            SpawnCardViewDescription.text = "Èëëþçèÿ.";
-        else if (LocalizationManager.Instance.Language == "uk")
-            SpawnCardViewDescription.text = "²ëþç³ÿ.";
-
+        if(!selfIllusion)
+            SpawnCardViewDescription.text = LocalizationManager.Instance.Language switch
+            {
+                ("en") => SpawnCard.BaseCard.DescriptionEng,
+                ("ru") => SpawnCard.BaseCard.DescriptionRu,
+                ("uk") => SpawnCard.BaseCard.DescriptionUk,
+                _ => SpawnCard.BaseCard.DescriptionEng,
+            };
+        else
+            SpawnCardViewDescription.text = LocalizationManager.Instance.Language switch
+            {
+                ("en") => "Illusion.",
+                ("ru") => "Èëëþçèÿ.",
+                ("uk") => "²ëþç³ÿ.",
+                _ => "Illusion.",
+            };
     }
 
     private void InstantiateStatusEffectDescription(int NumberEffects)
