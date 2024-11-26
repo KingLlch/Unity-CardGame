@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Xml.Serialization;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class EffectsManager : MonoBehaviour
@@ -141,22 +142,27 @@ public class EffectsManager : MonoBehaviour
         }
     }
 
-    public void StartShaderEffect(CardInfoScript card, Color color)
+    public void StartShaderEffect(CardInfoScript card, Color color, int value)
     {
         if (!card.IsShaderActive)
         {
-            StartCoroutine(ShaderEffect(card, color));
+            StartCoroutine(ShaderEffect(card, color, value));
             card.IsShaderActive = true;
         }
     }
 
-    private IEnumerator ShaderEffect(CardInfoScript card, Color color)
+    private IEnumerator ShaderEffect(CardInfoScript card, Color color, int value)
     {
         yield return new WaitForSeconds(ParticleTimeToMove);
 
         float damage = ShaderChangePointsTime;
         card.Image.material.SetFloat("_Damage", damage);
         card.Image.material.SetColor("_Color", color);
+
+        if(math.abs(value) > 12)
+            card.Image.material.SetFloat("_Value", 0);
+        else
+            card.Image.material.SetFloat("_Value", math.abs(value));
 
         while (damage > 0)
         {

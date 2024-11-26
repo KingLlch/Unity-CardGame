@@ -215,11 +215,11 @@ public class CardMechanics : MonoBehaviour
         targetCard.BaseCard.Points += value;
 
         if (value < 0)
-            EffectsManager.Instance.StartShaderEffect(targetCardInfo, Color.red);
+            EffectsManager.Instance.StartShaderEffect(targetCardInfo, Color.red, value);
         else if (value > 0)
-            EffectsManager.Instance.StartShaderEffect(targetCardInfo, Color.green);
+            EffectsManager.Instance.StartShaderEffect(targetCardInfo, Color.green, value);
         else
-            EffectsManager.Instance.StartShaderEffect(targetCardInfo, Color.grey);
+            EffectsManager.Instance.StartShaderEffect(targetCardInfo, Color.grey, value);
 
         if (value != 0)
             Debug.Log(startCard.BaseCard.Name + " изменила силу " + targetCard.BaseCard.Name + " в размере " + value + "\n" + (targetCard.BaseCard.Points - value) + " => " + targetCard.BaseCard.Points);

@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour
 
         CurrentGame = new Game();
 
-        //DebugGame();
+        DebugGame();
         Deck.Instance.CreateDeck(CurrentGame.PlayerDeck);
 
         GiveHandCards(CurrentGame.EnemyDeck, _enemyHand);

@@ -36,7 +36,7 @@ SpriteAtlas:
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     packingSettings:
       serializedVersion: 2
-      padding: 4
+      padding: 2
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
@@ -46,7 +46,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 2800000, guid: 74dab0501c9e2c64099718155f89859f, type: 3}
-    - {fileID: 2800000, guid: 6861a18eb252ec24b9ef2b92efd8d22f, type: 3}
+    - {fileID: 2800000, guid: 41d251a562e625c45a43f6db5acc9c87, type: 3}
     - {fileID: 2800000, guid: 2412ea3c57d81fc48bcfdb2d968ba9c3, type: 3}
     - {fileID: 2800000, guid: 6d91d3e498a6b054cb9b89ab82276e56, type: 3}
     - {fileID: 2800000, guid: 32069b366fb5f7046889910cea678ac0, type: 3}
@@ -60,7 +60,6 @@ SpriteAtlas:
     - {fileID: 2800000, guid: ebe852cfb57833e46abbc78d660953cd, type: 3}
     - {fileID: 2800000, guid: c376eab6c50e1bb4ea40f7db96abd182, type: 3}
     - {fileID: 2800000, guid: 7cd624fc0661e9a4cb95ed5ccca2228e, type: 3}
-    - {fileID: 2800000, guid: 41d251a562e625c45a43f6db5acc9c87, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -79,7 +78,6 @@ SpriteAtlas:
     - 2412ea3c57d81fc48bcfdb2d968ba9c3: 21300000
     - 7cd624fc0661e9a4cb95ed5ccca2228e: 21300000
     - 29eb322ed93b13a4fa589b8422d61168: 21300000
-    - 6861a18eb252ec24b9ef2b92efd8d22f: 21300000
     - ebe852cfb57833e46abbc78d660953cd: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -97,7 +95,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 2412ea3c57d81fc48bcfdb2d968ba9c3, type: 3}
   - {fileID: 21300000, guid: 7cd624fc0661e9a4cb95ed5ccca2228e, type: 3}
   - {fileID: 21300000, guid: 29eb322ed93b13a4fa589b8422d61168, type: 3}
-  - {fileID: 21300000, guid: 6861a18eb252ec24b9ef2b92efd8d22f, type: 3}
   - {fileID: 21300000, guid: ebe852cfb57833e46abbc78d660953cd, type: 3}
   m_PackedSpriteNamesToIndex:
   - Armor
@@ -114,7 +111,6 @@ SpriteAtlas:
   - Bleeding
   - Stun
   - Invulnerability
-  - Armor1
   - Shield
   m_RenderDataMap: {}
   m_Tag: EffectSpiteAtlas
