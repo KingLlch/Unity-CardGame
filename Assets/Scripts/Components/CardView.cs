@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -151,9 +152,13 @@ public class CardView : MonoBehaviour, IPointerClickHandler
         SpawnCardViewDescription.color = Color.black;
 
         if (!selfIllusion)
-            SpawnCardViewDescription.text = SpawnCard.BaseCard.DescriptionUk;
-        else
+            SpawnCardViewDescription.text = card.Description.text;
+        else if(LocalizationManager.Instance.Language == "en")
             SpawnCardViewDescription.text = "Illusion.";
+        else if (LocalizationManager.Instance.Language == "ru")
+            SpawnCardViewDescription.text = "Èëëþçèÿ.";
+        else if (LocalizationManager.Instance.Language == "uk")
+            SpawnCardViewDescription.text = "²ëþç³ÿ.";
 
     }
 
