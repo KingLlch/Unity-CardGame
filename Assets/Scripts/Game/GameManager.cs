@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -118,6 +119,9 @@ public class GameManager : MonoBehaviour
     public int ValueDeckCards = 20;
     public int ValueHandCards = 10;
 
+    public float TimeDrawCardStart = 0.1f;
+    public float TimeDrawCard = 0.3f;
+
     public bool IsPlayerTurn
     {
         get
@@ -165,6 +169,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(StartGame());
+    }
+
+    private IEnumerator StartGame()
+    {
         _turn = 0;
         _playerPoints = 0;
         _enemyPoints = 0;
@@ -174,8 +183,8 @@ public class GameManager : MonoBehaviour
         //DebugGame();
         Deck.Instance.CreateDeck(CurrentGame.PlayerDeck);
 
-        GiveHandCards(CurrentGame.EnemyDeck, _enemyHand);
-        GiveHandCards(CurrentGame.PlayerDeck, _playerHand);
+        StartCoroutine(GiveHandCards(CurrentGame.EnemyDeck, _enemyHand, false));
+        yield return StartCoroutine(GiveHandCards(CurrentGame.PlayerDeck, _playerHand, true));
 
         if (Object.FindObjectOfType<HowToPlay>() != null && HowToPlay.Instance.IsHowToPlay)
         {
@@ -186,20 +195,27 @@ public class GameManager : MonoBehaviour
             AllCoroutine.Add(StartCoroutine(TurnFunk()));
     }
 
-    private void GiveHandCards(List<Card> deck, Transform hand)
+    private IEnumerator GiveHandCards(List<Card> deck, Transform hand, bool isPlayer)
     {
         int i = 0;
         while (i++ < ValueHandCards)
         {
-            GiveCardtoHand(deck, hand);
+            yield return StartCoroutine(GiveCardtoHand(deck, hand, TimeDrawCardStart, isPlayer));
         }
     }
 
-    private void GiveCardtoHand(List<Card> deck, Transform hand)
+    private IEnumerator GiveCardtoHand(List<Card> deck, Transform hand, float time, bool isPlayer)
     {
-        if (deck.Count == 0) return;
+        if (deck.Count == 0) 
+            yield break;
 
         Card card = deck[0];
+
+        EffectsManager.Instance.DrawCardEffect(time, hand, isPlayer);
+
+        yield return new WaitForSeconds(time);
+
+        EffectsManager.Instance.HideDrawCardEffect();
 
         GameObject cardHand = Instantiate(CardPref, hand, false);
 
@@ -534,10 +550,7 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < card.SelfCard.DrawCard.DrawCardCount; i++)
             {
-                EffectsManager.Instance.DrawCardEffect(_enemyHand, false);
-                yield return new WaitForSeconds(0.3f);
-                EffectsManager.Instance.HideDrawCardEffect();
-                GiveCardtoHand(CurrentGame.EnemyDeck, _enemyHand);
+                yield return StartCoroutine(GiveCardtoHand(CurrentGame.EnemyDeck, _enemyHand, TimeDrawCard, false));
             }
         }
 
@@ -742,14 +755,7 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.ChangeEndTurnButtonInteractable(false);
             for (int i = 0; i < card.SelfCard.DrawCard.DrawCardCount; i++)
             {
-                EffectsManager.Instance.DrawCardEffect(_playerHand, true);
-
-
-                yield return new WaitForSeconds(0.3f);
-
-
-                EffectsManager.Instance.HideDrawCardEffect();
-                GiveCardtoHand(CurrentGame.PlayerDeck, _playerHand);
+                yield return StartCoroutine(GiveCardtoHand(CurrentGame.PlayerDeck, _playerHand, TimeDrawCard, true));
             }
             UIManager.Instance.ChangeEndTurnButtonInteractable(true);
         }
@@ -1201,8 +1207,8 @@ public class GameManager : MonoBehaviour
         Deck.Instance.DeleteDeck();
         Deck.Instance.CreateDeck(CurrentGame.PlayerDeck);
 
-        GiveHandCards(CurrentGame.EnemyDeck, _enemyHand);
-        GiveHandCards(CurrentGame.PlayerDeck, _playerHand);
+        StartCoroutine(GiveHandCards(CurrentGame.EnemyDeck, _enemyHand, false));
+        StartCoroutine(GiveHandCards(CurrentGame.PlayerDeck, _playerHand, true));
 
         UIManager.Instance.ChangeEndTurnButtonInteractable(true);
 

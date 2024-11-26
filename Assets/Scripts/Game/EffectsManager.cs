@@ -49,14 +49,14 @@ public class EffectsManager : MonoBehaviour
         }
     }
 
-    public void DrawCardEffect(Transform Hand, bool isPlayer)
+    public void DrawCardEffect(float time, Transform Hand, bool isPlayer)
     {
         CardBack.SetActive(true);
         if (isPlayer)
             CardBack.transform.position = PlayerDeck.transform.position;
         else 
             CardBack.transform.position = EnemyDeck.transform.position;
-        CardBack.transform.DOMove(Hand.position, 0.3f);
+        CardBack.transform.DOMove(Hand.position, time);
     }
 
     public void HideDrawCardEffect()
