@@ -23,33 +23,34 @@ public class CardView : MonoBehaviour, IPointerClickHandler
     }
 
     public GameObject CardViewObject;
-    public Image CardViewImage;
-    public TextMeshProUGUI CardViewName;
-    public TextMeshProUGUI CardViewSecondName;
-    public TextMeshProUGUI CardViewDescription;
+    [SerializeField] private Image CardViewImage;
+    [SerializeField] private TextMeshProUGUI CardViewName;
+    [SerializeField] private TextMeshProUGUI CardViewSecondName;
+    [SerializeField] private TextMeshProUGUI CardViewDescription;
 
-    public GameObject cardArmorGameObject;
-    public TextMeshProUGUI CardArmor;
+    [SerializeField] private GameObject cardArmorGameObject;
+    [SerializeField] private TextMeshProUGUI CardArmor;
 
-    public GameObject TimerGameObject;
-    public TextMeshProUGUI CardTimer;
+    [SerializeField] private GameObject TimerGameObject;
+    [SerializeField] private TextMeshProUGUI CardTimer;
 
-    public GameObject CardViewPointsGameObject;
-    public GameObject CardViewMaxPointsGameObject;
+    [SerializeField] private GameObject CardViewPointsGameObject;
+    [SerializeField] private GameObject CardViewMaxPointsGameObject;
 
-    public TextMeshProUGUI CardViewPoints;
-    public TextMeshProUGUI CardViewMaxPoints;
+    [SerializeField] private TextMeshProUGUI CardViewPoints;
+    [SerializeField] private TextMeshProUGUI CardViewMaxPoints;
 
-    public GameObject CardViewDescriptionParent;
-    public CardViewDescription CardViewDescriptionPrefab;
+    [SerializeField] private GameObject CardViewDescriptionParent;
+    [SerializeField] private ScrollRect CardViewDescriptionView;
+    [SerializeField] private CardViewDescription CardViewDescriptionPrefab;
 
-    public Toggle CurrentPointToggle;
+    [SerializeField] private Toggle CurrentPointToggle;
 
-    public GameObject SpawnCardView;
-    public Image SpawnCardViewImage;
-    public TextMeshProUGUI SpawnCardViewName;
-    public TextMeshProUGUI SpawnCardViewDescription;
-    public TextMeshProUGUI SpawnCardPoints;
+    [SerializeField] private GameObject SpawnCardView;
+    [SerializeField] private Image SpawnCardViewImage;
+    [SerializeField] private TextMeshProUGUI SpawnCardViewName;
+    [SerializeField] private TextMeshProUGUI SpawnCardViewDescription;
+    [SerializeField] private TextMeshProUGUI SpawnCardPoints;
 
     public List<GameObject> StatusEffectDescriptionList = new List<GameObject>();
 
@@ -327,10 +328,13 @@ public class CardView : MonoBehaviour, IPointerClickHandler
             StatusEffectDescriptionList[14].SetActive(false);
 
 
-        int height = (countStatuseffects * 200 + (countStatuseffects - 1) * 20) / 2 + 20;
+        int height = (countStatuseffects * 200 + (countStatuseffects - 1) * 20) + 20;
 
-        if (height > 1000)
-            CardViewDescriptionParent.GetComponent<RectTransform>().sizeDelta = new Vector2(CardViewDescriptionParent.GetComponent<RectTransform>().sizeDelta.x, height);
+        if (height > 780)
+        {
+            CardViewDescriptionParent.GetComponent<RectTransform>().sizeDelta = new Vector2(CardViewDescriptionParent.GetComponent<RectTransform>().sizeDelta.x, height/2);
+            CardViewDescriptionView.verticalScrollbar.value = 1;
+        }
         else
             CardViewDescriptionParent.GetComponent<RectTransform>().sizeDelta = new Vector2(CardViewDescriptionParent.GetComponent<RectTransform>().sizeDelta.x, 0);
     }
