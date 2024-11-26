@@ -100,7 +100,9 @@ public class CardInfoScript : MonoBehaviour
 
         Name.colorGradient = new VertexGradient(card.BaseCard.ColorTheme, card.BaseCard.ColorTheme, Color.black, Color.black);
         SecondName.colorGradient = new VertexGradient(card.BaseCard.ColorTheme, card.BaseCard.ColorTheme, Color.black, Color.black);
-        Description.colorGradient = new VertexGradient(Color.white, Color.white, Color.black, Color.black);
+
+        Color gray = new Color(0.5f, 0.5f, 0.5f);
+        Description.colorGradient = new VertexGradient(gray, gray, Color.black, Color.black);
 
         Material imageMaterial = new Material(Image.material);
 
@@ -122,8 +124,22 @@ public class CardInfoScript : MonoBehaviour
 
     public void ShowDescription()
     {
-        if ((IsDeckBuildCard) || ((!IsHideCard) && (!GameManager.Instance.IsDrag) && (!IsAnimationCard) && (!IsOrderCard) && (DescriptionObject != null)))
+        if ((IsDeckBuildCard) || ((!IsHideCard) && (!GameManager.Instance.IsStartGiveCards) && (!GameManager.Instance.IsDrag) && (!IsAnimationCard) && (!IsOrderCard) && (DescriptionObject != null)))
         {
+            switch (Description.text.Length)
+            {
+                case (> 100):
+                    DescriptionObject.GetComponent<RectTransform>().sizeDelta = new Vector2(120, 180);
+                    break;
+
+                case (< 100):
+                    DescriptionObject.GetComponent<RectTransform>().sizeDelta = new Vector2(120, 150);
+                    break;
+
+                default:
+                    break;
+            }
+
             DescriptionObject.SetActive(true);
             DescriptionObject.transform.SetParent(transform.parent.parent);
         }

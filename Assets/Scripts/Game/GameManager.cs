@@ -81,8 +81,9 @@ public class GameManager : MonoBehaviour
     private int _playerPoints;
     private int _enemyPoints;
 
-    public bool IsDrag;
-    public bool IsChooseCard;
+    [HideInInspector] public bool IsStartGiveCards = false;
+    [HideInInspector] public bool IsDrag;
+    [HideInInspector] public bool IsChooseCard;
     public GameObject CardPref;
 
     private bool isPlayerPassed;
@@ -119,7 +120,7 @@ public class GameManager : MonoBehaviour
     public int ValueDeckCards = 20;
     public int ValueHandCards = 10;
 
-    public float TimeDrawCardStart = 0.1f;
+    public float TimeDrawCardStart = 0.15f;
     public float TimeDrawCard = 0.3f;
 
     public bool IsPlayerTurn
@@ -180,11 +181,16 @@ public class GameManager : MonoBehaviour
 
         CurrentGame = new Game();
 
+        UIManager.Instance.ChangeEndTurnButtonInteractable(false);
+
         //DebugGame();
         Deck.Instance.CreateDeck(CurrentGame.PlayerDeck);
 
-        StartCoroutine(GiveHandCards(CurrentGame.EnemyDeck, _enemyHand, false));
-        yield return StartCoroutine(GiveHandCards(CurrentGame.PlayerDeck, _playerHand, true));
+        IsStartGiveCards = true;
+
+        StartCoroutine(GiveHandCards(CurrentGame.EnemyDeck, _enemyHand, false, true));
+        yield return StartCoroutine(GiveHandCards(CurrentGame.PlayerDeck, _playerHand, true, true));
+        EffectsManager.Instance.HideDrawCardEffect();
 
         if (Object.FindObjectOfType<HowToPlay>() != null && HowToPlay.Instance.IsHowToPlay)
         {
@@ -193,18 +199,21 @@ public class GameManager : MonoBehaviour
 
         else
             AllCoroutine.Add(StartCoroutine(TurnFunk()));
+
+        IsStartGiveCards = false;
+        UIManager.Instance.ChangeEndTurnButtonInteractable(true);
     }
 
-    private IEnumerator GiveHandCards(List<Card> deck, Transform hand, bool isPlayer)
+    private IEnumerator GiveHandCards(List<Card> deck, Transform hand, bool isPlayer, bool isStart = false)
     {
         int i = 0;
         while (i++ < ValueHandCards)
         {
-            yield return StartCoroutine(GiveCardtoHand(deck, hand, TimeDrawCardStart, isPlayer));
+            yield return StartCoroutine(GiveCardtoHand(deck, hand, TimeDrawCardStart, isPlayer, isStart));
         }
     }
 
-    private IEnumerator GiveCardtoHand(List<Card> deck, Transform hand, float time, bool isPlayer)
+    private IEnumerator GiveCardtoHand(List<Card> deck, Transform hand, float time, bool isPlayer, bool isStart = false)
     {
         if (deck.Count == 0) 
             yield break;
@@ -215,7 +224,8 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(time);
 
-        EffectsManager.Instance.HideDrawCardEffect();
+        if(!isStart)
+            EffectsManager.Instance.HideDrawCardEffect();
 
         GameObject cardHand = Instantiate(CardPref, hand, false);
 
